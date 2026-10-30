@@ -1,7 +1,7 @@
 # Dataset Inventory
 
 **Project:** The Psychology of Working Motherhood: Employment, Time, and Maternal Well-Being in the United States
-**Companion to:** `docs/research-plan.md` (v0.4)
+**Companion to:** `docs/research-plan.md` (v0.5)
 **Status:** v0.1, validation against official documentation
 **Documentation reviewed:** 2026-10-30
 
@@ -823,7 +823,52 @@ The project bands (0–5, 6–11, 12–17; research plan v0.4) match the NSCH to
 
 Child sleep hours still use different NSCH items for band 0–5 (`HOURSLEEP05`) and bands 6–11/12–17 (`HOURSLEEP`). These can be compared within a band, but not across the 0–5 boundary.
 
-### 6.4 Geographic comparability
+### 6.4 Within-early-childhood sub-analysis: 0–2 vs. 3–5
+
+This is a **secondary sub-analysis within band 0–5** (research plan v0.5, Section 1 and Section 3.4). It does not replace the primary bands. This section records what each dataset can support, based on the variables verified above. **No sample sizes have been estimated yet.** Feasibility depends on counts that can only be produced once the data are downloaded.
+
+#### NSCH
+
+| Aspect | Assessment | Basis |
+|---|---|---|
+| Exact age | ✅ `SC_AGE_YEARS` (0–17) gives the sampled child's exact age. `SC_AGE_LT4`/`LT6`/`LT9`/`LT10` add detail under 1 year. | VERIFIED (Section 2.4 B) |
+| Same questionnaire | ✅ Ages 0–2 and 3–5 are both on form T1, so every T1 item is asked of both subgroups with identical wording. | VERIFIED (Section 2.2) |
+| Whose age | ◐ The **sampled child's** age, not the youngest child's. `TOTAGE_0_5` shows how many children aged 0–5 are in the household but not whether any is under 3. A mother of a sampled 4-year-old and an unsampled 1-year-old is classified as 3–5. | VERIFIED (Section 2.4 B) |
+| Measures comparable across subgroups | Mental health (`A1_MENTHEALTH`), aggravation (`K8Q30`–`K8Q34`), support (`K8Q35`), resilience, employment (`A1_EMPLOYED_R`, 2023+), FPL, `ACE1`, `TENURE`, `BEDTIME`, `HOURSLEEP05`, `K6Q27`, `HOURSOFCARE` (2025 only) | VERIFIED universes (T1 or T1–T3) |
+| Child sleep caveat | `HOURSLEEP05` (24 hours including naps; top category "12 or more hours") is comparable between 0–2 and 3–5, but the 0–2 group may cluster in the top category (possible ceiling effect). Report category distributions, not estimated hours. **Do not compare with `HOURSLEEP`** (weeknights, ages 6–17). | Codes VERIFIED; the ceiling effect is an expectation to check in the data |
+| Childcare caveat | `HOURSOFCARE` exists only in 2025, and `K6Q20` (10+ hours of care) only in 2016–2022. Neither exists in 2023–2024. Do not pool the two items. | VERIFIED |
+| Weights | Children 0–5 are oversampled, which helps both subgroups. Use subpopulation estimation. | VERIFIED (FAQ25) |
+| **Verdict** | **Supported**, defined by the sampled child's age. | |
+
+#### ATUS
+
+| Aspect | Assessment | Basis |
+|---|---|---|
+| Exact age | ✅ Roster `TEAGE` gives each household member's exact age (0 = under 1). Combined with `TERRP` = 22 (own household child), this gives the **exact age of the mother's youngest own household child**. | VERIFIED (Section 3.5 A–B) |
+| Do not use `TRYHHCHILD` | ✖ It gives the youngest **household** child of any relationship (for example a niece or grandchild), not the youngest own child. | VERIFIED |
+| Own-child definition | ◐ "Own" includes step- and adopted children. Separating biological/adoptive children needs the ATUS-CPS parent-type variables (2007+, renamed 2020), measured 2–5 months earlier. A child born after the CPS interview has no CPS parent-type record. | VERIFIED |
+| Timing of roster ages | UNCERTAIN whether the roster (and therefore `TEAGE`) is updated at the ATUS interview or carried from the CPS interview. This matters at the age-3 boundary. Check the User's Guide. | Not verified |
+| Maternal sleep | ✅ Diary minutes for sleeping (`t010101`) and sleeplessness (`t010102`) apply equally to both subgroups. `WEREST` (well-rested) exists only in Well-Being Module years (2010, 2012, 2013, 2021), so subgroup cells there will be very small. | VERIFIED |
+| Paid work | ✅ Work activity codes (0501xx), `TELFS`, `TRDPFTPT`, usual hours `TEHRUSLT` | VERIFIED |
+| Primary childcare | ◐ 0301xx codes apply to both subgroups, but activities do **not** identify which child received care. Classifying mothers by youngest child is a household-level comparison, not a child-level one. | VERIFIED |
+| Secondary childcare | ✅ All secondary-childcare measures cover children **under 13**, so both 0–2 and 3–5 are fully covered. (Band 12–17 coverage limits are unchanged; Section 6.3.) | VERIFIED |
+| Unpaid household labor | ✅ Household activity codes (02xxxx) apply equally | VERIFIED |
+| Sample size | UNCERTAIN. About 6,100 respondents in 2025. Mothers whose youngest own child is 0–2 or 3–5, split by employment status, are expected to need **pooled years**. Weekday/weekend splits will thin the cells further. Counts must be produced before committing to estimates. Households with children are oversampled, which helps. | Respondent count VERIFIED; subgroup counts not yet estimated |
+| Disrupted years | Exclude or handle 2020 (partial year, `TU20FWGT`) and late 2025 (shutdown gap) explicitly when pooling. | VERIFIED |
+| **Verdict** | **Supported in principle** for maternal sleep, paid work, primary and secondary childcare and unpaid labor, defined by the youngest own household child. **Reliability depends on pooled sample sizes**, still to be confirmed. Well-Being Module subgroup estimates are likely too small. | |
+
+#### ACS PUMS (not a priority for this sub-analysis)
+
+`AGEP` gives exact ages for children who can be linked to their mother (female householder's children coded 25/26/27; subfamily children). The `PAOC` and `HUPAOC` recodes cannot separate 0–2 from 3–5. Possible for linkable mothers only (Section 4.6).
+
+#### Rules carried into the analysis
+
+- Label every result "within-early-childhood sub-analysis (0–2 vs. 3–5)" and keep it separate from primary-band results.
+- Compare the subgroups only on measures asked identically of both. Never compare NSCH `HOURSLEEP05` with `HOURSLEEP`.
+- State the age definition: sampled child (NSCH) vs. youngest own household child (ATUS). Because these definitions differ, NSCH and ATUS sub-analysis results are triangulated, not combined.
+- Suppress or flag estimates that fail each source's reliability rules. Drop the sub-analysis for measures that cannot be estimated reliably, rather than implying coverage.
+
+### 6.5 Geographic comparability
 
 - **Common level: state.** NSCH (`FIPSST`), ATUS (`GESTFIPS`), ACS PUMS (`STATE`), ACS tables and BEA RPP (`SARPP`) all identify states. ATUS state samples are not designed for state estimates.
 - **Metro areas:**
@@ -835,7 +880,7 @@ Child sleep hours still use different NSCH items for band 0–5 (`HOURSLEEP05`) 
   - Metro delineations differ by vintage across sources.
 - **Ecological inference:** state- or metro-level associations remain area-level findings.
 
-### 6.5 Temporal comparability
+### 6.6 Temporal comparability
 
 | Dataset | Usable span | Key breaks |
 |---|---|---|
@@ -863,6 +908,8 @@ Child sleep hours still use different NSCH items for band 0–5 (`HOURSLEEP05`) 
 | 9 | Whether 2024 `MARPP`/`PARPP` exist, and whether metro RPPs continue for 2025 | BEA | Metro comparisons (visualization 9) |
 | 10 | Metro delineation vintage used by BEA | BEA | PUMA/metro alignment |
 | 11 | A separate official source for geographic childcare costs, if wanted | — | RPP has no childcare component |
+| 12 | Whether ATUS roster ages (`TEAGE`) are updated at the ATUS interview or carried from the CPS interview | ATUS | Classification at the age-3 boundary in the 0–2 vs. 3–5 sub-analysis (Section 6.4) |
+| 13 | Unweighted counts of mothers with a child 0–2 vs. 3–5, by employment status, per year and pooled | NSCH, ATUS | Whether sub-analysis questions U1–U4 can be estimated reliably |
 
 ---
 

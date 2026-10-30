@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Document status** | Draft v0.4: age bands aligned with NSCH questionnaire forms |
+| **Document status** | Draft v0.5: within-early-childhood sub-analysis (0–2 vs. 3–5) added |
 | **Created** | 2026-10-30 |
 | **Last revised** | 2026-10-30 |
 | **Scope** | Descriptive and associational secondary analysis of public U.S. survey and price data |
@@ -19,6 +19,7 @@
 | v0.2 | Central focus changed to **working mothers**. GSS replaced by the **American Time Use Survey (ATUS)**. Added requirements for measuring employment and labor-force status and for identifying mothers. D3.js recorded as the preferred visualization framework. |
 | v0.3 | **Child age bands** changed to **0–2, 3–6, 7–12, 13–17** (replacing 0–5 / 6–17). Added a **sleep research strand** covering maternal sleep, child sleep, and their relationship to employment and well-being. Added an **economic and housing dimension**: expanded ACS, new **BEA Regional Price Parities** dataset, NSCH household financial context, six new economic research questions, economic methodology and new visualization concepts. |
 | v0.4 | **Child age bands** changed to **0–5, 6–11, 12–17**, replacing 0–2 / 3–6 / 7–12 / 13–17. The new bands match the NSCH questionnaire forms (T1, T2, T3; see `docs/dataset-inventory.md`), so NSCH form-specific items no longer split a band. Primary population is now mothers of children 0–5. |
+| v0.5 | Added a **within-early-childhood sub-analysis** comparing mothers of children **0–2 vs. 3–5** (Section 1, Section 3.4), to keep the original interest in the caregiving demands of children under 3. It is a secondary analysis and does **not** replace the primary bands. ATUS feasibility documented in `docs/dataset-inventory.md` Section 6.4. |
 
 ### Verification convention
 
@@ -55,6 +56,29 @@ These are the project's age groups:
 **Why these bands.** They match the three NSCH topical questionnaire forms exactly (T1: 0–5, T2: 6–11, T3: 12–17). Every NSCH item is therefore asked either for a whole band or not at all. The 0–5 boundary also matches the ACS "under 6 / 6–17" recodes.
 
 **Applying the bands in each dataset.** Each dataset determines child age differently: in NSCH it is the sampled child, in ATUS the youngest own household child, and in ACS own children (Section 4). Some measures still cover only part of a band. For example, ATUS secondary childcare covers children under 13 only, so band 12–17 is covered only at age 12. Any band a measure covers only partly will be flagged in results.
+
+### Within-early-childhood sub-analysis: 0–2 vs. 3–5
+
+**This is a secondary sub-analysis inside band 1 (0–5). It does not replace the primary bands.** All primary results use 0–5, 6–11 and 12–17. The sub-analysis asks whether caregiving demands, time use, sleep and well-being differ between mothers of children under 3 (infancy and toddlerhood) and mothers of children 3–5 (preschool).
+
+| Subgroup | Ages | Rationale |
+|---|---|---|
+| 1a | **0–2** | Infancy and toddlerhood: potentially the most intensive caregiving demands, night waking and the period around return to work |
+| 1b | **3–5** | Preschool: changing childcare arrangements and preschool entry |
+
+**Defining the subgroups in each dataset** (details in `docs/dataset-inventory.md` Section 6.4):
+
+| Dataset | Age definition | Supported? |
+|---|---|---|
+| NSCH | **Exact age of the sampled child** (`SC_AGE_YEARS`). Both subgroups are on form T1, so every T1 item is asked of both. | Yes, by sampled child. The youngest child cannot be identified, so a mother is classified by the sampled child even if she has a younger one. |
+| ATUS | **Exact age of the mother's youngest own household child**, from roster age and relationship. | Yes in principle. Sample size must be checked before committing to estimates (likely requires pooling years). |
+| ACS PUMS | Exact age (`AGEP`) of linkable own children | Possible for linkable mothers only. Not a priority for this sub-analysis. |
+
+**Rules for the sub-analysis:**
+- Compare 0–2 with 3–5 **only on measures asked identically of both subgroups**. NSCH T1 items, including `HOURSLEEP05`, meet this. NSCH child sleep for 0–5 must **not** be compared with the weeknight sleep item used for ages 6–17.
+- `HOURSLEEP05` has a top category of "12 or more hours" that includes naps. Infant and toddler sleep is often in this range, so the 0–2 group may cluster at the top category (a ceiling effect). Differences there are reported as differences in category distribution, not as estimated hours.
+- ATUS secondary childcare (children under 13) covers both subgroups fully. ATUS primary-childcare activities do not identify which child received care, so a mother of both a 1-year-old and a 4-year-old is classified by her **youngest** child, and her childcare time cannot be split between the children.
+- Sample sizes are checked first. Estimates that fail each source's reliability rules are suppressed or flagged, and the sub-analysis is dropped for any measure where it cannot be estimated reliably. It is never reported as covering more than the data support.
 
 ### Population
 
@@ -147,6 +171,15 @@ Shorter maternal sleep is associated with employment circumstances (for example 
 - **S4.** How are maternal sleep (ATUS) and child sleep (NSCH) associated with maternal psychological well-being in each dataset, and are the patterns consistent across datasets? *(Within each dataset, then triangulated)*
 
 Each sleep dimension is investigated separately. **No dataset is assumed to measure all of them.** Availability and age eligibility must be confirmed in the dataset inventory before analysis.
+
+### 3.4 Within-early-childhood sub-analysis research questions (0–2 vs. 3–5)
+
+These are **secondary** questions within band 0–5 (see Section 1). They are descriptive and associational.
+
+- **U1.** Do maternal mental/emotional health, parenting aggravation and emotional support differ between mothers of a sampled child aged 0–2 and those of a sampled child aged 3–5? *(NSCH)*
+- **U2.** Do child sleep (`HOURSLEEP05`, `BEDTIME`), non-parental childcare hours and job disruption due to childcare problems differ between the two subgroups? *(NSCH, T1 items only. Childcare hours only in years the item exists.)*
+- **U3.** Do mothers whose youngest own child is 0–2 differ from those whose youngest is 3–5 in diary-day sleep, sleeplessness, paid work, primary and secondary childcare, and household activities, by employment status? *(ATUS, pooled years, subject to sample size)*
+- **U4.** Do employment status and usual hours differ between the two subgroups? *(ATUS. NSCH `A1_EMPLOYED_R` for 2023+, which has no hours.)*
 
 ## 4. Dataset overview
 
@@ -281,6 +314,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 - Biological/adoptive mothers are distinguished from other female caregivers wherever the data allow.
 - Age bands are applied as defined in Section 1. Every output states whether the band refers to the sampled child (NSCH), the youngest household child (ATUS) or own children (ACS), and flags any band a measure covers only partly.
+- The 0–2 vs. 3–5 sub-analysis is labeled **"within-early-childhood sub-analysis"** in every output and kept separate from primary-band results. It uses only measures asked identically of both subgroups.
 
 ### 7.7 Sleep measurement
 
@@ -301,7 +335,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 | **Missing data** | Report item nonresponse. Distinguish legitimate skips. Use official imputations correctly. Use multiple imputation as a sensitivity analysis where needed. |
 | **Confounding / selection** | Adjust for measured confounders. Selection into employment and housing tenure is acknowledged. No "effect of working" or "effect of owning" language. |
 | **Correlation vs. causation** | All data are cross-sectional. Reverse causation is possible (for example, poor health leading to less employment). |
-| **Multiple comparisons** | H1–H6, E1–E6 and S1–S4 are pre-specified. Other analyses are labeled exploratory. |
+| **Multiple comparisons** | H1–H6, E1–E6, S1–S4 and the sub-analysis questions U1–U4 are pre-specified. Other analyses are labeled exploratory. |
 | **Small cells** | Low-count or high relative standard error estimates are suppressed or flagged according to each source's guidance. |
 
 ## 8. Data access limitations
@@ -321,7 +355,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 1. **Interactive 24-hour time-use comparison (ATUS):** The diary day of working vs. nonworking mothers by child age band, with toggles for full-time/part-time, family structure and weekday/weekend.
 2. **Daily minutes by activity (ATUS):** Paid work, primary and secondary childcare, household activities, sleep and personal time, by group, with confidence intervals.
-3. **Maternal sleep by employment and child age band (ATUS):** Distribution of diary-day sleep, with band 0–5 highlighted.
+3. **Maternal sleep by employment and child age band (ATUS):** Distribution of diary-day sleep, with band 0–5 highlighted. An optional view splits 0–5 into 0–2 and 3–5, labeled as the within-early-childhood sub-analysis and shown only where sample sizes allow.
 4. **Child sleep and routines by age band (NSCH):** Shown only for the ages each item covers.
 5. **Maternal well-being comparisons (NSCH):** Mental-health ratings and aggravation by employment status and child age band.
 6. **Well-being by economic pressure, support and housing tenure (NSCH):** Point estimates with intervals (housing tenure only if NSCH measures it).
@@ -370,7 +404,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 2. Resolve the population-defining variables first: maternal identification, child age and the age-band coverage of key items.
 3. Confirm whether NSCH measures housing tenure, caregiver sleep and child sleep, and for which ages. E3 and parts of H6 depend on this.
 4. Confirm the PUMS mother–child linkage approach and the PUMA–metro alignment for RPP comparisons.
-5. Estimate unweighted sample sizes of mothers by age band and employment status in each source to confirm the planned comparisons are feasible, especially band 0–5 in ATUS.
+5. Estimate unweighted sample sizes of mothers by age band and employment status in each source to confirm the planned comparisons are feasible, especially band 0–5 in ATUS. Include the 0–2 and 3–5 subgroups in NSCH and ATUS to decide which sub-analysis measures (U1–U4) can be estimated reliably.
 6. Revise this plan (v0.5) to match the confirmed variables, and mark any hypotheses or research questions that cannot be tested.
 
 ---
