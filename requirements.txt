@@ -1,0 +1,23 @@
+# Data handling
+pandas
+numpy
+pyarrow
+
+# HTTP / data collection
+requests
+httpx
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Statistics
+scipy
+statsmodels
+
+# Notebooks
+jupyterlab
+
+# Configuration
+python-dotenv
