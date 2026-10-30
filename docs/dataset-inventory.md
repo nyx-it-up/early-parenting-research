@@ -1,7 +1,7 @@
 # Dataset Inventory
 
 **Project:** The Psychology of Working Motherhood: Employment, Time, and Maternal Well-Being in the United States
-**Companion to:** `docs/research-plan.md` (v0.5)
+**Companion to:** `docs/research-plan.md` (v0.6)
 **Status:** v0.1, validation against official documentation
 **Documentation reviewed:** 2026-10-30
 
@@ -823,9 +823,9 @@ The project bands (0–5, 6–11, 12–17; research plan v0.4) match the NSCH to
 
 Child sleep hours still use different NSCH items for band 0–5 (`HOURSLEEP05`) and bands 6–11/12–17 (`HOURSLEEP`). These can be compared within a band, but not across the 0–5 boundary.
 
-### 6.4 Within-early-childhood sub-analysis: 0–2 vs. 3–5
+### 6.4 Secondary age bands: 0–2 / 3–5 / 6–11 / 12–17
 
-This is a **secondary sub-analysis within band 0–5** (research plan v0.5, Section 1 and Section 3.4). It does not replace the primary bands. This section records what each dataset can support, based on the variables verified above. **No sample sizes have been estimated yet.** Feasibility depends on counts that can only be produced once the data are downloaded.
+The project uses two age-band schemes (research plan v0.6, Section 1): **primary 0–5 / 6–11 / 12–17** and **secondary 0–2 / 3–5 / 6–11 / 12–17**. The secondary scheme differs only by splitting 0–5, so the coverage of 6–11 and 12–17 is as shown in Section 6.3. This section covers the new 0–2 vs. 3–5 split. The secondary scheme does not replace the primary bands. This section records what each dataset can support, based on the variables verified above. **No sample sizes have been estimated yet.** Feasibility depends on counts that can only be produced once the data are downloaded.
 
 #### NSCH
 
@@ -857,16 +857,16 @@ This is a **secondary sub-analysis within band 0–5** (research plan v0.5, Sect
 | Disrupted years | Exclude or handle 2020 (partial year, `TU20FWGT`) and late 2025 (shutdown gap) explicitly when pooling. | VERIFIED |
 | **Verdict** | **Supported in principle** for maternal sleep, paid work, primary and secondary childcare and unpaid labor, defined by the youngest own household child. **Reliability depends on pooled sample sizes**, still to be confirmed. Well-Being Module subgroup estimates are likely too small. | |
 
-#### ACS PUMS (not a priority for this sub-analysis)
+#### ACS PUMS (not a priority for the secondary scheme)
 
 `AGEP` gives exact ages for children who can be linked to their mother (female householder's children coded 25/26/27; subfamily children). The `PAOC` and `HUPAOC` recodes cannot separate 0–2 from 3–5. Possible for linkable mothers only (Section 4.6).
 
 #### Rules carried into the analysis
 
-- Label every result "within-early-childhood sub-analysis (0–2 vs. 3–5)" and keep it separate from primary-band results.
+- Label every result that uses the secondary scheme "secondary age bands" and keep it separate from primary-band results.
 - Compare the subgroups only on measures asked identically of both. Never compare NSCH `HOURSLEEP05` with `HOURSLEEP`.
-- State the age definition: sampled child (NSCH) vs. youngest own household child (ATUS). Because these definitions differ, NSCH and ATUS sub-analysis results are triangulated, not combined.
-- Suppress or flag estimates that fail each source's reliability rules. Drop the sub-analysis for measures that cannot be estimated reliably, rather than implying coverage.
+- State the age definition: sampled child (NSCH) vs. youngest own household child (ATUS). Because these definitions differ, NSCH and ATUS secondary-band results are triangulated, not combined.
+- Suppress or flag estimates that fail each source's reliability rules. Drop the 0–2 vs. 3–5 split for measures that cannot be estimated reliably, rather than implying coverage.
 
 ### 6.5 Geographic comparability
 
@@ -908,8 +908,8 @@ This is a **secondary sub-analysis within band 0–5** (research plan v0.5, Sect
 | 9 | Whether 2024 `MARPP`/`PARPP` exist, and whether metro RPPs continue for 2025 | BEA | Metro comparisons (visualization 9) |
 | 10 | Metro delineation vintage used by BEA | BEA | PUMA/metro alignment |
 | 11 | A separate official source for geographic childcare costs, if wanted | — | RPP has no childcare component |
-| 12 | Whether ATUS roster ages (`TEAGE`) are updated at the ATUS interview or carried from the CPS interview | ATUS | Classification at the age-3 boundary in the 0–2 vs. 3–5 sub-analysis (Section 6.4) |
-| 13 | Unweighted counts of mothers with a child 0–2 vs. 3–5, by employment status, per year and pooled | NSCH, ATUS | Whether sub-analysis questions U1–U4 can be estimated reliably |
+| 12 | Whether ATUS roster ages (`TEAGE`) are updated at the ATUS interview or carried from the CPS interview | ATUS | Classification at the age-3 boundary in the secondary age bands (Section 6.4) |
+| 13 | Unweighted counts of mothers with a child 0–2 vs. 3–5, by employment status, per year and pooled | NSCH, ATUS | Whether secondary age-band questions U1–U4 can be estimated reliably |
 
 ---
 
