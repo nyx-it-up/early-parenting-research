@@ -1,0 +1,22 @@
+band,employment,n_2023,n_2024,n_2025,n_pooled,weighted_children,meets_n30_pooled,meets_n30_every_year
+"Child 0-2, no other 0-5",Employed full-time,1940,1370,1051,4361,1696977,True,True
+"Child 0-2, no other 0-5",Employed part-time,466,306,330,1102,469619,True,True
+"Child 0-2, no other 0-5",Working without pay,31,23,14,68,25704,True,False
+"Child 0-2, no other 0-5","Not employed, looking for work",175,130,100,405,281214,True,True
+"Child 0-2, no other 0-5","Not employed, not looking for work",520,363,329,1212,583048,True,True
+"Child 0-2, no other 0-5",Retired,3,9,4,16,4075,False,False
+"Child 0-2, no other 0-5",Missing,27,12,15,54,36592,True,False
+Child 0-2 + another 0-5,Employed full-time,1386,811,675,2872,1376486,True,True
+Child 0-2 + another 0-5,Employed part-time,434,270,269,973,503997,True,True
+Child 0-2 + another 0-5,Working without pay,58,37,25,120,54638,True,False
+Child 0-2 + another 0-5,"Not employed, looking for work",116,70,65,251,238898,True,True
+Child 0-2 + another 0-5,"Not employed, not looking for work",609,376,364,1349,827658,True,True
+Child 0-2 + another 0-5,Retired,3,1,2,6,11473,False,False
+Child 0-2 + another 0-5,Missing,20,17,11,48,45574,True,False
+Sampled child 3+,Employed full-time,17093,17166,14609,48868,20017476,True,True
+Sampled child 3+,Employed part-time,4454,4171,3700,12325,5745162,True,True
+Sampled child 3+,Working without pay,417,424,332,1173,579704,True,True
+Sampled child 3+,"Not employed, looking for work",1347,1282,1113,3742,2855604,True,True
+Sampled child 3+,"Not employed, not looking for work",3733,3244,2914,9891,5724079,True,True
+Sampled child 3+,Retired,241,319,300,860,350792,True,True
+Sampled child 3+,Missing,292,228,199,719,500370,True,True

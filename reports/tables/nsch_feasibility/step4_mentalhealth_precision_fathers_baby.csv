@@ -1,0 +1,19 @@
+band,employment,n,share_pct,ci_low_pct,ci_high_pct,ci_width_pts,rse_pct,flags
+"Child 0-2, no other 0-5",Employed full-time,3289,4.6,3.7,5.9,2.2,12.1,
+"Child 0-2, no other 0-5",Employed part-time,125,4.3,1.8,10.1,8.4,44.7,CI>1.2x estimate
+"Child 0-2, no other 0-5",Working without pay,9,2.1,0.3,15.9,15.7,107.8,n<30; CI>1.2x estimate
+"Child 0-2, no other 0-5","Not employed, looking for work",82,6.2,2.7,13.6,11.0,41.8,CI>1.2x estimate
+"Child 0-2, no other 0-5","Not employed, not looking for work",59,8.3,3.4,18.8,15.4,43.8,CI>1.2x estimate
+"Child 0-2, no other 0-5",Retired,18,0.3,0.0,2.6,2.5,104.9,n<30; CI>1.2x estimate
+Child 0-2 + another 0-5,Employed full-time,2600,3.5,2.6,4.9,2.3,16.5,
+Child 0-2 + another 0-5,Employed part-time,59,18.8,4.0,56.1,52.1,70.8,CI>20pts; CI>1.2x estimate
+Child 0-2 + another 0-5,Working without pay,8,0.0,,,,,n<30
+Child 0-2 + another 0-5,"Not employed, looking for work",52,17.6,6.1,41.3,35.2,50.2,CI>20pts; CI>1.2x estimate
+Child 0-2 + another 0-5,"Not employed, not looking for work",55,8.7,2.0,30.3,28.3,70.7,CI>20pts; CI>1.2x estimate
+Child 0-2 + another 0-5,Retired,16,4.2,0.5,28.2,27.7,106.6,n<30; CI>20pts; CI>1.2x estimate
+Sampled child 3+,Employed full-time,33336,3.7,3.3,4.1,0.7,5.2,
+Sampled child 3+,Employed part-time,1200,6.9,4.7,10.0,5.4,19.6,
+Sampled child 3+,Working without pay,151,14.2,5.7,31.5,25.9,44.6,CI>20pts; CI>1.2x estimate
+Sampled child 3+,"Not employed, looking for work",886,9.3,6.9,12.4,5.4,14.8,
+Sampled child 3+,"Not employed, not looking for work",604,25.6,16.2,38.0,21.7,21.8,CI>20pts
+Sampled child 3+,Retired,1169,7.3,5.2,10.1,4.8,16.7,

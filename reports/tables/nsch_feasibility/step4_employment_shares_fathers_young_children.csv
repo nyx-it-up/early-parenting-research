@@ -1,0 +1,19 @@
+band,employment,n,share_pct,ci_low_pct,ci_high_pct,ci_width_pts,rse_pct,flags
+No child 0-5,Employed full-time,26249,87.2,86.4,88.1,1.7,0.5,
+No child 0-5,Employed part-time,26249,3.9,3.5,4.4,0.9,6.1,
+No child 0-5,Working without pay,26249,0.4,0.3,0.5,0.2,13.8,
+No child 0-5,"Not employed, looking for work",26249,2.7,2.3,3.1,0.8,7.6,
+No child 0-5,"Not employed, not looking for work",26249,1.9,1.5,2.4,0.9,12.5,
+No child 0-5,Retired,26249,3.9,3.5,4.4,0.9,6.2,
+1 child 0-5,Employed full-time,11537,88.8,87.3,90.1,2.7,0.8,
+1 child 0-5,Employed part-time,11537,4.4,3.6,5.4,1.7,10.0,
+1 child 0-5,Working without pay,11537,0.5,0.2,1.1,0.9,46.5,CI>1.2x estimate
+1 child 0-5,"Not employed, looking for work",11537,3.4,2.6,4.2,1.6,12.1,
+1 child 0-5,"Not employed, not looking for work",11537,1.4,1.1,1.9,0.8,14.2,
+1 child 0-5,Retired,11537,1.6,1.1,2.3,1.2,19.2,
+2+ children 0-5,Employed full-time,6028,90.5,88.3,92.3,4.0,1.1,
+2+ children 0-5,Employed part-time,6028,3.5,2.1,5.8,3.6,25.3,
+2+ children 0-5,Working without pay,6028,0.3,0.1,0.8,0.7,46.6,CI>1.2x estimate
+2+ children 0-5,"Not employed, looking for work",6028,3.2,2.5,4.2,1.7,13.7,
+2+ children 0-5,"Not employed, not looking for work",6028,1.8,1.3,2.4,1.1,15.3,
+2+ children 0-5,Retired,6028,0.6,0.3,1.1,0.8,31.5,CI>1.2x estimate

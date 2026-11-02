@@ -1,0 +1,10 @@
+band,employment,n,share_pct,ci_low_pct,ci_high_pct,ci_width_pts,rse_pct,flags
+"Child 0-2, no other 0-5",Employed full-time,4352,6.7,5.4,8.4,2.9,11.0,
+"Child 0-2, no other 0-5",Employed part-time,1101,8.5,5.9,12.3,6.4,18.9,
+"Child 0-2, no other 0-5","Not employed (looking, not looking or retired)",1630,11.9,8.8,15.9,7.1,15.2,
+Child 0-2 + another 0-5,Employed full-time,2869,6.9,5.1,9.3,4.2,15.3,
+Child 0-2 + another 0-5,Employed part-time,972,6.6,4.3,10.0,5.7,21.8,
+Child 0-2 + another 0-5,"Not employed (looking, not looking or retired)",1600,7.9,5.9,10.5,4.6,14.6,
+Sampled child 3+,Employed full-time,48771,6.9,6.5,7.4,1.0,3.5,
+Sampled child 3+,Employed part-time,12293,7.6,6.8,8.5,1.7,5.8,
+Sampled child 3+,"Not employed (looking, not looking or retired)",14459,11.1,10.0,12.2,2.2,5.1,
