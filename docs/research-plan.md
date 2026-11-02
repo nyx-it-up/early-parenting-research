@@ -4,12 +4,12 @@
 
 | | |
 |---|---|
-| **Document status** | Draft v0.6: primary and secondary age-band schemes |
+| **Document status** | Draft v0.7: NSCH feasibility results and confirmed variables folded in |
 | **Created** | 2026-10-30 |
-| **Last revised** | 2026-10-30 |
+| **Last revised** | 2026-11-01 |
 | **Scope** | Descriptive and associational secondary analysis of public U.S. survey and price data |
 | **Causal claims** | None. All hypotheses and research questions are stated as associations. |
-| **Companion document** | `docs/dataset-inventory.md`: source-backed validation of datasets and variables |
+| **Companion documents** | `docs/dataset-inventory.md`: source-backed validation of datasets and variables. `docs/nsch-feasibility.md`: NSCH sample definition, sample sizes, reliability, missing data and agreed analysis decisions. |
 
 ### Revision history
 
@@ -21,6 +21,7 @@
 | v0.4 | **Child age bands** changed to **0–5, 6–11, 12–17**, replacing 0–2 / 3–6 / 7–12 / 13–17. The new bands match the NSCH questionnaire forms (T1, T2, T3; see `docs/dataset-inventory.md`), so NSCH form-specific items no longer split a band. Primary population is now mothers of children 0–5. |
 | v0.5 | Added a **within-early-childhood sub-analysis** comparing mothers of children **0–2 vs. 3–5** (Section 1, Section 3.4), to keep the original interest in the caregiving demands of children under 3. It is a secondary analysis and does **not** replace the primary bands. ATUS feasibility documented in `docs/dataset-inventory.md` Section 6.4. |
 | v0.6 | Formalized **two age-band schemes**: **primary 0–5 / 6–11 / 12–17** and **secondary 0–2 / 3–5 / 6–11 / 12–17**. The secondary scheme replaces the stand-alone 0–2 vs. 3–5 sub-analysis and keeps its rules and research questions (U1–U4). |
+| v0.7 | Folded in the **NSCH feasibility results** (`docs/nsch-feasibility.md`) and the inventory corrections (inventory Section 1.3). NSCH mother definition and employment groups fixed. Added **fathers as a comparison group** (H8) and **caregiving load** (number of young children; H7). Added the **youngest-child band** as an NSCH sensitivity definition. E3 confirmed testable (`TENURE`). NSCH has no caregiver sleep or work-hours item. Reliability rules, logit confidence intervals, pooling and missing-data handling specified (Section 7.8). Resolved `[VERIFY]` tags for NSCH. |
 
 ### Verification convention
 
@@ -84,7 +85,7 @@ Every secondary band still falls within a single NSCH questionnaire form (0–2 
 
 | Dataset | Age definition | Supported? |
 |---|---|---|
-| NSCH | **Exact age of the sampled child** (`SC_AGE_YEARS`). Both subgroups are on form T1, so every T1 item is asked of both. | Yes, by sampled child. The youngest child cannot be identified, so a mother is classified by the sampled child even if she has a younger one. |
+| NSCH | **Exact age of the sampled child** (`SC_AGE_YEARS`). Both subgroups are on form T1, so every T1 item is asked of both. | **Yes**, by sampled child: pooled 2023–2025, every main employment group has ≥ 650 mothers in each subgroup and passes the reliability rules (`docs/nsch-feasibility.md` Section 2). Other children's exact ages are not available, so a mother is classified by the sampled child even if she has a younger one. |
 | ATUS | **Exact age of the mother's youngest own household child**, from roster age and relationship. | Yes in principle. Sample size must be checked before committing to estimates (likely requires pooling years). |
 | ACS PUMS | Exact age (`AGEP`) of linkable own children | Possible for linkable mothers only. Not a priority for the secondary scheme. |
 
@@ -95,12 +96,25 @@ Every secondary band still falls within a single NSCH questionnaire form (0–2 
 - ATUS secondary childcare (children under 13) covers both subgroups fully. ATUS primary-childcare activities do not identify which child received care, so a mother of both a 1-year-old and a 4-year-old is classified by her **youngest** child, and her childcare time cannot be split between the children.
 - Sample sizes are checked first. Estimates that fail each source's reliability rules are suppressed or flagged, and the 0–2 vs. 3–5 split is dropped for any measure where it cannot be estimated reliably. It is never reported as covering more than the data support.
 
+#### Youngest child and caregiving load (NSCH)
+
+NSCH classifies a mother by the **sampled** child, which may not be her youngest. The topical file gives only counts of household children per band (`TOTAGE_0_5`, `TOTAGE_6_11`, `TOTAGE_12_17`, including the sampled child), so two further NSCH definitions are added:
+
+| Definition | Built from | Role |
+|---|---|---|
+| **Youngest-child band** (0–5 / 6–11 / 12–17) | The lowest band with a household child | Sensitivity analysis for the primary bands. It moves 8,391 mothers (9.3%) into band 0–5 and matches the ATUS definition (youngest own child). |
+| **Number of children aged 0–5** (none / 1 / 2+) | `TOTAGE_0_5` | Caregiving load (H7) |
+| **"Baby plus another young child"** | Sampled child aged 0–2 **and** `TOTAGE_0_5` ≥ 2 | Closest available measure of having two very young children (H7) |
+
+"Two children under 3" **cannot** be measured in the public NSCH files. The 2023–2024 screener files list every child's age, but they cannot be linked to the topical file and have no parent information (`docs/nsch-feasibility.md` Section 2.4). The household counts include all children, not only the mother's own.
+
 ### Population
 
 - **Primary:** Female biological or adoptive mothers whose child (or youngest child, where the dataset allows) is in **band 1 (0–5)**.
 - **Secondary comparison groups:**
   - Mothers whose child (or youngest child) is in band 2 (6–11) or band 3 (12–17).
   - Mothers who are not working (unemployed or out of the labor force), compared with working mothers.
+  - **Fathers** (male biological or adoptive parents, defined the same way), to separate patterns of working *motherhood* from those of working *parenthood* (H8).
 
 ### Defining "mother"
 
@@ -108,8 +122,8 @@ Each dataset identifies mothers differently, and the definitions are **not equiv
 
 | Dataset | How a mother is identified | Can biological/adoptive mothers be separated from other female caregivers? |
 |---|---|---|
-| NSCH | Caregiver sex combined with relationship to the sampled child (`A1_SEX`, `A1_RELATION` and Adult 2 equivalents) `[VERIFY]` | Expected to be possible if a biological/adoptive parent code exists separately from step-, grand-, foster and other caregivers `[VERIFY]` |
-| ATUS | Respondent sex plus the presence of own household children `[TO IDENTIFY]` | Uncertain. "Own child" may include stepchildren. `[TO IDENTIFY]` |
+| NSCH | **Respondent (Adult 1) is female and the sampled child's biological or adoptive parent**: `A1_SEX = 2` and `A1_RELATION = 1`. Mothers recorded only as Adult 2 are proxy-reported and excluded from the main sample (sensitivity check for employment only). 90,415 mothers pooled 2023–2025. | **Yes.** Code 1 covers biological and adoptive parents together. Step-, grand- and foster parents have separate codes. |
+| ATUS | Female respondent (`TESEX = 2`) with own household children under 18 (roster `TERRP = 22` and `TEAGE` < 18) | **Partly.** "Own child" includes step-children. Biological/adoptive vs. step can be separated only from 2007, through the ATUS-CPS parent-type variables measured 2–5 months before the diary day. |
 | ACS PUMS | Female persons linked to children through relationship-to-householder and family/subfamily variables `[VERIFY]` | Partly. Relationship codes may separate biological, adopted and stepchildren only relative to the householder. Mothers who are not the householder or spouse/partner may be hard to link to specific children. `[VERIFY]` |
 | BEA RPP | Not applicable (area-level price data, no respondents) | n/a |
 
@@ -136,8 +150,8 @@ All hypotheses and research questions are **associational**. "Associated with," 
 
 Working mothers' reported mental and emotional health varies by employment circumstances.
 
-- Data: NSCH. Outcome: caregiver mental/emotional health rating. Exposure: caregiver employment `[VERIFY]` at whatever level of detail the variable records.
-- Caveat: Employment status is **not** a measure of job quality, flexibility or work-life balance.
+- Data: NSCH 2023–2025 pooled. Outcome: self-rated mental/emotional health (`A1_MENTHEALTH`). Exposure: `A1_EMPLOYED_R` in four groups: full-time; part-time; not employed and looking; not employed and not looking (retired merged in). "Working without pay" is shown only for the primary bands, with a reliability note.
+- Caveat: Employment status is **not** a measure of job quality, flexibility or work-life balance. NSCH has **no work-hours item**.
 
 #### H2 — Aggravation, economic pressure and time demands
 
@@ -149,7 +163,7 @@ Parenting aggravation is associated with economic pressure and time demands.
 
 Greater emotional support is associated with better reported maternal well-being.
 
-- Data: NSCH emotional-support items `[TO IDENTIFY]`. Family resilience is analyzed as a **separate** family-level construct.
+- Data: NSCH `K8Q35` (someone to turn to for day-to-day emotional support with parenting). The detailed `EMOSUP*` items were discontinued after 2022. Family resilience (`TALKABOUT`, `WKTOSOLVE`, `STRENGTHS`, `HOPEFUL`) is analyzed as a **separate** family-level construct.
 
 #### H4 — Time allocation
 
@@ -167,22 +181,37 @@ Mothers' employment, time use and well-being patterns differ across child age ba
 
 Shorter maternal sleep is associated with employment circumstances (for example full-time work) and with poorer maternal well-being, especially among mothers whose youngest child is 0–5.
 
-- Data: ATUS for maternal sleep time and its relationship to employment, plus Well-Being Module measures if available `[VERIFY]`. NSCH for child sleep and its association with maternal well-being, **only if** NSCH measures maternal sleep or child sleep for the relevant ages `[TO IDENTIFY]`. The parts of H6 that no single dataset can test are triangulated, not merged.
+- Data: ATUS for maternal sleep time and its relationship to employment, plus Well-Being Module measures (`WEREST`, `WUTIRED`) in 2010, 2012, 2013 and 2021 only. **NSCH has no caregiver sleep measure.** NSCH child sleep (`HOURSLEEP05` for 0–5, `HOURSLEEP` for 6–17; not comparable with each other) and `BEDTIME` are analyzed against maternal well-being within NSCH. The parts of H6 that no single dataset can test are triangulated, not merged.
+
+#### H7 — Caregiving load (new in v0.7)
+
+Mothers caring for more than one young child report different mental health, aggravation and employment patterns from mothers with one young child.
+
+- Data: NSCH. Groups: number of household children aged 0–5 (none / 1 / 2+), and "sampled child aged 0–2 plus another child aged 0–5". Both are large enough for the main employment groups (`docs/nsch-feasibility.md` Section 2.4).
+- Caveats: household counts include children who may not be the mother's own. "Two children under 3" cannot be measured. Number of children is also associated with employment and income, which are accounted for in adjusted analyses.
+
+#### H8 — Mothers compared with fathers (new in v0.7)
+
+Associations between employment and well-being differ between mothers and fathers.
+
+- Data: NSCH. Fathers: `A1_SEX = 1` and `A1_RELATION = 1` (44,245 pooled). Employment collapsed to full-time / part-time / not employed, because about 90% of fathers work full-time.
+- Feasible: **full-time vs. not employed** in the primary and youngest-child bands. Part-time fathers are too few for reliable outcome estimates in most groups and are shown only with reliability flags. For the 0–2 / 3–5 split and the "baby plus another young child" group, only full-time fathers are reliable.
+- Caveat: mothers and fathers who answer the survey may differ from those who do not (respondent selection).
 
 ### 3.2 Economic and housing research questions
 
 - **E1.** How do maternal earnings and occupations vary by employment status and age of youngest child? *(ACS PUMS)*
 - **E2.** How does housing cost burden differ between working and nonworking mothers? *(ACS PUMS)*
-- **E3.** How do renters and homeowners compare in reported maternal well-being, accounting for income and household size? *(NSCH, **only if** NSCH measures housing tenure `[TO IDENTIFY]`. ACS PUMS can describe tenure and cost burden but has no well-being measures.)*
+- **E3.** How do renters and homeowners compare in reported maternal well-being, accounting for income and household size? *(NSCH `TENURE`, 2018–2025: own with mortgage / own free and clear / rent / no rent; imputed where missing, flagged by `TENURE_IF`. NSCH has no housing **cost** amounts. ACS PUMS can describe tenure and cost burden but has no well-being measures.)*
 - **E4.** How do regional price levels relate to maternal earnings and housing costs? *(ACS + BEA RPP, at the area level, or person level with an area-level price index attached)*
 - **E5.** Are mothers in high-cost regions more likely to experience financial pressure? *(ACS PUMS cost burden by RPP level of the area. NSCH material hardship by state RPP, if state is available.)*
-- **E6.** How do household size and number of children relate to economic pressure and maternal well-being? *(NSCH for well-being; ACS PUMS for economic pressure)*
+- **E6.** How do household size and number of children relate to economic pressure and maternal well-being? *(NSCH for well-being, using `TOTKIDS_R`, `HHCOUNT` and the H7 groups; ACS PUMS for economic pressure)*
 
 ### 3.3 Sleep research questions
 
 - **S1.** How long do mothers sleep on the diary day, and how does that vary by employment status, work hours and child age band? *(ATUS)*
-- **S2.** Where measured, how do sleep quality, sleeplessness or night interruptions vary across these groups? *(ATUS sleeplessness activity code and Well-Being Module items if available `[VERIFY]`; any NSCH caregiver sleep item `[TO IDENTIFY]`.)*
-- **S3.** How do child sleep duration and bedtime routines vary by child age band and maternal employment? *(NSCH child sleep items, with age eligibility `[VERIFY]`)*
+- **S2.** Where measured, how do sleep quality, sleeplessness or night interruptions vary across these groups? *(ATUS sleeplessness activity 010102, and `WEREST` in Well-Being Module years. NSCH has no caregiver sleep item.)*
+- **S3.** How do child sleep duration and bedtime routines vary by child age band and maternal employment? *(NSCH `HOURSLEEP05` (T1, 0–5, per 24 hours including naps), `HOURSLEEP` (T2/T3, 6–17, weeknights) and `BEDTIME`. The two duration items are analyzed separately and never compared.)*
 - **S4.** How are maternal sleep (ATUS) and child sleep (NSCH) associated with maternal psychological well-being in each dataset, and are the patterns consistent across datasets? *(Within each dataset, then triangulated)*
 
 Each sleep dimension is investigated separately. **No dataset is assumed to measure all of them.** Availability and age eligibility must be confirmed in the dataset inventory before analysis.
@@ -192,9 +221,11 @@ Each sleep dimension is investigated separately. **No dataset is assumed to meas
 These are **secondary** questions using the secondary age-band scheme (see Section 1). They focus on the 0–2 vs. 3–5 split, and 6–11 and 12–17 may be shown alongside for context. They are descriptive and associational.
 
 - **U1.** Do maternal mental/emotional health, parenting aggravation and emotional support differ between mothers of a sampled child aged 0–2 and those of a sampled child aged 3–5? *(NSCH)*
-- **U2.** Do child sleep (`HOURSLEEP05`, `BEDTIME`), non-parental childcare hours and job disruption due to childcare problems differ between the two subgroups? *(NSCH, T1 items only. Childcare hours only in years the item exists.)*
+- **U2.** Do child sleep (`HOURSLEEP05`, `BEDTIME`), non-parental childcare hours and job disruption due to childcare problems differ between the two subgroups? *(NSCH, T1 items only. Childcare hours (`HOURSOFCARE`) exist **only in 2025**, so they are not pooled. Job disruption: `K6Q27`.)*
 - **U3.** Do mothers whose youngest own child is 0–2 differ from those whose youngest is 3–5 in diary-day sleep, sleeplessness, paid work, primary and secondary childcare, and household activities, by employment status? *(ATUS, pooled years, subject to sample size)*
 - **U4.** Do employment status and usual hours differ between the two subgroups? *(ATUS. NSCH `A1_EMPLOYED_R` for 2023+, which has no hours.)*
+
+**NSCH feasibility (v0.7):** U1, U2 and the NSCH part of U4 are feasible for mothers in the four main employment groups. "Retired" and "working without pay" are not reported separately at this level. The ATUS feasibility check (U3, U4) is still to do.
 
 ## 4. Dataset overview
 
@@ -209,18 +240,20 @@ Full details, verified variable names, codes and documentation links are in **`d
 
 ### 4.1 NSCH: household financial and family context
 
-In addition to the well-being and parenting variables from v0.2, NSCH variables need to be confirmed for:
+**Years used:** 2023–2025 topical files, pooled (the years with `A1_EMPLOYED_R`). Loaded by `src/nsch.py`; sample definition and feasibility in `docs/nsch-feasibility.md`.
 
-| Construct | Notes | Status |
+| Construct | Variable(s) | Status (v0.7) |
 |---|---|---|
-| Household income and federal poverty level | Income-to-poverty measure, possibly multiply imputed | `[VERIFY]` |
-| Housing tenure | Whether NSCH measures own/rent at all is unknown | `[TO IDENTIFY]` |
-| Number of children in household | | `[VERIFY]` |
-| Family structure | | `[VERIFY]` |
-| Caregiver employment | `A1_EMPLOYED_R` or similar, plus Adult 2 equivalent | `[VERIFY]` |
-| Caregiver mental/emotional health | `A1_MENTHEALTH`, `A2_MENTHEALTH` | `[VERIFY]` |
+| Household income and federal poverty level | `FPL_I1`–`FPL_I6`: six multiply imputed versions, combined with Rubin's rules; `FPL_IF` flags imputation | Confirmed |
+| Housing tenure | `TENURE` (2018–2025), `TENURE_IF` | Confirmed |
+| Housing strain | `MISSMORTGAGE` (code 3 = "don't know", recoded to missing), `HOMEEVIC` | Confirmed |
+| Number of children in household | `TOTKIDS_R`; `TOTAGE_0_5`, `TOTAGE_6_11`, `TOTAGE_12_17` | Confirmed |
+| Family structure | `FAMILY_R`, `A1_MARITAL` | Confirmed (codes of `A1_MARITAL`: inventory open item 3) |
+| Caregiver employment | `A1_EMPLOYED_R` (6 codes, 2023+); `A2_EMPLOYED_R` proxy-reported. No hours item. | Confirmed |
+| Caregiver mental/emotional health | `A1_MENTHEALTH` (self-report); `A2_MENTHEALTH` (proxy) | Confirmed |
+| Economic hardship | `ACE1`, `FOODSIT` | Confirmed |
 
-**Individual caregiver earnings and household income are different measures.** NSCH is expected to measure household income relative to poverty, not the mother's own earnings `[VERIFY]`. NSCH household income will never be interpreted as maternal earnings.
+**Individual caregiver earnings and household income are different measures.** NSCH measures family income relative to poverty, not the mother's own earnings. NSCH household income will never be interpreted as maternal earnings.
 
 ### 4.2 ATUS
 
@@ -248,31 +281,32 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 | **What it measures** | Differences in price levels across states and metropolitan areas for a given year, expressed relative to the national level `[VERIFY]` |
 | **Components to investigate** | All items; housing rents; utilities; other available categories (goods, other services) `[VERIFY]` |
 | **Geography** | States and metropolitan areas; possibly nonmetropolitan portions of states `[VERIFY]` |
-| **Years** | Annual series. Year range and the latest release are `[VERIFY]`. |
+| **Years** | Annual series, 2008–2024 (inventory Section 5). BEA announced it was discontinuing metro-area statistics, so **metro RPPs after 2024 are uncertain**; state RPPs continue. |
 | **Access** | BEA interactive tables, downloads and the BEA API (registration key) `[VERIFY]` dataset and table names |
 | **Use in this project** | Geographic context for ACS earnings and housing costs (E4, E5). Comparing nominal and price-adjusted earnings across areas. |
 
 **How RPP is used with ACS.** Nominal ACS earnings and housing costs can be shown next to the RPP for the area where the mother lives, or adjusted by it, to compare purchasing power across states or metro areas. For example, the same nominal earnings correspond to different price-adjusted amounts in high- and low-price areas. The housing-rent RPP shows whether high housing cost burden in an area coincides with high rent levels or with low earnings.
 
-**What RPP is not.** RPP is **not** a complete household affordability measure, a living-wage measure, or a cost-of-living index for a particular family. It reflects area price levels for a broad consumption basket. It does not account for a specific family's size or composition, childcare costs (unless a component is confirmed `[VERIFY]`), tax differences, public benefits, or whether housing is owned or rented. It describes the area, not the mother.
+**What RPP is not.** RPP is **not** a complete household affordability measure, a living-wage measure, or a cost-of-living index for a particular family. It reflects area price levels for a broad consumption basket. It does not account for a specific family's size or composition, childcare costs (there is **no RPP childcare component**: childcare fees carry no regional price variation in the RPP; inventory Section 5), tax differences, public benefits, or whether housing is owned or rented. It describes the area, not the mother.
 
 ## 5. Constructs: direct measures vs. proxies
 
 | Concept | Direct measure (preferred) | Proxy / indirect measure | Notes |
 |---|---|---|---|
 | Maternal mental health | NSCH caregiver mental/emotional health rating, when self-reported | NSCH rating reported by another adult | Single global item, not diagnostic |
-| Parenting stress | NSCH aggravation items | none | Respondent may not be the mother `[VERIFY]` |
-| Momentary affect | ATUS Well-Being Module, if available `[VERIFY]` | none | Activity-level; limited years |
+| Parenting stress | NSCH aggravation items | none | Items describe the **respondent**; valid for mothers only when the mother is Adult 1 |
+| Momentary affect | ATUS Well-Being Module (2010, 2012, 2013, 2021) | none | Activity-level; 4 years only; 2010–13 activity-selection error |
 | Maternal sleep duration | ATUS diary sleep time | none | One diary day, not habitual sleep |
-| Maternal sleep quality / interruptions | ATUS sleeplessness code, Well-Being Module items `[VERIFY]` | none | Availability uncertain |
-| Child sleep | NSCH child sleep and bedtime items `[VERIFY]` | none | Parent-reported; age-specific |
+| Maternal sleep quality / interruptions | ATUS sleeplessness (010102); `WEREST` in Well-Being Module years | none | No sleep-quality scale in any source |
+| Child sleep | NSCH `HOURSLEEP05` (0–5), `HOURSLEEP` (6–17), `BEDTIME` | none | Parent-reported; the two duration items are not comparable |
 | Employment | NSCH, ATUS and ACS employment / labor force status | none | Employment ≠ job quality |
 | Individual earnings | ACS PUMS earnings; ATUS weekly earnings `[VERIFY]` | none | Not household income |
 | Household / family income | ACS PUMS; NSCH income-to-poverty | none | Not maternal earnings |
 | Housing cost burden | ACS PUMS gross rent / owner costs as % of income | none | Use official ACS definitions |
 | Purchasing power | ACS earnings adjusted by BEA RPP | Nominal income | RPP is area-level |
-| Economic pressure (experienced) | NSCH material-hardship item `[TO IDENTIFY]` | Income-to-poverty, cost burden, RPP | Resources and prices ≠ experienced strain |
-| Emotional support | NSCH support items `[TO IDENTIFY]` | none | Distinct from family resilience |
+| Economic pressure (experienced) | NSCH `ACE1` (hard to cover basics), `FOODSIT`, `MISSMORTGAGE`, `HOMEEVIC` | Income-to-poverty, cost burden, RPP | Resources and prices ≠ experienced strain |
+| Emotional support | NSCH `K8Q35` | none | Distinct from family resilience |
+| Caregiving load | NSCH number of children 0–5; "baby plus another young child" | none | Household children, not necessarily own |
 | Family structure | NSCH, ATUS roster, ACS family type | none | Definitions differ across sources |
 
 ## 6. Integration strategy
@@ -281,14 +315,14 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 ### 6.1 Independent individual-level analyses
 
-- **NSCH:** well-being, aggravation, support, child sleep and household financial context (H1–H3, H5, H6 partly, E3, E6).
+- **NSCH:** well-being, aggravation, support, child sleep, caregiving load, the father comparison and household financial context (H1–H3, H5, H6 partly, H7, H8, E3, E6).
 - **ATUS:** time use and maternal sleep (H2 time part, H4, H5, H6, S1–S2).
 - **ACS PUMS:** mothers' earnings, occupation, employment, household composition, housing tenure and cost burden (E1, E2, E5, E6, H5).
 
 ### 6.2 Area-level context (attaching geography, not people)
 
 - **BEA RPP** and **published ACS indicators** are area-level. They can be attached to individual records **by geography** (for example state, or metro area where it can be identified) as contextual variables. This is not individual linkage.
-- **Geographic alignment:** BEA metro areas follow specific delineations, while PUMS identifies Public Use Microdata Areas (PUMAs), which do not map cleanly onto metro areas. NSCH public files are expected to identify state only `[VERIFY]`. Each analysis states which geography it uses and how areas were matched.
+- **Geographic alignment:** BEA metro areas follow specific delineations, while PUMS identifies Public Use Microdata Areas (PUMAs), which do not map cleanly onto metro areas. NSCH public files identify **state** (`FIPSST`) plus a metro/non-metro flag (`METRO_YN`). `METRO_YN` is suppressed for whole states (Alaska, Connecticut, Massachusetts, Vermont and Wyoming in 2023–2025; Maryland in 2023–2024; Nevada in 2025). Each analysis states which geography it uses and how areas were matched.
 - **Year alignment:** RPP year, ACS vintage (1-year vs. 5-year) and NSCH/ATUS survey years will be aligned and documented. Where they cannot be aligned exactly, the gap is stated.
 - Contextual models need multilevel or cluster-robust methods.
 
@@ -330,33 +364,36 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 - Biological/adoptive mothers are distinguished from other female caregivers wherever the data allow.
 - Age bands are applied as defined in Section 1. Every output states whether the band refers to the sampled child (NSCH), the youngest household child (ATUS) or own children (ACS), and flags any band a measure covers only partly.
 - Results using the **secondary age bands** (0–2 / 3–5 / 6–11 / 12–17) are labeled as such in every output and kept separate from primary-band results. 0–2 vs. 3–5 comparisons use only measures asked identically of both groups.
+- **NSCH results describe children, not mothers.** `FWC` is a child-level weight, and the Census Bureau says estimates "should be framed in terms of children". Results are worded "X% of children aged 0–5 have a mother who…". ATUS and ACS count people, so cross-source comparisons state this difference.
+- **NSCH respondent selection.** The main NSCH sample is mothers who answered the survey. A third of identified mothers appear only as Adult 2 and are excluded (employment-only sensitivity check). This is reported as a limitation.
 
 ### 7.7 Sleep measurement
 
 - ATUS sleep is **time recorded in one diary day**, not habitual sleep or sleep quality. Sleep quality or interruptions are reported only where a dataset actually measures them.
-- Child sleep is parent-reported, and item wording and eligibility may vary by child age `[VERIFY]`.
+- Child sleep is parent-reported. NSCH `HOURSLEEP05` (T1, ages 0–5) counts sleep per 24 hours including naps, with a top category of "12 or more hours"; `HOURSLEEP` (T2/T3, ages 6–17) counts weeknight sleep. The two are never compared.
 - Maternal sleep and child sleep come from **different surveys** and are never linked at the individual level.
 
 ### 7.8 General statistical issues
 
 | Issue | Plan |
 |---|---|
-| **Survey weights** | Use the official weight for each dataset, year, file and record type (person vs. housing in ACS PUMS). Unweighted estimates are diagnostic only. |
-| **Complex sampling / variance** | NSCH: design-based variance per documentation. ATUS and ACS PUMS: replicate weights per documentation. Domain estimation for subgroups. |
+| **Survey weights** | Use the official weight for each dataset, year, file and record type (person vs. housing in ACS PUMS). Unweighted estimates are diagnostic only. NSCH: `FWC` divided by the number of pooled years. |
+| **Complex sampling / variance** | NSCH: Taylor linearization with strata `FIPSST` × `STRATUM` (× year when pooling) and household (`HHID`) as PSU. ATUS and ACS PUMS: replicate weights per documentation. Domain estimation for subgroups (no deleting records before variance estimation). |
+| **Confidence intervals** | Logit-transformed 95% intervals for proportions, so intervals stay within 0–100%. |
 | **ATUS diary day** | Population patterns, not individual typical days. Weekday/weekend weighting per BLS. |
-| **Pooling years** | Likely needed for ATUS and NSCH subgroups. Follow official guidance and check item and code changes across years. |
+| **Pooling years** | NSCH: 2023–2025 pooled for all subgroup estimates. `STRATUM` keeps its values "1" and "2A"; recoding is only needed if 2016 is added. 2023 contributes extra 0–5 cases because of a CDC-funded young-children oversample (2021–2023), which the weights already handle. ATUS: pooling required; years to be decided in the ATUS feasibility check. |
 | **Variable availability** | A year × variable availability matrix is built for each source before pooling. |
 | **Period effects** | Pandemic-period sensitivity analyses. 2020 data disruptions `[VERIFY]` for each source. |
-| **Missing data** | Report item nonresponse. Distinguish legitimate skips. Use official imputations correctly. Use multiple imputation as a sensitivity analysis where needed. |
+| **Missing data** | Report item nonresponse. Distinguish legitimate skips. Use official imputations correctly. NSCH: item nonresponse among mothers is ≤ 1.9%, so complete-case analysis per item, with per-item n stated. Income (`FPL_I1`–`I6`) is combined across the six imputations with Rubin's rules. Numeric "don't know" codes (`MISSMORTGAGE` = 3) are recoded to missing. |
 | **Confounding / selection** | Adjust for measured confounders. Selection into employment and housing tenure is acknowledged. No "effect of working" or "effect of owning" language. |
 | **Correlation vs. causation** | All data are cross-sectional. Reverse causation is possible (for example, poor health leading to less employment). |
-| **Multiple comparisons** | H1–H6, E1–E6, S1–S4 and the secondary age-band questions U1–U4 are pre-specified. Other analyses are labeled exploratory. |
-| **Small cells** | Low-count or high relative standard error estimates are suppressed or flagged according to each source's guidance. |
+| **Multiple comparisons** | H1–H8, E1–E6, S1–S4 and the secondary age-band questions U1–U4 are pre-specified. Other analyses are labeled exploratory. |
+| **Small cells** | Suppressed or flagged according to each source's guidance. NSCH: present only estimates with an unweighted denominator ≥ 30, and flag estimates whose 95% CI is wider than 20 percentage points or wider than 1.2 times the estimate (2025 NSCH Methodology Report). |
 
 ## 8. Data access limitations
 
-- **NSCH:** Downloadable public-use files. **No conventional public microdata API.** State-level geography only `[VERIFY]`.
-- **ATUS:** Downloadable microdata files from BLS. **The BLS Public Data API does not serve ATUS microdata** `[VERIFY]`. IPUMS ATUS is third-party and uses different variable names.
+- **NSCH:** Downloadable public-use files. **No conventional public microdata API.** State-level geography plus a partly suppressed metro flag. The 2016–2024 screener files cannot be linked to the topical files.
+- **ATUS:** Downloadable microdata files from BLS. **The BLS Public Data API does not serve ATUS microdata.** The BLS website blocks automated downloads, so ATUS files are downloaded manually through a browser. IPUMS ATUS is third-party and uses different variable names.
 - **ACS:** Official Census Data API for tables (and possibly PUMS `[VERIFY]`). PUMS file downloads. Sampling error on every estimate. Table IDs and variable names change between releases.
 - **BEA RPP:** Interactive tables, downloads and an API that requires a free key `[VERIFY]`. Area-level only.
 - **Cross-source:** Different respondents, years, reference periods, geographies and definitions of "mother," "employment," "income" and "family." Compatibility has to be shown for each specific comparison, not assumed.
@@ -415,16 +452,19 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 ## 11. Immediate next steps
 
-1. Complete `docs/dataset-inventory.md`: verify sources, years, access, variables, codes and age eligibility for NSCH, ATUS, ACS and BEA RPP.
-2. Resolve the population-defining variables first: maternal identification, child age and the age-band coverage of key items.
-3. Confirm whether NSCH measures housing tenure, caregiver sleep and child sleep, and for which ages. E3 and parts of H6 depend on this.
-4. Confirm the PUMS mother–child linkage approach and the PUMA–metro alignment for RPP comparisons.
-5. Estimate unweighted sample sizes of mothers by age band and employment status in each source to confirm the planned comparisons are feasible, especially band 0–5 in ATUS. Produce counts for both the primary and secondary age-band schemes in NSCH and ATUS to decide which secondary-band measures (U1–U4) can be estimated reliably.
-6. Revise this plan (v0.7) to match the confirmed variables, and mark any hypotheses or research questions that cannot be tested.
+Done in v0.7: dataset inventory (all four sources); NSCH population-defining variables; NSCH tenure, sleep and age coverage; NSCH sample sizes, reliability and missing data (`docs/nsch-feasibility.md`); this revision.
+
+1. **ATUS feasibility check:** unweighted and weighted sample sizes of mothers (youngest own household child) by primary and secondary age band × employment status, for candidate pooling windows. Also the share of mothers whose own children include step-children (2007+). Files must be downloaded manually from BLS.
+2. Confirm the PUMS mother–child linkage approach and the PUMA–metro alignment for RPP comparisons.
+3. Start the NSCH analysis (H1, H3, H5, H7, H8, E3, U1, U2), applying the decisions in `docs/nsch-feasibility.md` Section 5.
+4. Build a year × variable availability matrix for ATUS and ACS before pooling.
+5. Inventory open item 3: confirm `A1_MARITAL` codes and `TOTAGE_*` / `AGEPOS4` across years.
 
 ---
 
 ## Sources (official entry points)
+
+Sources for the methods and decisions folded in at v0.7 are cited in APA style in `docs/nsch-feasibility.md` Section 6.
 
 - NSCH, U.S. Census Bureau: https://www.census.gov/programs-surveys/nsch.html
 - NSCH, HRSA Maternal and Child Health Bureau: https://mchb.hrsa.gov/data-research/national-survey-childrens-health
