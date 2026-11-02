@@ -1,0 +1,22 @@
+band,employment,n_2023,n_2024,n_2025,n_pooled,weighted_children,meets_n30_pooled,meets_n30_every_year
+0-5,Employed full-time,7174,4756,4238,16168,7756171,True,True
+0-5,Employed part-time,216,144,132,492,352255,True,True
+0-5,Working without pay,16,19,13,48,35020,True,False
+0-5,"Not employed, looking for work",164,137,108,409,286282,True,True
+0-5,"Not employed, not looking for work",164,96,55,315,137443,True,True
+0-5,Retired,60,32,41,133,103191,True,True
+0-5,Missing,69,42,47,158,108151,True,True
+6-11,Employed full-time,3462,4242,3810,11514,6023538,True,True
+6-11,Employed part-time,123,173,142,438,269159,True,True
+6-11,Working without pay,26,22,22,70,30558,True,False
+6-11,"Not employed, looking for work",79,112,107,298,179014,True,True
+6-11,"Not employed, not looking for work",76,63,64,203,119175,True,True
+6-11,Retired,93,123,102,318,181202,True,True
+6-11,Missing,53,40,36,129,80344,True,True
+12-17,Employed full-time,3437,4235,3944,11616,3904959,True,True
+12-17,Employed part-time,129,182,153,464,175379,True,True
+12-17,Working without pay,11,24,15,50,16922,True,False
+12-17,"Not employed, looking for work",99,113,107,319,122963,True,True
+12-17,"Not employed, not looking for work",66,82,55,203,94429,True,True
+12-17,Retired,208,277,271,756,263489,True,True
+12-17,Missing,66,32,46,144,53348,True,True

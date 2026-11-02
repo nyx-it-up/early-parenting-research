@@ -85,7 +85,7 @@ This inventory identifies the official datasets, variables and documentation nee
 
 ### 1.3 Corrections to the research plan
 
-These verification results changed assumptions in `research-plan.md` v0.3. Item 5 is resolved in v0.4. The others are still to be folded into the plan.
+These verification results changed assumptions in `research-plan.md` v0.3. Item 5 was resolved in v0.4; all others are folded into v0.7.
 
 1. **NSCH has housing tenure** (`TENURE`, 2018–2025), so research question E3 (renters vs. owners and maternal well-being) **can be tested in NSCH**. NSCH has no housing **cost** amounts.
 2. **NSCH has no caregiver sleep measure.** Maternal sleep comes only from ATUS. Child sleep comes from NSCH.
@@ -128,7 +128,7 @@ These verification results changed assumptions in `research-plan.md` v0.3. Item 
 - **Geography:** The public file identifies only areas of at least 250,000 people: `FIPSST` (state), plus `METRO_YN`, `MPC_YN` and `CBSAFP_YN`. Finer geography requires the restricted file, accessed through a Federal Statistical Research Data Center. *(FAQ25)*
 - **Questionnaire forms:** A screener (S1) rosters the children in the household. One child is sampled, and the household receives **T1 (ages 0–5), T2 (6–11) or T3 (12–17)** according to that child's age. `FORMTYPE` records which form was used. Items not on the form are coded `.N`. Other missing codes are `.L` (legitimate skip), `.M` (missing in error), `.D` (suppressed) and `.K` (don't know). *(FAQ25; MR25)*
 - **Sampling:** One child per household. Children with special health care needs are oversampled, with a secondary oversample of ages 0–5. Some states purchase oversamples. *(FAQ25)*
-- **Weight and design:** weight **`FWC`**; strata **`FIPSST` × `STRATUM`**; PSU **`HHID`**. Use subpopulation (domain) options rather than deleting records. Reliability rules: n ≥ 30, and flag estimates with a 95% CI wider than 20 points or a relative standard error above 30%. *(FAQ25; MR25)*
+- **Weight and design:** weight **`FWC`**; strata **`FIPSST` × `STRATUM`**; PSU **`HHID`**. Use subpopulation (domain) options rather than deleting records. Reliability rules: present only estimates with an unweighted denominator ≥ 30, and flag estimates whose 95% CI is wider than 20 percentage points or wider than 1.2 times the estimate (described as about equal to a relative standard error above 30%; see `docs/nsch-feasibility.md` Section 0.2). *(FAQ25; MR25)*
 - **Pooling:** Divide `FWC` by the number of years. Recode `STRATUM` "2a" to "2" when 2016 is included. *(FAQ25; Multi-Year Guide)*
 - **Target population of estimates:** In the documentation's words: "Weighted estimates do not generalize to the population of parents, mothers, or pediatric health care providers… estimates should be framed in terms of children, e.g., 51% of US children live with a college educated mother." *(FAQ25; MR25)*
 

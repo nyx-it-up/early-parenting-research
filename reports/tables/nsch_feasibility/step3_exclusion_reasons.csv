@@ -1,0 +1,11 @@
+filter,reason,n
+sex,Adult 1 male,48048
+sex,Adult 1 female,99011
+sex,Adult 1 sex missing,4617
+relation (female Adult 1 only),Biological or adoptive parent,90415
+relation (female Adult 1 only),Step-parent,1259
+relation (female Adult 1 only),Grandparent,5782
+relation (female Adult 1 only),Foster parent,227
+relation (female Adult 1 only),Other relative,997
+relation (female Adult 1 only),Other non-relative,267
+relation (female Adult 1 only),Relationship missing,64

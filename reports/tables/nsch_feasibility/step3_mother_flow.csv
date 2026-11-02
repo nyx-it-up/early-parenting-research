@@ -1,0 +1,49 @@
+step,year,band,n
+1. All sampled children,2023,0-5,21524
+1. All sampled children,2023,6-11,15241
+1. All sampled children,2023,12-17,18397
+1. All sampled children,2023,All,55162
+1. All sampled children,2024,0-5,13841
+1. All sampled children,2024,6-11,15574
+1. All sampled children,2024,12-17,21960
+1. All sampled children,2024,All,51375
+1. All sampled children,2025,0-5,12100
+1. All sampled children,2025,6-11,13348
+1. All sampled children,2025,12-17,19691
+1. All sampled children,2025,All,45139
+2. Adult 1 is female,2023,0-5,14137
+2. Adult 1 is female,2023,6-11,10130
+2. Adult 1 is female,2023,12-17,12067
+2. Adult 1 is female,2023,All,36334
+2. Adult 1 is female,2024,0-5,9021
+2. Adult 1 is female,2024,6-11,10198
+2. Adult 1 is female,2024,12-17,14437
+2. Adult 1 is female,2024,All,33656
+2. Adult 1 is female,2025,0-5,7735
+2. Adult 1 is female,2025,6-11,8594
+2. Adult 1 is female,2025,12-17,12692
+2. Adult 1 is female,2025,All,29021
+3. ...and biological/adoptive parent (mother),2023,0-5,13153
+3. ...and biological/adoptive parent (mother),2023,6-11,9242
+3. ...and biological/adoptive parent (mother),2023,12-17,10970
+3. ...and biological/adoptive parent (mother),2023,All,33365
+3. ...and biological/adoptive parent (mother),2024,0-5,8306
+3. ...and biological/adoptive parent (mother),2024,6-11,9240
+3. ...and biological/adoptive parent (mother),2024,12-17,13083
+3. ...and biological/adoptive parent (mother),2024,All,30629
+3. ...and biological/adoptive parent (mother),2025,0-5,7147
+3. ...and biological/adoptive parent (mother),2025,6-11,7807
+3. ...and biological/adoptive parent (mother),2025,12-17,11467
+3. ...and biological/adoptive parent (mother),2025,All,26421
+1. All sampled children,Pooled,0-5,47465
+1. All sampled children,Pooled,12-17,60048
+1. All sampled children,Pooled,6-11,44163
+1. All sampled children,Pooled,All,151676
+2. Adult 1 is female,Pooled,0-5,30893
+2. Adult 1 is female,Pooled,12-17,39196
+2. Adult 1 is female,Pooled,6-11,28922
+2. Adult 1 is female,Pooled,All,99011
+3. ...and biological/adoptive parent (mother),Pooled,0-5,28606
+3. ...and biological/adoptive parent (mother),Pooled,12-17,35520
+3. ...and biological/adoptive parent (mother),Pooled,6-11,26289
+3. ...and biological/adoptive parent (mother),Pooled,All,90415

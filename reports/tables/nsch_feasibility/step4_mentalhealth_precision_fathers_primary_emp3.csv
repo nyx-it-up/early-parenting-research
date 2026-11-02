@@ -1,0 +1,10 @@
+band,employment,n,share_pct,ci_low_pct,ci_high_pct,ci_width_pts,rse_pct,flags
+0-5,Employed full-time,12935,4.4,3.8,5.1,1.3,7.3,
+0-5,Employed part-time,389,4.6,1.6,12.3,10.7,52.4,CI>1.2x estimate
+0-5,"Not employed (looking, not looking or retired)",669,8.0,5.5,11.6,6.1,19.1,
+6-11,Employed full-time,11416,3.5,3.0,4.1,1.1,7.9,
+6-11,Employed part-time,422,10.4,6.2,17.0,10.8,25.9,
+6-11,"Not employed (looking, not looking or retired)",775,12.8,9.5,17.1,7.6,15.1,
+12-17,Employed full-time,14874,3.4,2.9,4.1,1.2,8.7,
+12-17,Employed part-time,573,6.5,3.5,11.6,8.0,30.3,CI>1.2x estimate
+12-17,"Not employed (looking, not looking or retired)",1497,13.6,8.8,20.4,11.6,21.6,

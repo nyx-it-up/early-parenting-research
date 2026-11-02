@@ -1,0 +1,19 @@
+band,employment,n,share_pct,ci_low_pct,ci_high_pct,ci_width_pts,rse_pct,flags
+0-5,Employed full-time,12935,4.4,3.8,5.1,1.3,7.3,
+0-5,Employed part-time,389,4.6,1.6,12.3,10.7,52.4,CI>1.2x estimate
+0-5,Working without pay,39,3.8,0.9,14.6,13.7,72.2,CI>1.2x estimate
+0-5,"Not employed, looking for work",314,8.4,4.9,14.1,9.3,27.3,
+0-5,"Not employed, not looking for work",258,10.4,5.8,17.8,11.9,28.6,
+0-5,Retired,97,3.3,1.2,8.3,7.1,48.8,CI>1.2x estimate
+6-11,Employed full-time,11416,3.5,3.0,4.1,1.1,7.9,
+6-11,Employed part-time,422,10.4,6.2,17.0,10.8,25.9,
+6-11,Working without pay,63,25.4,9.1,53.7,44.7,46.7,CI>20pts; CI>1.2x estimate
+6-11,"Not employed, looking for work",307,10.1,6.4,15.5,9.1,22.6,
+6-11,"Not employed, not looking for work",200,22.0,13.1,34.5,21.4,24.9,CI>20pts
+6-11,Retired,268,9.2,5.2,16.0,10.8,28.8,
+12-17,Employed full-time,14874,3.4,2.9,4.1,1.2,8.7,
+12-17,Employed part-time,573,6.5,3.5,11.6,8.0,30.3,CI>1.2x estimate
+12-17,Working without pay,66,5.0,0.8,26.3,25.5,92.3,CI>20pts; CI>1.2x estimate
+12-17,"Not employed, looking for work",399,10.5,6.5,16.3,9.8,23.5,
+12-17,"Not employed, not looking for work",260,34.4,17.6,56.2,38.7,30.1,CI>20pts
+12-17,Retired,838,6.8,4.5,10.3,5.9,21.4,

@@ -1,0 +1,22 @@
+band,employment,n_2023,n_2024,n_2025,n_pooled,weighted_children,meets_n30_pooled,meets_n30_every_year
+No child 0-5,Employed full-time,10740,13165,11325,35230,13982470,True,True
+No child 0-5,Employed part-time,2577,3088,2695,8360,3698974,True,True
+No child 0-5,Working without pay,223,297,223,743,351341,True,True
+No child 0-5,"Not employed, looking for work",735,867,756,2358,1654496,True,True
+No child 0-5,"Not employed, not looking for work",1650,2023,1764,5437,2961645,True,True
+No child 0-5,Retired,202,301,286,789,303607,True,True
+No child 0-5,Missing,177,179,145,501,319231,True,True
+1 child 0-5,Employed full-time,6611,4332,3424,14367,5937742,True,True
+1 child 0-5,Employed part-time,1796,1067,1018,3881,1847329,True,True
+1 child 0-5,Working without pay,144,104,92,340,169942,True,True
+1 child 0-5,"Not employed, looking for work",607,448,378,1433,1135537,True,True
+1 child 0-5,"Not employed, not looking for work",1745,1103,1003,3851,2177536,True,True
+1 child 0-5,Retired,31,23,15,69,34718,True,False
+1 child 0-5,Missing,115,45,56,216,171492,True,True
+2+ children 0-5,Employed full-time,3068,1850,1586,6504,3170728,True,True
+2+ children 0-5,Employed part-time,981,592,586,2159,1172475,True,True
+2+ children 0-5,Working without pay,139,83,56,278,138763,True,True
+2+ children 0-5,"Not employed, looking for work",296,167,144,607,585683,True,True
+2+ children 0-5,"Not employed, not looking for work",1467,857,840,3164,1995605,True,True
+2+ children 0-5,Retired,14,5,5,24,28014,False,False
+2+ children 0-5,Missing,47,33,24,104,91813,True,False
