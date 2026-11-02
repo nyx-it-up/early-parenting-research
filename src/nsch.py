@@ -55,6 +55,7 @@ VARIABLES = {
         "TOTAGE_12_17",  # Number of children aged 12-17 in household
         "AGEPOS4",       # Sampled child's birth order (only, oldest, 2nd, ...)
         "HHCOUNT",       # Number of people living at the address
+        "HHCOUNT_IF",    # Flag: household count was imputed (1 imputed, 0 not)
         "FAMCOUNT",      # Number of household members who are family
         "FAMILY_R",      # Family structure (e.g., two married bio/adoptive parents, single mother)
     ],
@@ -65,6 +66,7 @@ VARIABLES = {
         "A1_AGE",         # Age
         "A1_MARITAL",     # Marital status
         "A1_GRADE",       # Highest education completed
+        "A1_GRADE_IF",    # Flag: education was imputed (1 imputed, 0 not)
         "A1_EMPLOYED_R",  # Current employment: full-time, part-time, looking, etc. (2023+)
         "A1_MENTHEALTH",  # Rating of own mental/emotional health (excellent ... poor)
         "A1_PHYSHEALTH",  # Rating of own physical health (excellent ... poor)
