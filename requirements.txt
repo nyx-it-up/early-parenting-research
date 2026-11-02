@@ -21,3 +21,6 @@ jupyterlab
 
 # Configuration
 python-dotenv
+
+# Database (SQL analysis)
+duckdb
