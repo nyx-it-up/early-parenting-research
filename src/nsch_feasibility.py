@@ -477,12 +477,15 @@ def missing_status(data, name):
 
 
 def missingness(mothers):
-    """Counts of valid and missing codes per variable, by year and pooled."""
+    """Counts of valid and missing codes per variable, by year and pooled.
+
+    Covers every kept variable, including the design group: METRO_YN is
+    suppressed (.d) for some records.
+    """
     analysis_variables = []
-    for group, names in VARIABLES.items():
-        if group != "design":
-            for name in names:
-                analysis_variables.append(name)
+    for names in VARIABLES.values():
+        for name in names:
+            analysis_variables.append(name)
 
     columns = ["valid"] + list(MISSING_CODE_NAMES.values()) + ["dont_know", "not_in_file"]
     rows = []

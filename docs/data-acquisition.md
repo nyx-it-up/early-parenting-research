@@ -43,4 +43,25 @@ Checksums are SHA-256. "Last-Modified" is the server header at download time and
 
 \*Checked: `HHID`, `FWC`, `FIPSST`, `STRATUM`, `SC_AGE_YEARS`, `A1_SEX`, `A1_RELATION`, `A1_EMPLOYED_R`, `A1_MENTHEALTH`, `K8Q31`, `K8Q35`, `HOURSLEEP05`, `TENURE`, `FPL_I1`.
 
-**Not downloaded:** the SAS versions; the 2024 screener file (the screener public file was discontinued after 2024 and is not needed); the "Title V Code" files.
+**Not downloaded:** the SAS versions; the "Title V Code" files.
+
+---
+
+## NSCH: Screener files 2023–2024 (Stata)
+
+- **Source:** same as above (dataset pages `nsch2023.html`, `nsch2024.html`).
+- **Downloaded:** 2026-11-02 04:51 UTC.
+- **Location:** `data/raw/nsch/{year}/screener/`
+- **Purpose:** check whether the screener roster (exact ages of every child in the household) can be linked to the topical file to identify "two children under 3". Result: **it cannot**; the screener uses a different household ID (`HHIDS`) and has no parent information. See `docs/nsch-feasibility.md` Section 2.4. The files are not used in the analysis. The screener public file was discontinued in 2025.
+
+| Year | URL | Bytes | Last-Modified | SHA-256 |
+|---|---|---|---|---|
+| 2024 | https://www2.census.gov/programs-surveys/nsch/datasets/2024/nsch_2024_screener_Stata.zip | 1,928,586 | Tue, 02 Dec 2025 14:00:22 GMT | `449c64e822427322625b0cfb7ebfd84b71c8b218372b3266f603bb7c848079b4` |
+| 2023 | https://www2.census.gov/programs-surveys/nsch/datasets/2023/nsch_2023e_screener_Stata.zip | 2,313,285 | Wed, 12 Feb 2025 16:47:32 GMT | `f9deee3e5636ac964194b4e782edfc6d41578974265282e3d965d55b925ff98f` |
+
+| Year | File | Rows (children) | Households | SHA-256 |
+|---|---|---|---|---|
+| 2024 | `nsch_2024e_screener.dta` | 116,498 | 63,327 | `db9ee30ea7a935e0778392c9864be8b06409df10f7e275eeac4b292650fb70f0` |
+| 2024 | `nsch_2024_screener.do` | | | `ef00eb001e7c030c52ab0d6b698bfeaeda8178162b5adc1ca1e98d8898e49af7` |
+| 2023 | `nsch_2023e_screener.dta` | 133,963 | 70,187 | `237905d85bd186d5319bcbb12bbbbb169c424ee24f96719a590d59f5b1f499db` |
+| 2023 | `nsch_2023_screener.do` | | | `2884edc165b21033019b263fc0c0716d90336382b5389e762de496d5f389227e` |

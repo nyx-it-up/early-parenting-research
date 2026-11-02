@@ -1,6 +1,6 @@
 # NSCH Feasibility Check: Mother Definition, Sample Sizes and Missing Data
 
-**Status:** Results of research plan Section 11, step 5, for NSCH 2023–2025 (pooled; data: U.S. Census Bureau, 2025a, 2025b, 2026d). Decisions in Section 5 were agreed on 2026-11-01.
+**Status:** Results of research plan Section 11, step 5, for NSCH 2023–2025 (pooled; data: U.S. Census Bureau, 2025d, 2025g, 2026d; screener files 2025c, 2025f). Decisions in Section 5 were agreed on 2026-11-01.
 **Code:** `src/nsch_feasibility.py` (reads `data/processed/nsch_2023_2025.parquet`, written by `src/nsch.py`).
 **Tables:** `reports/tables/nsch_feasibility/*.csv` (every number below comes from these files).
 **Sources:** cited in APA 7th edition style; full reference list in Section 6.
@@ -19,7 +19,7 @@
 | Can we identify mothers with more than one young child? | **Partly.** We can identify "2+ children aged 0–5" and "a child aged 0–2 plus another child aged 0–5", but not "two children under 3" (Section 2.4). Both groups are large enough for mothers. |
 | Is a father comparison feasible? | **Yes, for full-time vs. not employed.** Part-time fathers are too few for reliable outcome estimates in most groups (Section 2.5). |
 | Which employment groups are too small? | **"Retired"** for mothers of children under 12. **"Working without pay"** is borderline. |
-| Is missing data a problem? | **No.** Item nonresponse among mothers is at most 1.9% for every kept variable. |
+| Is missing data a problem? | **No.** Item nonresponse among mothers is at most 1.9% for every kept variable. The exception is `METRO_YN` (metro/non-metro), which the Census Bureau suppresses for **whole states** (9.8% of mothers; Section 3). |
 | Main caveat | Requiring the mother to be the **respondent** drops 42,099 children whose mother appears only as Adult 2 (described by someone else). This is a selection, not random loss (Section 1.3). |
 
 ---
@@ -32,7 +32,7 @@
 |---|---|---|
 | **Weight (`FWC`)** | Each sampled child stands in for many children in the population. `FWC` is how many. Weights correct for oversampling (for example, children aged 0–5 and children with special health care needs were deliberately sampled more often) and for nonresponse. | (U.S. Census Bureau, 2026c, pp. 10–11, 44; U.S. Census Bureau, 2026b, p. 8) |
 | **Child-level weight** | `FWC` is the only weight in the topical file and is built for **children**. The Census Bureau says weighted estimates "do not generalize to the population of parents, mothers…" and "should be framed in terms of children". | (U.S. Census Bureau, 2026b, pp. 8, 11) |
-| **Pooled weight (`FWC` / 3)** | Each year's weights add up to all US children. Stacking three years would count every child three times, so the official guidance is to divide the weight by the number of years combined. This only changes **totals**; shares are unaffected because the factor cancels. | (U.S. Census Bureau, 2025d, p. 2; U.S. Census Bureau, 2026b, p. 12) |
+| **Pooled weight (`FWC` / 3)** | Each year's weights add up to all US children. Stacking three years would count every child three times, so the official guidance is to divide the weight by the number of years combined. This only changes **totals**; shares are unaffected because the factor cancels. | (U.S. Census Bureau, 2025i, p. 2; U.S. Census Bureau, 2026b, p. 12) |
 | **Domain (subpopulation) estimation** | To estimate a subgroup (e.g., mothers), keep every record and give the others zero weight. Deleting records first gives wrong standard errors. | (U.S. Census Bureau, 2026c, p. 49; U.S. Census Bureau, 2026a, p. 8) |
 | **Design-based standard error** | Uncertainty that accounts for how the sample was drawn: strata = state × `STRATUM`, primary sampling unit = household (`HHID`). NSCH standard errors here are about twice as large as a simple-random-sample formula would give. | (U.S. Census Bureau, 2026b, p. 12; U.S. Census Bureau, 2026c, p. 49) |
 | **95% confidence interval (CI)** | The range the true value plausibly falls in. Narrow = precise. | — |
@@ -40,7 +40,7 @@
 | **Korn–Graubard CI** | An alternative: a survey-adjusted version of the "exact" (Clopper–Pearson) binomial interval. It uses an *effective* sample size (n adjusted for the survey design). NCHS recommends it in its data presentation standards. Not used here; noted for reference. | (Parker et al., 2017; Korn & Graubard, 1998) |
 | **Relative standard error (RSE)** | SE ÷ estimate. It measures uncertainty relative to the size of the number. An RSE of 54% means the uncertainty is about half the estimate itself. Reported in the tables for information. | — |
 | **Sensitivity analysis** | Re-running an analysis with a different but reasonable choice to see whether the conclusions change. If they don't, the result is robust. | — |
-| **Rubin's rules** | How to combine results from multiply imputed data. Income is missing for many families, so the Census Bureau provides **six** plausible versions (`FPL_I1`–`FPL_I6`). Run the analysis on each version and average the six estimates. The final uncertainty is the average within-version variance plus (1 + 1/6) × the variance *between* the six estimates. Where income was reported, the versions agree and nothing changes. Where it was imputed, uncertainty grows honestly. The NSCH guide cites Rubin (1996) and defers to software (Stata `mi estimate: svy:`) rather than giving the formula. The formula itself is from Rubin (1987). | (U.S. Census Bureau, 2025c, pp. 1–2, 7–8; Rubin, 1996; Rubin, 1987) |
+| **Rubin's rules** | How to combine results from multiply imputed data. Income is missing for many families, so the Census Bureau provides **six** plausible versions (`FPL_I1`–`FPL_I6`). Run the analysis on each version and average the six estimates. The final uncertainty is the average within-version variance plus (1 + 1/6) × the variance *between* the six estimates. Where income was reported, the versions agree and nothing changes. Where it was imputed, uncertainty grows honestly. The NSCH guide cites Rubin (1996) and defers to software (Stata `mi estimate: svy:`) rather than giving the formula. The formula itself is from Rubin (1987). | (U.S. Census Bureau, 2025h, pp. 1–2, 7–8; Rubin, 1996; Rubin, 1987) |
 
 ### 0.2 NSCH reliability rules
 
@@ -60,7 +60,7 @@ The NSCH public files use these codes (U.S. Census Bureau, 2026c, pp. 30–31, 3
 | `.m` | **No valid response** ("missing in error"): the question was asked but left blank or answered invalidly. | 0.4–1.5% per item |
 | `.l` | **Logical skip**: not asked because of an earlier answer, e.g. Adult 2 questions when there is no second adult. | 14,262 for Adult 2 items |
 | `.n` | **Not in universe**: the question is not on this child's form, e.g. a T1-only item for a 10-year-old. | All children 6–17 for T1 items |
-| `.d` | **Suppressed for confidentiality**: blanked by the Census Bureau because it could help identify someone. | 0 (none of our variables) |
+| `.d` | **Suppressed for confidentiality**: blanked by the Census Bureau because it could help identify someone. | 8,889 (9.8%), all for `METRO_YN` (Section 3) |
 | `.k` | **Don't know.** Only assigned to `FASD_YEARS`, and not present on the 2025 file (U.S. Census Bureau, 2026c, footnote 25). None of the 2023–2025 label files we use define it. | Not used |
 | *Numeric "don't know"* | Some items store "don't know" as an ordinary answer code. Among kept variables only **`MISSMORTGAGE` = 3**. This is counted as nonresponse here and must be recoded to missing in the analysis. | 979 (1.1%) |
 
@@ -112,7 +112,11 @@ Unweighted counts. Table: `step3_mother_flow.csv`.
 
 By year (all ages): 2023 = 33,365; 2024 = 30,629; 2025 = 26,421.
 
-**2023 has many more children aged 0–5 in the sample** (21,524, compared with 13,841 in 2024 and 12,100 in 2025). Weighted totals are stable at about 22.1 million children 0–5 each year, so the weights correct for this. However, 2023 contributes 46% of the pooled 0–5 sample. The reason is **not yet verified** [VERIFY in the 2023 Methodology Report].
+**2023 has many more children aged 0–5 in the sample** (21,524, compared with 13,841 in 2024 and 12,100 in 2025). Weighted totals are stable at about 22.1 million children 0–5 each year, so the weights correct for this. However, 2023 contributes 46% of the pooled 0–5 sample.
+
+**Why:** in 2021–2023 "the Centers for Disease Control provided additional funding to increase representation of young children in the NSCH" (U.S. Census Bureau, 2025a, p. 4). Addresses likely to have a child aged 0–5 were put in a separate stratum (1A) and sampled at the highest rate (U.S. Census Bureau, 2025b, p. 8). The split ended in 2024 (U.S. Census Bureau, 2025e, p. 10). How one child is chosen *within* a household (oversampling children 0–5 at 60%) did not change across 2023–2025 (U.S. Census Bureau, 2025b, p. 10; 2025e, p. 11).
+
+**What it means for us:** nothing extra to do. The weights include these selection probabilities, and `STRATUM` was deliberately released with only the levels "1" and "2A" for 2021–2023 so years can be pooled (U.S. Census Bureau, 2025a, p. 4, footnote 1). No document warns against pooling 2023 with later years. Results for 0–5 simply lean more on 2023 cases.
 
 ### 1.2 Why children were excluded
 
@@ -167,7 +171,7 @@ Full-time shares are close. Respondent mothers are somewhat more often "looking 
 - **Logit-transformed 95% CIs.**
 - NSCH reliability rules (Section 0.2) applied to every estimate.
 
-`STRATUM` keeps its values "1" and "2A". The recode of "2A" to "2" is only needed when 2016 is pooled (U.S. Census Bureau, 2025d, pp. 2–3).
+`STRATUM` keeps its values "1" and "2A". The recode of "2A" to "2" is only needed when 2016 is pooled (U.S. Census Bureau, 2025i, pp. 2–3).
 
 ### 2.1 Unweighted sample sizes, mothers, primary bands
 
@@ -229,7 +233,11 @@ So we **can** identify:
 
 We **cannot** identify "two children under 3", because the other child's exact age is unknown. We also can't see children aged 18 or over, such as a child at college: they are not counted as children. If they live at home they are only in the total household size (`HHCOUNT`).
 
-**Possible improvement (to check):** for 2016–2024 a separate Screener file "included all children rostered on completed screeners" (U.S. Census Bureau, 2026c, p. 8). It was discontinued in 2025. If the 2023–2024 screener files include each child's age and can be linked to the topical file by `HHID`, "two children under 3" may be measurable for those two years. [VERIFY: not yet downloaded or checked.]
+**Screener files checked (2026-11-01): they cannot fill the gap.** For 2016–2024 a separate Screener file "included all children rostered on completed screeners" (U.S. Census Bureau, 2026c, p. 8). The 2023 and 2024 files (U.S. Census Bureau, 2025c, 2025f) do list every child's exact age (`C_AGE_YEARS`), but:
+- They use a **different household ID** (`HHIDS`, "Unique Household ID (Screener)") from the topical file (`HHID`). Where the numbers happen to coincide they are different households: the 0–5 child counts agree only 7–8% of the time, where a true match would agree every time. The documentation describes no way to link the two files.
+- They contain **no information about parents** (no sex, relationship or employment of the adults), so even on their own they cannot describe mothers.
+
+"Two children under 3" therefore cannot be measured for mothers in the public NSCH files. The screener file was discontinued in 2025.
 
 Three groupings were tested (tables `step4_*_youngest`, `*_young_children`, `*_baby`):
 
@@ -280,6 +288,7 @@ Tables: `step5_missingness.csv` (every kept variable, by year and pooled) and `s
 **Item nonresponse** = no valid response (`.m`) + suppressed (`.d`) + "don't know", as a share of mothers who were asked.
 
 - **Every kept variable has at most 1.9% item nonresponse**, in every year and band. Most are below 1%.
+- **Exception: `METRO_YN` is suppressed (`.d`) for 8,889 mothers (9.8%).** This is not nonresponse: the Census Bureau blanks it for **every** record in certain states. Those are Alaska, Connecticut, Massachusetts, Vermont and Wyoming in all three years, Maryland in 2023–2024 and Nevada in 2025. Metro/non-metro comparisons therefore exclude those states and must say so. This was found by the SQL exercise (`sql/04_missing_codes.sql`): the first pandas run skipped the survey-design variables, which is now fixed.
 - **Key items**, pooled:
 
   | Variable | Nonresponse |
@@ -354,7 +363,7 @@ Agreed 2026-11-01.
 12. **Primary bands (0–5 / 6–11 / 12–17):** feasible as planned, based on the sampled child's age.
 13. **Secondary split (0–2 vs. 3–5):** feasible for mothers in the four main groups. This answers research plan Section 3.4 and inventory open item 13 for NSCH; the ATUS half is still open. For fathers, only full-time is reliable at this level.
 14. **Youngest-child bands:** an alternative definition. It reclassifies 8,391 mothers into the 0–5 band and matches how ATUS defines mothers (by youngest child). Used as a sensitivity analysis for the main comparisons.
-15. **Multiple young children:** "number of children aged 0–5" (none / 1 / 2+) and "child 0–2 plus another child 0–5" are added as measures of caregiving load. "Two children under 3" is not measurable in the topical file (Section 2.4).
+15. **Multiple young children:** "number of children aged 0–5" (none / 1 / 2+) and "child 0–2 plus another child 0–5" are added as measures of caregiving load. "Two children under 3" is not measurable in the public files (Section 2.4).
 16. **Pool all three years** for subgroup estimates.
 
 ### 5.5 Reliability and intervals
@@ -364,14 +373,14 @@ Agreed 2026-11-01.
 
 ### 5.6 Missing data
 
-19. Use **complete-case analysis** per item. Nonresponse is ≤ 1.9%, so multiple imputation for item nonresponse is not justified. State the per-item n in every table.
+19. Use **complete-case analysis** per item. Nonresponse is ≤ 1.9%, so multiple imputation for item nonresponse is not justified. State the per-item n in every table. Any metro/non-metro breakdown (`METRO_YN`) states that the suppressed states are excluded.
 20. Recode `MISSMORTGAGE` = 3 ("don't know") to missing.
 21. Combine income (`FPL_I1`–`I6`) **across the six imputations** with Rubin's rules rather than using `FPL_I1` alone.
 
 ### 5.7 Open items
 
-- [VERIFY] Why the 2023 sample has so many more children aged 0–5.
-- [VERIFY] Whether the 2023–2024 Screener files give other children's exact ages and link by `HHID` (would allow "two under 3" for those years).
+- ~~Why the 2023 sample has so many more children aged 0–5.~~ Resolved: CDC-funded young-children oversample in 2021–2023 (Section 1.1).
+- ~~Whether the 2023–2024 Screener files allow "two under 3".~~ Resolved: they cannot be linked to the topical file (Section 2.4).
 - Add hypotheses for caregiving load (number of young children) and the father comparison to the research plan (v0.7), with these decisions.
 - `docs/dataset-inventory.md` Section 2.2 describes the reliability rules as three separate tests; correct it to match Section 0.2 here in v0.7 of the plan/inventory.
 - The ATUS sample-size check (plan Section 11, step 5, second half) is still to do.
@@ -394,13 +403,23 @@ Rubin, D. B. (1996). Multiple imputation after 18+ years. *Journal of the Americ
 
 StataCorp. (2025). proportion: Estimate proportions. In *Stata base reference manual*. Stata Press. https://www.stata.com/manuals/rproportion.pdf
 
-U.S. Census Bureau. (2025a). *2023 National Survey of Children's Health: Topical public use file (enhanced), Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2023/nsch_2023e_topical_Stata.zip
+U.S. Census Bureau. (2025a, September 5). *2023 National Survey of Children's Health: Data users frequently asked questions (FAQs)*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/2023-NSCH-FAQs.pdf
 
-U.S. Census Bureau. (2025b). *2024 National Survey of Children's Health: Topical public use file, Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2024/nsch_2024_topical_Stata.zip
+U.S. Census Bureau. (2025b, January 31). *2023 National Survey of Children's Health: Methodology report*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/2023-NSCH-Methodology-Report.pdf
 
-U.S. Census Bureau. (2025c, October 6). *National Survey of Children's Health: Analysis with multiply imputed data*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/NSCH-Analysis-with-Imputed-Data-Guide.pdf
+U.S. Census Bureau. (2025c). *2023 National Survey of Children's Health: Screener public use file (enhanced), Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2023/nsch_2023e_screener_Stata.zip
 
-U.S. Census Bureau. (2025d, October 6). *National Survey of Children's Health: Guide to multi-year estimates*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/NSCH-Guide-to-Multi-Year-Estimates.pdf
+U.S. Census Bureau. (2025d). *2023 National Survey of Children's Health: Topical public use file (enhanced), Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2023/nsch_2023e_topical_Stata.zip
+
+U.S. Census Bureau. (2025e, December 1). *2024 National Survey of Children's Health: Methodology report*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/2024-NSCH-Methodology-Report.pdf
+
+U.S. Census Bureau. (2025f). *2024 National Survey of Children's Health: Screener public use file, Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2024/nsch_2024_screener_Stata.zip
+
+U.S. Census Bureau. (2025g). *2024 National Survey of Children's Health: Topical public use file, Stata format* [Data set]. https://www2.census.gov/programs-surveys/nsch/datasets/2024/nsch_2024_topical_Stata.zip
+
+U.S. Census Bureau. (2025h, October 6). *National Survey of Children's Health: Analysis with multiply imputed data*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/NSCH-Analysis-with-Imputed-Data-Guide.pdf
+
+U.S. Census Bureau. (2025i, October 6). *National Survey of Children's Health: Guide to multi-year estimates*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/NSCH-Guide-to-Multi-Year-Estimates.pdf
 
 U.S. Census Bureau. (2026a, October 1). *2025 National Survey of Children's Health: Comprehensive analytic guide*. https://www2.census.gov/programs-surveys/nsch/technical-documentation/methodology/NSCH-Analytic-Guide.pdf
 
@@ -419,7 +438,7 @@ U.S. Census Bureau. (2026d). *2025 National Survey of Children's Health: Topical
   - the R documentation page.
 - **Taken from another document's reference list, not checked against the original:**
   - **Korn & Graubard (1998):** as cited by Parker et al. (2017). The Statistics Canada catalogue lists the authors in the opposite order, and the R documentation gives the volume as 23. Confirm against the article before publication. [VERIFY]
-  - **Rubin (1996):** as cited by U.S. Census Bureau (2025c). The issue number (434) and DOI were added from memory and have not been checked. [VERIFY]
+  - **Rubin (1996):** as cited by U.S. Census Bureau (2025h). The issue number (434) and DOI were added from memory and have not been checked. [VERIFY]
 - **Not checked:** Rubin (1987), the standard source for the combining formula; DOI not checked. [VERIFY]
 - **Dataset release dates:** the dates are the server "Last-Modified" dates at download (`docs/data-acquisition.md`), not formal publication dates.
 - **Same author and year:** works are labelled a, b, c… in title order (APA 7, Section 9.47).
