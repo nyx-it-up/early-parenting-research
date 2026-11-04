@@ -1,9 +1,5 @@
--- Exercise 01 - the mother filter
--- Instructions and hints: sql/README.md
--- Expected output columns: survey_year, all_children, female_respondent, mothers
--- Check: .venv/Scripts/python.exe src/check_sql.py sql/01_mother_flow.sql
-
--- Write your query below.
+-- Mother definition: children per survey year at each step
+-- Database: data/processed/nsch.duckdb (built by src/build_db.py)
 
 SELECT
       SURVEY_YEAR AS survey_year,
@@ -13,4 +9,3 @@ SELECT
   FROM nsch
   GROUP BY survey_year
   ORDER BY survey_year;
-
