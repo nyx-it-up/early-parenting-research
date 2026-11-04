@@ -4,12 +4,12 @@
 
 | | |
 |---|---|
-| **Document status** | Draft v0.7: NSCH feasibility results and confirmed variables folded in |
+| **Document status** | Draft v0.8: ATUS feasibility results folded in |
 | **Created** | 2026-10-30 |
-| **Last revised** | 2026-11-01 |
+| **Last revised** | 2026-11-03 |
 | **Scope** | Descriptive and associational secondary analysis of public U.S. survey and price data |
 | **Causal claims** | None. All hypotheses and research questions are stated as associations. |
-| **Companion documents** | `docs/dataset-inventory.md`: source-backed validation of datasets and variables. `docs/nsch-feasibility.md`: NSCH sample definition, sample sizes, reliability, missing data and agreed analysis decisions. |
+| **Companion documents** | `docs/dataset-inventory.md`: source-backed validation of datasets and variables. `docs/nsch-feasibility.md`: NSCH sample definition, sample sizes, reliability, missing data and agreed analysis decisions. `docs/atus-feasibility.md`: the same for ATUS. |
 
 ### Revision history
 
@@ -22,6 +22,7 @@
 | v0.5 | Added a **within-early-childhood sub-analysis** comparing mothers of children **0–2 vs. 3–5** (Section 1, Section 3.4), to keep the original interest in the caregiving demands of children under 3. It is a secondary analysis and does **not** replace the primary bands. ATUS feasibility documented in `docs/dataset-inventory.md` Section 6.4. |
 | v0.6 | Formalized **two age-band schemes**: **primary 0–5 / 6–11 / 12–17** and **secondary 0–2 / 3–5 / 6–11 / 12–17**. The secondary scheme replaces the stand-alone 0–2 vs. 3–5 sub-analysis and keeps its rules and research questions (U1–U4). |
 | v0.7 | Folded in the **NSCH feasibility results** (`docs/nsch-feasibility.md`) and the inventory corrections (inventory Section 1.3). NSCH mother definition and employment groups fixed. Added **fathers as a comparison group** (H8) and **caregiving load** (number of young children; H7). Added the **youngest-child band** as an NSCH sensitivity definition. E3 confirmed testable (`TENURE`). NSCH has no caregiver sleep or work-hours item. Reliability rules, logit confidence intervals, pooling and missing-data handling specified (Section 7.8). Resolved `[VERIFY]` tags for NSCH. |
+| v0.8 | Folded in the **ATUS feasibility results** (`docs/atus-feasibility.md`). ATUS mothers are **all** female respondents with own household children under 18, including step-mothers. ATUS window fixed at **2022–2025 pooled** (2020 and 2021 excluded). ATUS employment collapsed to full-time / part-time / not employed. Primary and secondary age bands confirmed feasible for ATUS (U3, U4). Well-Being Module years fall outside the window. ATUS fathers added to H8 (full-time only by band). Pre-/during-/post-pandemic comparison deferred to a later pass. |
 
 ### Verification convention
 
@@ -86,7 +87,7 @@ Every secondary band still falls within a single NSCH questionnaire form (0–2 
 | Dataset | Age definition | Supported? |
 |---|---|---|
 | NSCH | **Exact age of the sampled child** (`SC_AGE_YEARS`). Both subgroups are on form T1, so every T1 item is asked of both. | **Yes**, by sampled child: pooled 2023–2025, every main employment group has ≥ 650 mothers in each subgroup and passes the reliability rules (`docs/nsch-feasibility.md` Section 2). Other children's exact ages are not available, so a mother is classified by the sampled child even if she has a younger one. |
-| ATUS | **Exact age of the mother's youngest own household child**, from roster age and relationship. | Yes in principle. Sample size must be checked before committing to estimates (likely requires pooling years). |
+| ATUS | **Exact age of the mother's youngest own household child**, from roster age and relationship. | **Yes**, pooled 2022–2025: every full-time / part-time / not employed group has ≥ 129 mothers in each subgroup, and mean sleep, childcare and paid-work minutes pass the provisional reliability rules (`docs/atus-feasibility.md` Sections 3–4). |
 | ACS PUMS | Exact age (`AGEP`) of linkable own children | Possible for linkable mothers only. Not a priority for the secondary scheme. |
 
 **Rules for the secondary scheme:**
@@ -110,7 +111,7 @@ NSCH classifies a mother by the **sampled** child, which may not be her youngest
 
 ### Population
 
-- **Primary:** Female biological or adoptive mothers whose child (or youngest child, where the dataset allows) is in **band 1 (0–5)**.
+- **Primary:** Mothers whose child (or youngest child, where the dataset allows) is in **band 1 (0–5)**. In NSCH these are biological or adoptive mothers. In ATUS they are all mothers with own household children, including step-mothers (see "Defining mother" below).
 - **Secondary comparison groups:**
   - Mothers whose child (or youngest child) is in band 2 (6–11) or band 3 (12–17).
   - Mothers who are not working (unemployed or out of the labor force), compared with working mothers.
@@ -123,11 +124,11 @@ Each dataset identifies mothers differently, and the definitions are **not equiv
 | Dataset | How a mother is identified | Can biological/adoptive mothers be separated from other female caregivers? |
 |---|---|---|
 | NSCH | **Respondent (Adult 1) is female and the sampled child's biological or adoptive parent**: `A1_SEX = 2` and `A1_RELATION = 1`. Mothers recorded only as Adult 2 are proxy-reported and excluded from the main sample (sensitivity check for employment only). 90,415 mothers pooled 2023–2025. | **Yes.** Code 1 covers biological and adoptive parents together. Step-, grand- and foster parents have separate codes. |
-| ATUS | Female respondent (`TESEX = 2`) with own household children under 18 (roster `TERRP = 22` and `TEAGE` < 18) | **Partly.** "Own child" includes step-children. Biological/adoptive vs. step can be separated only from 2007, through the ATUS-CPS parent-type variables measured 2–5 months before the diary day. |
+| ATUS | Female respondent (`TESEX = 2`) with own household children under 18 (roster `TERRP = 22` and `TEAGE` < 18). **All such mothers are kept, including step-mothers**, as BLS defines own children. 3,847 mothers pooled 2022–2025. | **Partly, and not applied.** Biological/adoptive vs. step can be separated only from 2007, through the ATUS-CPS parent-type variables measured 2–5 months before the diary day. In 2022–2025, 1.5% of mothers have only step-children and 4.1% cannot be classified (`docs/atus-feasibility.md` Section 1). |
 | ACS PUMS | Female persons linked to children through relationship-to-householder and family/subfamily variables `[VERIFY]` | Partly. Relationship codes may separate biological, adopted and stepchildren only relative to the householder. Mothers who are not the householder or spouse/partner may be hard to link to specific children. `[VERIFY]` |
 | BEA RPP | Not applicable (area-level price data, no respondents) | n/a |
 
-Female caregivers who are not biological or adoptive mothers are **excluded from the primary analysis**. Where the data allow, they are analyzed separately as a sensitivity check. If a dataset cannot separate them, this is reported as a limitation.
+Female caregivers who are not biological or adoptive mothers are **excluded from the primary analysis**, except in ATUS, where step-mothers are kept (see the table above). Where the data allow, they are analyzed separately as a sensitivity check. If a dataset cannot separate them, this is reported as a limitation.
 
 ## 2. Research objectives
 
@@ -169,7 +170,7 @@ Greater emotional support is associated with better reported maternal well-being
 
 Working mothers' allocation of time between paid work, childcare and household labor differs by family structure and socioeconomic circumstances.
 
-- Data: ATUS
+- Data: ATUS 2022–2025 pooled.
 
 #### H5 — Child age band
 
@@ -181,7 +182,7 @@ Mothers' employment, time use and well-being patterns differ across child age ba
 
 Shorter maternal sleep is associated with employment circumstances (for example full-time work) and with poorer maternal well-being, especially among mothers whose youngest child is 0–5.
 
-- Data: ATUS for maternal sleep time and its relationship to employment, plus Well-Being Module measures (`WEREST`, `WUTIRED`) in 2010, 2012, 2013 and 2021 only. **NSCH has no caregiver sleep measure.** NSCH child sleep (`HOURSLEEP05` for 0–5, `HOURSLEEP` for 6–17; not comparable with each other) and `BEDTIME` are analyzed against maternal well-being within NSCH. The parts of H6 that no single dataset can test are triangulated, not merged.
+- Data: ATUS 2022–2025 for maternal sleep time and its relationship to employment. The Well-Being Module measures (`WEREST`, `WUTIRED`) exist only in 2010, 2012, 2013 and 2021, **outside the 2022–2025 window**, so they are not part of the main analysis. Whether to analyze them separately is an open decision. **NSCH has no caregiver sleep measure.** NSCH child sleep (`HOURSLEEP05` for 0–5, `HOURSLEEP` for 6–17; not comparable with each other) and `BEDTIME` are analyzed against maternal well-being within NSCH. The parts of H6 that no single dataset can test are triangulated, not merged.
 
 #### H7 — Caregiving load (new in v0.7)
 
@@ -196,6 +197,7 @@ Associations between employment and well-being differ between mothers and father
 
 - Data: NSCH. Fathers: `A1_SEX = 1` and `A1_RELATION = 1` (44,245 pooled). Employment collapsed to full-time / part-time / not employed, because about 90% of fathers work full-time.
 - Feasible: **full-time vs. not employed** in the primary and youngest-child bands. Part-time fathers are too few for reliable outcome estimates in most groups and are shown only with reliability flags. For the 0–2 / 3–5 split and the "baby plus another young child" group, only full-time fathers are reliable.
+- ATUS (2022–2025): fathers defined like ATUS mothers with `TESEX = 1` (3,191 fathers). 84–90% work full-time, so only **full-time fathers** are compared by band. Part-time (46–60 per band) and not-employed fathers are too few, and some of their estimates fail the provisional reliability rules (`docs/atus-feasibility.md` Section 4).
 - Caveat: mothers and fathers who answer the survey may differ from those who do not (respondent selection).
 
 ### 3.2 Economic and housing research questions
@@ -210,7 +212,7 @@ Associations between employment and well-being differ between mothers and father
 ### 3.3 Sleep research questions
 
 - **S1.** How long do mothers sleep on the diary day, and how does that vary by employment status, work hours and child age band? *(ATUS)*
-- **S2.** Where measured, how do sleep quality, sleeplessness or night interruptions vary across these groups? *(ATUS sleeplessness activity 010102, and `WEREST` in Well-Being Module years. NSCH has no caregiver sleep item.)*
+- **S2.** Where measured, how do sleep quality, sleeplessness or night interruptions vary across these groups? *(ATUS sleeplessness activity 010102. `WEREST` exists only in Well-Being Module years, outside the 2022–2025 window. NSCH has no caregiver sleep item.)*
 - **S3.** How do child sleep duration and bedtime routines vary by child age band and maternal employment? *(NSCH `HOURSLEEP05` (T1, 0–5, per 24 hours including naps), `HOURSLEEP` (T2/T3, 6–17, weeknights) and `BEDTIME`. The two duration items are analyzed separately and never compared.)*
 - **S4.** How are maternal sleep (ATUS) and child sleep (NSCH) associated with maternal psychological well-being in each dataset, and are the patterns consistent across datasets? *(Within each dataset, then triangulated)*
 
@@ -222,10 +224,12 @@ These are **secondary** questions using the secondary age-band scheme (see Secti
 
 - **U1.** Do maternal mental/emotional health, parenting aggravation and emotional support differ between mothers of a sampled child aged 0–2 and those of a sampled child aged 3–5? *(NSCH)*
 - **U2.** Do child sleep (`HOURSLEEP05`, `BEDTIME`), non-parental childcare hours and job disruption due to childcare problems differ between the two subgroups? *(NSCH, T1 items only. Childcare hours (`HOURSOFCARE`) exist **only in 2025**, so they are not pooled. Job disruption: `K6Q27`.)*
-- **U3.** Do mothers whose youngest own child is 0–2 differ from those whose youngest is 3–5 in diary-day sleep, sleeplessness, paid work, primary and secondary childcare, and household activities, by employment status? *(ATUS, pooled years, subject to sample size)*
+- **U3.** Do mothers whose youngest own child is 0–2 differ from those whose youngest is 3–5 in diary-day sleep, sleeplessness, paid work, primary and secondary childcare, and household activities, by employment status? *(ATUS 2022–2025 pooled)*
 - **U4.** Do employment status and usual hours differ between the two subgroups? *(ATUS. NSCH `A1_EMPLOYED_R` for 2023+, which has no hours.)*
 
-**NSCH feasibility (v0.7):** U1, U2 and the NSCH part of U4 are feasible for mothers in the four main employment groups. "Retired" and "working without pay" are not reported separately at this level. The ATUS feasibility check (U3, U4) is still to do.
+**NSCH feasibility (v0.7):** U1, U2 and the NSCH part of U4 are feasible for mothers in the four main employment groups. "Retired" and "working without pay" are not reported separately at this level.
+
+**ATUS feasibility (v0.8):** U3 and the ATUS part of U4 are feasible for mothers by full-time / part-time / not employed (≥ 129 mothers per cell, 2022–2025). Unemployed mothers are not reported separately. Usual hours (`TEHRUSLT`) include 4.6% "hours vary" answers, which are reported separately.
 
 ## 4. Dataset overview
 
@@ -257,7 +261,19 @@ Full details, verified variable names, codes and documentation links are in **`d
 
 ### 4.2 ATUS
 
-As specified in v0.2: respondent, activity, activity summary, roster, who, ATUS-CPS and replicate-weight files linked by identifiers, plus labor force status, hours, presence and age of children, primary and secondary childcare, household activities, sleep and diary-day information. All `[VERIFY]` in the inventory.
+**Years used:** 2022–2025 multi-year files, pooled. 2020 is excluded (diaries from March 18 to May 9 not collected, separate weight `TU20FWGT`) and 2021 is left out as too close to the COVID-19 pandemic. 2025 has no diaries from October 1 to November 12 (federal shutdown). Loaded by `src/atus.py`; sample definition and feasibility in `docs/atus-feasibility.md`.
+
+| Construct | Variable(s) | Status (v0.8) |
+|---|---|---|
+| Mother and youngest own child | Roster `TESEX`, `TERRP = 22`, `TEAGE` < 18 | Confirmed; agrees 100% with `TROHHCHILD` |
+| Employment | `TELFS`, `TRDPFTPT`; usual hours `TEHRUSLT` | Confirmed; no missing values among mothers. Full-time threshold `[VERIFY]` |
+| Sleep | Activity 010101 (sleeping), 010102 (sleeplessness) | Confirmed |
+| Primary childcare | Activities 0301xx–0303xx (household children) | Confirmed |
+| Paid work | Activity 0501xx | Confirmed |
+| Diary day | `TUDIARYDAY`, `TRHOLIDAY`; 50% weekend by design | Confirmed |
+| Weight | `TUFNWGTP` | Confirmed for 2022–2025 |
+| Replicate weights | 160 replicates (Fay method) | Not downloaded yet; multi-year names `[VERIFY]` |
+| Secondary childcare, household activities, Who file | — | Not yet checked |
 
 ### 4.3 ACS: economic and household analysis
 
@@ -295,7 +311,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 |---|---|---|---|
 | Maternal mental health | NSCH caregiver mental/emotional health rating, when self-reported | NSCH rating reported by another adult | Single global item, not diagnostic |
 | Parenting stress | NSCH aggravation items | none | Items describe the **respondent**; valid for mothers only when the mother is Adult 1 |
-| Momentary affect | ATUS Well-Being Module (2010, 2012, 2013, 2021) | none | Activity-level; 4 years only; 2010–13 activity-selection error |
+| Momentary affect | ATUS Well-Being Module (2010, 2012, 2013, 2021) | none | Activity-level; 4 years only, all outside the 2022–2025 window; 2010–13 activity-selection error |
 | Maternal sleep duration | ATUS diary sleep time | none | One diary day, not habitual sleep |
 | Maternal sleep quality / interruptions | ATUS sleeplessness (010102); `WEREST` in Well-Being Module years | none | No sleep-quality scale in any source |
 | Child sleep | NSCH `HOURSLEEP05` (0–5), `HOURSLEEP` (6–17), `BEDTIME` | none | Parent-reported; the two duration items are not comparable |
@@ -337,6 +353,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 - **Employment vs. labor-force participation:** employed; unemployed (in the labor force but not working); not in the labor force. "Nonworking" is always split into unemployed vs. not in the labor force where the data allow.
 - **Full-time / part-time / unemployed / out of labor force** are distinguished where each dataset permits. The full-time threshold and reference period are documented for each source.
+- **ATUS:** unemployed mothers are too few to report on their own (20–49 per band in 2022–2025), so they are combined with "not in the labor force" as **not employed**.
 - **Employment ≠ job quality, flexibility or work-life balance.** None of these will be inferred from employment status.
 
 ### 7.2 Income, earnings and purchasing power
@@ -361,7 +378,7 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 ### 7.6 Population definition and age bands
 
-- Biological/adoptive mothers are distinguished from other female caregivers wherever the data allow.
+- Biological/adoptive mothers are distinguished from other female caregivers wherever the data allow. **Exception:** ATUS keeps all mothers with own household children, including step-mothers.
 - Age bands are applied as defined in Section 1. Every output states whether the band refers to the sampled child (NSCH), the youngest household child (ATUS) or own children (ACS), and flags any band a measure covers only partly.
 - Results using the **secondary age bands** (0–2 / 3–5 / 6–11 / 12–17) are labeled as such in every output and kept separate from primary-band results. 0–2 vs. 3–5 comparisons use only measures asked identically of both groups.
 - **NSCH results describe children, not mothers.** `FWC` is a child-level weight, and the Census Bureau says estimates "should be framed in terms of children". Results are worded "X% of children aged 0–5 have a mother who…". ATUS and ACS count people, so cross-source comparisons state this difference.
@@ -377,18 +394,18 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 | Issue | Plan |
 |---|---|
-| **Survey weights** | Use the official weight for each dataset, year, file and record type (person vs. housing in ACS PUMS). Unweighted estimates are diagnostic only. NSCH: `FWC` divided by the number of pooled years. |
-| **Complex sampling / variance** | NSCH: Taylor linearization with strata `FIPSST` × `STRATUM` (× year when pooling) and household (`HHID`) as PSU. ATUS and ACS PUMS: replicate weights per documentation. Domain estimation for subgroups (no deleting records before variance estimation). |
+| **Survey weights** | Use the official weight for each dataset, year, file and record type (person vs. housing in ACS PUMS). Unweighted estimates are diagnostic only. NSCH: `FWC` divided by the number of pooled years. ATUS: `TUFNWGTP` (weighted means need no division; totals are divided by the number of pooled years). |
+| **Complex sampling / variance** | NSCH: Taylor linearization with strata `FIPSST` × `STRATUM` (× year when pooling) and household (`HHID`) as PSU. ATUS: the 160 replicate weights, Var = (4/160) Σ(Ŷᵢ − Ŷ₀)² (the feasibility check used approximate SEs). ACS PUMS: replicate weights per documentation. Domain estimation for subgroups (no deleting records before variance estimation). |
 | **Confidence intervals** | Logit-transformed 95% intervals for proportions, so intervals stay within 0–100%. |
 | **ATUS diary day** | Population patterns, not individual typical days. Weekday/weekend weighting per BLS. |
-| **Pooling years** | NSCH: 2023–2025 pooled for all subgroup estimates. `STRATUM` keeps its values "1" and "2A"; recoding is only needed if 2016 is added. 2023 contributes extra 0–5 cases because of a CDC-funded young-children oversample (2021–2023), which the weights already handle. ATUS: pooling required; years to be decided in the ATUS feasibility check. |
+| **Pooling years** | NSCH: 2023–2025 pooled for all subgroup estimates. `STRATUM` keeps its values "1" and "2A"; recoding is only needed if 2016 is added. 2023 contributes extra 0–5 cases because of a CDC-funded young-children oversample (2021–2023), which the weights already handle. ATUS: **2022–2025 pooled** (3,847 mothers). 2020 and 2021 excluded. |
 | **Variable availability** | A year × variable availability matrix is built for each source before pooling. |
-| **Period effects** | Pandemic-period sensitivity analyses. 2020 data disruptions `[VERIFY]` for each source. |
-| **Missing data** | Report item nonresponse. Distinguish legitimate skips. Use official imputations correctly. NSCH: item nonresponse among mothers is ≤ 1.9%, so complete-case analysis per item, with per-item n stated. Income (`FPL_I1`–`I6`) is combined across the six imputations with Rubin's rules. Numeric "don't know" codes (`MISSMORTGAGE` = 3) are recoded to missing. |
+| **Period effects** | ATUS: 2020 and 2021 excluded from the main window. A pre-pandemic / pandemic / post-pandemic comparison is planned for a later pass. Other sources: 2020 data disruptions `[VERIFY]`. |
+| **Missing data** | Report item nonresponse. Distinguish legitimate skips. Use official imputations correctly. NSCH: item nonresponse among mothers is ≤ 1.9%, so complete-case analysis per item, with per-item n stated. Income (`FPL_I1`–`I6`) is combined across the six imputations with Rubin's rules. Numeric "don't know" codes (`MISSMORTGAGE` = 3) are recoded to missing. ATUS: no missing values in employment or age among mothers; diary minutes are never missing; "hours vary" (`TEHRUSLT` = −4) is reported separately. |
 | **Confounding / selection** | Adjust for measured confounders. Selection into employment and housing tenure is acknowledged. No "effect of working" or "effect of owning" language. |
 | **Correlation vs. causation** | All data are cross-sectional. Reverse causation is possible (for example, poor health leading to less employment). |
 | **Multiple comparisons** | H1–H8, E1–E6, S1–S4 and the secondary age-band questions U1–U4 are pre-specified. Other analyses are labeled exploratory. |
-| **Small cells** | Suppressed or flagged according to each source's guidance. NSCH: present only estimates with an unweighted denominator ≥ 30, and flag estimates whose 95% CI is wider than 20 percentage points or wider than 1.2 times the estimate (2025 NSCH Methodology Report). |
+| **Small cells** | Suppressed or flagged according to each source's guidance. NSCH: present only estimates with an unweighted denominator ≥ 30, and flag estimates whose 95% CI is wider than 20 percentage points or wider than 1.2 times the estimate (2025 NSCH Methodology Report). ATUS: provisional rules n ≥ 30 and relative standard error ≤ 30%, to be replaced by the BLS publication criteria (User's Guide Appendix N) `[VERIFY]`. |
 
 ## 8. Data access limitations
 
@@ -452,19 +469,22 @@ Availability to be confirmed in ACS PUMS (person and housing records) and publis
 
 ## 11. Immediate next steps
 
-Done in v0.7: dataset inventory (all four sources); NSCH population-defining variables; NSCH tenure, sleep and age coverage; NSCH sample sizes, reliability and missing data (`docs/nsch-feasibility.md`); this revision.
+Done in v0.7: dataset inventory (all four sources); NSCH population-defining variables; NSCH tenure, sleep and age coverage; NSCH sample sizes, reliability and missing data (`docs/nsch-feasibility.md`).
+Done in v0.8: ATUS mother definition, pooling window, sample sizes, precision and missing data (`docs/atus-feasibility.md`); this revision.
 
-1. **ATUS feasibility check:** unweighted and weighted sample sizes of mothers (youngest own household child) by primary and secondary age band × employment status, for candidate pooling windows. Also the share of mothers whose own children include step-children (2007+). Files must be downloaded manually from BLS.
-2. Confirm the PUMS mother–child linkage approach and the PUMA–metro alignment for RPP comparisons.
-3. Start the NSCH analysis (H1, H3, H5, H7, H8, E3, U1, U2), applying the decisions in `docs/nsch-feasibility.md` Section 5.
-4. Build a year × variable availability matrix for ATUS and ACS before pooling.
-5. Inventory open item 3: confirm `A1_MARITAL` codes and `TOTAGE_*` / `AGEPOS4` across years.
+1. **Download the ATUS replicate weight file** (292.6 MB, manual browser download) and confirm its variable names.
+2. Check the BLS publication criteria (ATUS User's Guide Appendix N) and the `TRDPFTPT` full-time threshold.
+3. Confirm the PUMS mother–child linkage approach and the PUMA–metro alignment for RPP comparisons.
+4. Start the NSCH analysis (H1, H3, H5, H7, H8, E3, U1, U2), applying the decisions in `docs/nsch-feasibility.md` Section 5.
+5. Build a year × variable availability matrix for ACS before pooling.
+6. Inventory open item 3: confirm `A1_MARITAL` codes and `TOTAGE_*` / `AGEPOS4` across years.
+7. Later pass: ATUS pre-pandemic / pandemic / post-pandemic comparison.
 
 ---
 
 ## Sources (official entry points)
 
-Sources for the methods and decisions folded in at v0.7 are cited in APA style in `docs/nsch-feasibility.md` Section 6.
+Sources for the methods and decisions folded in at v0.7 are cited in APA style in `docs/nsch-feasibility.md` Section 6, and for v0.8 in `docs/atus-feasibility.md` (References).
 
 - NSCH, U.S. Census Bureau: https://www.census.gov/programs-surveys/nsch.html
 - NSCH, HRSA Maternal and Child Health Bureau: https://mchb.hrsa.gov/data-research/national-survey-childrens-health
