@@ -10,7 +10,7 @@ Creates data/processed/nsch.duckdb (not under version control) with:
   age_bands          child age 0-17 -> primary and secondary age band
 
 Labels are copied from the 2023-2025 Stata label files (.do); they are
-identical in all three years. The exercises in sql/README.md use these tables.
+identical in all three years. The queries in sql/ use these tables.
 
 Usage (from the repository root, after running src/nsch.py):
     .venv/Scripts/python.exe src/build_db.py
