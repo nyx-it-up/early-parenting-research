@@ -288,7 +288,7 @@ Tables: `step5_missingness.csv` (every kept variable, by year and pooled) and `s
 **Item nonresponse** = no valid response (`.m`) + suppressed (`.d`) + "don't know", as a share of mothers who were asked.
 
 - **Every kept variable has at most 1.9% item nonresponse**, in every year and band. Most are below 1%.
-- **Exception: `METRO_YN` is suppressed (`.d`) for 8,889 mothers (9.8%).** This is not nonresponse: the Census Bureau blanks it for **every** record in certain states. Those are Alaska, Connecticut, Massachusetts, Vermont and Wyoming in all three years, Maryland in 2023–2024 and Nevada in 2025. Metro/non-metro comparisons therefore exclude those states and must say so. This was found by a SQL query (`sql/04_missing_codes.sql`): the first pandas run skipped the survey-design variables, which is now fixed.
+- **Exception: `METRO_YN` is suppressed (`.d`) for 8,889 mothers (9.8%).** This is not nonresponse: the Census Bureau blanks it for **every** record in certain states. Those are Alaska, Connecticut, Massachusetts, Vermont and Wyoming in all three years, Maryland in 2023–2024 and Nevada in 2025. Metro/non-metro comparisons therefore exclude those states and must say so. This was found by the SQL exercise (`sql/04_missing_codes.sql`): the first pandas run skipped the survey-design variables, which is now fixed.
 - **Key items**, pooled:
 
   | Variable | Nonresponse |
