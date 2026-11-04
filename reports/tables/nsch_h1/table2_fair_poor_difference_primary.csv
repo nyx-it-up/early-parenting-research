@@ -1,0 +1,10 @@
+band,employment,fair_poor_pct,full_time_fair_poor_pct,difference_pts,ci_low_pts,ci_high_pts,ci_excludes_zero,n_group,n_full_time
+0-5,Employed part-time,8.4,7.4,1.0,-0.7,2.7,False,4596,16522
+0-5,"Not employed, looking for work",15.0,7.4,7.7,4.0,11.3,True,1470,16522
+0-5,"Not employed, not looking (incl. retired)",7.5,7.4,0.1,-1.4,1.7,False,5300,16522
+6-11,Employed part-time,7.6,6.7,0.8,-0.9,2.6,False,4328,16243
+6-11,"Not employed, looking for work",13.8,6.7,7.0,4.1,10.0,True,1341,16243
+6-11,"Not employed, not looking (incl. retired)",9.4,6.7,2.7,0.5,4.9,True,3708,16243
+12-17,Employed part-time,6.9,6.7,0.2,-1.1,1.5,False,5442,23227
+12-17,"Not employed, looking for work",12.2,6.7,5.5,2.8,8.1,True,1569,23227
+12-17,"Not employed, not looking (incl. retired)",12.1,6.7,5.4,2.5,8.2,True,4301,23227
