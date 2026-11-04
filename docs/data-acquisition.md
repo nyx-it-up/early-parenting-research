@@ -65,3 +65,41 @@ Checksums are SHA-256. "Last-Modified" is the server header at download time and
 | 2024 | `nsch_2024_screener.do` | | | `ef00eb001e7c030c52ab0d6b698bfeaeda8178162b5adc1ca1e98d8898e49af7` |
 | 2023 | `nsch_2023e_screener.dta` | 133,963 | 70,187 | `237905d85bd186d5319bcbb12bbbbb169c424ee24f96719a590d59f5b1f499db` |
 | 2023 | `nsch_2023_screener.do` | | | `2884edc165b21033019b263fc0c0716d90336382b5389e762de496d5f389227e` |
+
+---
+
+## ATUS: American Time Use Survey, 2003–2025 multi-year files
+
+- **Source:** U.S. Bureau of Labor Statistics, ATUS 2003–2025 Multi-Year Microdata Files: https://www.bls.gov/tus/data/datafiles-0325.htm
+- **Downloaded:** 2026-11-04 03:57–03:58 UTC (2026-11-03 19:57–19:58 Pacific), **manually in a browser**. The BLS website blocks automated downloads, so no server headers (Last-Modified) were recorded. The direct file URLs were not recorded either; each file is linked from the page above.
+- **Location:** `data/raw/atus/` (the zips and their extracted contents).
+- **Format:** each zip contains one comma-separated `.dat` data file with a header row, Stata (`.do`), SAS and SPSS programs with variable and value labels, and an `_info.txt` note.
+- **Purpose:** ATUS feasibility check (`docs/atus-feasibility.md`).
+- **Not downloaded yet:** Activity, Who, Case history and Replicate weights files (the replicate weights are needed for final standard errors).
+
+### Downloaded archives
+
+| File on the page | Zip | Bytes | SHA-256 |
+|---|---|---|---|
+| Respondent file | `atusresp-0325.zip` | 16,710,282 | `026dcbf38665c749baa486e080273f67246135c4ee013bd364c43d757adeda9d` |
+| Roster file | `atusrost-0325.zip` | 3,317,812 | `e8f1b62daf3b450e61b881a0d1ae7715fc3d7d22ac26aaaf1de347306e991009` |
+| Activity summary file | `atussum-0325.zip` | 16,141,000 | `a33499aa7b74e855ec2727e8007931dd0de469507acc05ead4af32831b1d4d68` |
+| ATUS-CPS file | `atuscps-0325.zip` | 103,926,958 | `0ea77394ff8532fb185b5e5a43f7dfb138394c323df96aa05ee5bcbd314233ba` |
+
+### Extracted files
+
+| File | Rows | Columns | SHA-256 |
+|---|---|---|---|
+| `atusresp_0325.dat` | 258,954 | 133 | `2892bce5d31c5692f94579147c4fdb268e3e512651560fd15ed93c51f6017b17` |
+| `atusrost_0325.dat` | 702,409 | 5 | `533e80c2fb80caf9df073bb6ff8786ee8b3512577969cbb1492e4fc58b00abf3` |
+| `atussum_0325.dat` | 258,954 | 456 | `6a5c9572d52d040456c8f6cb39107bc7682ac8fcf4bf33da87cdfd5967adf6ac` |
+| `atuscps_0325.dat` | 1,583,133 | 265 | `7079ad9aa4f09c9df57c834a3404107a33af7b208e553fecdab313560667e754` |
+| `atusresp_0325.do` | | | `74b63150a7ba92387382a89f8f15955607187c791e64619ceb8ae4b93620140d` |
+| `atusrost_0325.do` | | | `da7d134fda99a04a19eb6d292d4414fb72b10ea10a9c53e84a1089c5c5efee22` |
+| `atussum_0325.do` | | | `cc8eec950844b48849184879c5a0b16fbf0a54b07da379d4464c54bb3cbf4588` |
+| `atuscps_0325.do` | | | `bcf8d1a766787c4068d1e17e5826a0c38c280f15e2323c1e47f17a394f2374c7` |
+
+### Integrity checks performed
+
+- Row and column counts match the `_info.txt` note in each zip (e.g. "133 variables and 258,954 observations" for the Respondent file).
+- The Respondent and Activity summary files have the same 258,954 `TUCASEID`s; every respondent has a roster line 1.

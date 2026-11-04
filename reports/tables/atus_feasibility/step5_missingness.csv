@@ -1,0 +1,6 @@
+window,variable,base_n,n_missing,pct
+2022-2025,TELFS (labor force status),3847,0,0.0
+2022-2025,"TRDPFTPT (full/part time), employed only",2877,0,0.0
+2022-2025,"TEHRUSLT (usual hours), employed only, -4 'hours vary' excluded",2877,0,0.0
+2022-2025,"TEHRUSLT = -4 'hours vary', employed only",2877,133,4.62
+2022-2025,RESP_AGE (respondent age),3847,0,0.0
