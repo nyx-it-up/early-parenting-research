@@ -50,6 +50,8 @@ IMPUTATIONS = ["FPL_I1", "FPL_I2", "FPL_I3", "FPL_I4", "FPL_I5", "FPL_I6"]
 CATEGORIES = {
     "EMP": ["Employed full-time", "Employed part-time",
             "Not employed, looking for work", "Not employed, not looking (incl. retired)"],
+    # Collapsed employment for the mothers vs. fathers comparison (H8).
+    "EMP3": ["Employed full-time", "Employed part-time", "Not employed (looking, not looking or retired)"],
     "BAND": ["0-5", "6-11", "12-17"],
     "YEAR": ["2023", "2024", "2025"],
     "INCOME": ["400%+ FPL", "<100% FPL", "100-199% FPL", "200-399% FPL"],
@@ -139,6 +141,8 @@ def add_covariates(data):
     for code, label in EMPLOYMENT_4_LABELS.items():
         employment_names[code] = label
     data["EMP"] = data["EMPLOYMENT_4"].map(employment_names)
+    data["EMP3"] = data["EMPLOYMENT_3"].map({1: CATEGORIES["EMP3"][0], 2: CATEGORIES["EMP3"][1],
+                                             3: CATEGORIES["EMP3"][2]})
     data["YEAR"] = data["SURVEY_YEAR"].astype(str)
     data["EDUCATION"] = data["A1_GRADE"].apply(education_group)
     data["MARITAL"] = data["A1_MARITAL"].apply(marital_group)
@@ -152,35 +156,39 @@ def add_covariates(data):
 def design_matrix(frame, variables, interaction=False):
     """Intercept + one 0/1 column per non-reference category of each variable.
 
-    With interaction=True, adds employment x band columns.
-    Returns (array, list of column names).
+    The first variable is the exposure (EMP or EMP3). With interaction=True,
+    adds exposure x band columns. Returns (array, list of column names).
     """
+    exposure = variables[0]
     columns = {"Intercept": np.ones(len(frame))}
     for variable in variables:
         for category in CATEGORIES[variable][1:]:
             columns[f"{variable}: {category}"] = (frame[variable] == category).astype(float).values
     if interaction:
-        for employment in CATEGORIES["EMP"][1:]:
+        for employment in CATEGORIES[exposure][1:]:
             for band in CATEGORIES["BAND"][1:]:
                 columns[f"EMP x BAND: {employment} x {band}"] = (
-                    (frame["EMP"] == employment) & (frame["BAND"] == band)).astype(float).values
+                    (frame[exposure] == employment) & (frame["BAND"] == band)).astype(float).values
     names = list(columns.keys())
     return np.column_stack([columns[name] for name in names]), names
 
 
-def set_employment(frame, employment):
+def set_employment(frame, employment, exposure="EMP"):
     """Copy of frame with every record's employment set to one group (for predictive margins)."""
     changed = frame.copy()
-    changed["EMP"] = employment
+    changed[exposure] = employment
     return changed
 
 
-def fit_once(data, domain, variables, income_column, interaction=False):
-    """Fit one model on one imputation. Returns a dict with everything later steps need."""
+def fit_once(data, domain, variables, income_column, interaction=False, outcome="FAIR_POOR"):
+    """Fit one model on one imputation. Returns a dict with everything later steps need.
+
+    outcome is a 0/1 column of data (default: fair/poor mental health).
+    """
     frame = data.loc[domain].copy()
     frame["INCOME"] = frame[income_column].apply(income_group)
     X, names = design_matrix(frame, variables, interaction)
-    y = frame["FAIR_POOR"].values
+    y = frame[outcome].values
     w = frame["WEIGHT_POOLED"].values
     beta = fit_logit(X, y, w)
 
@@ -204,9 +212,10 @@ def margins(fit, data, subset=None):
         frame = frame[keep]
         w = w[keep]
         rows = rows[keep]
+    exposure = fit["variables"][0]
     results = {}
-    for employment in CATEGORIES["EMP"]:
-        X, _ = design_matrix(set_employment(frame, employment), fit["variables"], fit["interaction"])
+    for employment in CATEGORIES[exposure]:
+        X, _ = design_matrix(set_employment(frame, employment, exposure), fit["variables"], fit["interaction"])
         results[employment] = predictive_margin(X, w, fit["beta"], fit["influence"], rows, len(data))
     return results
 
@@ -223,8 +232,9 @@ def combine_margins(fits, data, subset=None):
         per_imputation.append(margins(fit, data, subset))
 
     rows = []
-    reference = CATEGORIES["EMP"][0]
-    for employment in CATEGORIES["EMP"]:
+    exposure = fits[0]["variables"][0]
+    reference = CATEGORIES[exposure][0]
+    for employment in CATEGORIES[exposure]:
         levels, level_vars, gaps, gap_vars = [], [], [], []
         for result in per_imputation:
             level, z = result[employment]
