@@ -1,0 +1,18 @@
+state,fipsst,program_type,bonding_benefits_start,start_verification,source_url,notes
+CA,6,mandatory,2004-07-01,official-domain search excerpt + NPWF chart,https://edd.ca.gov/en/newsroom/benefitting-californians/2024/celebrating-20-years-of-paid-family-leave/,8 weeks bonding since 2020; higher 90%/70% replacement rates from 2025-01-01; TDI state
+NJ,34,mandatory,2009-07-01,official-domain search excerpt + NPWF chart,https://www.nj.gov/labor/myleavebenefits/assets/pdfs/Annual%20FLI%20TDI%20Report%20for%202024.pdf,12 weeks; TDI state
+RI,44,mandatory,2014-01-05,official-domain search excerpt (day [VERIFY]) + NPWF chart,https://dlt.ri.gov/individuals/temporary-disability-caregiver-insurance,6 weeks in 2023-2024; 7 weeks in 2025; TDI state
+NY,36,mandatory,2018-01-01,official-domain search excerpt + NPWF chart,https://paidfamilyleave.ny.gov/bonding-leave-birth-child,12 weeks since 2021; TDI state
+WA,53,mandatory,2020-01-01,fetched official page,https://paidleave.wa.gov/history/,12 weeks family leave
+DC,11,mandatory,2020-07-01,fetched official page + NPWF chart,https://dcpaidfamilyleave.dc.gov/parental-leave/,12 weeks parental leave since 2022
+MA,25,mandatory,2021-01-01,official-domain search excerpt + NPWF chart,https://www.mass.gov/info-details/timeline-of-paid-family-and-medical-leave-contributions-and-benefits,12 weeks family leave
+CT,9,mandatory,2022-01-01,official-domain search excerpt + NPWF chart,https://portal.ct.gov/Office-of-the-Governor/News/Press-Releases/2022/01-2022/Governor-Lamont-Announces-Benefits-Are-Now-Available-for-Paid-Leave-Program,12 weeks
+OR,41,mandatory,2023-09-03,fetched official page,https://paidleave.oregon.gov/creating-paid-leave-oregon/,starts inside the 2023 NSCH fieldwork (June 2023 - January 2024)
+CO,8,mandatory,2024-01-01,official-domain search excerpt + NPWF chart,https://famli.colorado.gov/news-article/welcoming-a-new-child-in-2023-you-can-take-paid-bonding-leave-in-2024,parents of 2023 births could take bonding leave in 2024 (within 12 months of birth)
+DE,10,mandatory,2026-01-01,fetched official page,https://labor.delaware.gov/delaware-paid-leave/,after the 2023-2025 window
+MN,27,mandatory,2026-01-01,official-domain search excerpt + NPWF chart,https://mn.gov/deed/assets/paid-leave-at-a-glance-eng-acc_tcm1045-708826.pdf,after the 2023-2025 window
+ME,23,mandatory,2026-05-01,official-domain search excerpt + NPWF chart,https://www.maine.gov/labor/news_events/article.shtml?id=13340124,after the 2023-2025 window
+MD,24,mandatory,2028-01-01,fetched official page (NPWF says July 2028 [VERIFY]),https://paidleave.maryland.gov/about-the-program/,after the 2023-2025 window
+VA,51,mandatory,2028-12-01,NPWF chart only [VERIFY],https://nationalpartnership.org/our-work/resources/economic-justice/paid-leave/state-paid-family-leave-laws.pdf,after the 2023-2025 window
+NH,33,voluntary,2023-01-01,official-domain search excerpt [VERIFY],https://www.paidfamilymedicalleave.nh.gov/overview,voluntary insurance; not counted as a paid leave state
+VT,50,voluntary,2023-07-01,official-domain search excerpt [VERIFY],https://governor.vermont.gov/vtfmli,voluntary insurance (state employees from 2023; employers from 2024-07-01); not counted as a paid leave state

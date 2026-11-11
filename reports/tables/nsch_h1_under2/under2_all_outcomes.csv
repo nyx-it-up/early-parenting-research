@@ -1,0 +1,87 @@
+scheme,outcome,comparison,group_type,group,n,unadjusted,unadjusted_ci,flags,unadjusted_gap,unadjusted_gap_ci,outcome_events,adjusted,adjusted_ci,adjusted_gap,adjusted_gap_ci
+under2,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 2",employment,Employed full-time,3753,2.1,2.04 to 2.15,,,,,2.13,2.07 to 2.19,,
+under2,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 2",employment,Employed part-time,1108,2.14,2.04 to 2.24,,0.04,-0.07 to 0.16,,2.12,2.03 to 2.21,-0.01,-0.11 to 0.10
+under2,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 2",employment,"Not employed, looking for work",357,2.38,2.17 to 2.58,,0.28,0.06 to 0.49,,2.31,2.11 to 2.52,0.18,-0.03 to 0.40
+under2,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1500,2.18,2.09 to 2.27,,0.08,-0.02 to 0.19,,2.17,2.07 to 2.26,0.04,-0.08 to 0.15
+under2,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,Under 2,3753,2.1,2.04 to 2.15,,,,,2.07,2.01 to 2.13,,
+under2,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,2-5,12769,2.21,2.17 to 2.24,,0.11,0.04 to 0.17,,2.18,2.14 to 2.21,0.11,0.04 to 0.17
+under2,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,6-11,16243,2.16,2.13 to 2.19,,0.06,-0.00 to 0.12,,2.15,2.12 to 2.18,0.08,0.01 to 0.14
+under2,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,12-17,23227,2.13,2.11 to 2.15,,0.03,-0.03 to 0.09,,2.16,2.14 to 2.19,0.09,0.02 to 0.16
+under2,Mental health very good or worse,"1: employment, child under 2",employment,Employed full-time,3753,73.3,70.4 to 76.1,,,,4994,72.5,69.3 to 75.7,,
+under2,Mental health very good or worse,"1: employment, child under 2",employment,Employed part-time,1108,75.1,69.8 to 79.7,,1.8,-4.0 to 7.5,4994,75.9,71.2 to 80.5,3.4,-2.2 to 8.9
+under2,Mental health very good or worse,"1: employment, child under 2",employment,"Not employed, looking for work",357,72.7,62.9 to 80.7,,-0.7,-10.0 to 8.7,4994,74.8,66.1 to 83.5,2.3,-7.1 to 11.7
+under2,Mental health very good or worse,"1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1500,72.6,68.6 to 76.3,,-0.7,-5.6 to 4.1,4994,73.3,69.3 to 77.3,0.8,-4.5 to 6.1
+under2,Mental health very good or worse,"2: child age, full-time mothers",child age,Under 2,3753,73.3,70.4 to 76.1,,,,42902,71.5,68.3 to 74.7,,
+under2,Mental health very good or worse,"2: child age, full-time mothers",child age,2-5,12769,77.0,75.4 to 78.6,,3.7,0.4 to 6.9,42902,76.0,74.2 to 77.8,4.5,1.1 to 7.9
+under2,Mental health very good or worse,"2: child age, full-time mothers",child age,6-11,16243,74.8,73.3 to 76.2,,1.5,-1.7 to 4.7,42902,74.7,73.3 to 76.1,3.2,-0.3 to 6.7
+under2,Mental health very good or worse,"2: child age, full-time mothers",child age,12-17,23227,73.4,72.2 to 74.5,,0.1,-3.0 to 3.1,42902,74.7,73.4 to 76.0,3.2,-0.4 to 6.9
+under2,"Mental health good, fair or poor","1: employment, child under 2",employment,Employed full-time,3753,30.1,27.3 to 32.9,,,,2225,32.7,29.5 to 35.8,,
+under2,"Mental health good, fair or poor","1: employment, child under 2",employment,Employed part-time,1108,31.8,26.2 to 38.0,,1.7,-4.8 to 8.3,2225,30.0,25.1 to 35.0,-2.6,-8.3 to 3.0
+under2,"Mental health good, fair or poor","1: employment, child under 2",employment,"Not employed, looking for work",357,46.9,37.5 to 56.5,,16.8,6.8 to 26.8,2225,41.4,32.0 to 50.9,8.8,-1.3 to 18.9
+under2,"Mental health good, fair or poor","1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1500,35.9,31.6 to 40.5,,5.9,0.6 to 11.2,2225,34.2,29.7 to 38.7,1.5,-4.1 to 7.2
+under2,"Mental health good, fair or poor","2: child age, full-time mothers",child age,Under 2,3753,30.1,27.3 to 32.9,,,,18678,29.7,26.8 to 32.5,,
+under2,"Mental health good, fair or poor","2: child age, full-time mothers",child age,2-5,12769,35.1,33.4 to 36.9,,5.1,1.8 to 8.4,18678,34.0,32.1 to 35.8,4.3,1.2 to 7.5
+under2,"Mental health good, fair or poor","2: child age, full-time mothers",child age,6-11,16243,33.5,32.1 to 35.0,,3.5,0.3 to 6.6,18678,33.1,31.7 to 34.5,3.5,0.3 to 6.6
+under2,"Mental health good, fair or poor","2: child age, full-time mothers",child age,12-17,23227,32.4,31.2 to 33.6,,2.3,-0.8 to 5.3,18678,33.6,32.2 to 35.0,3.9,0.7 to 7.2
+under2,Mental health fair or poor,"1: employment, child under 2",employment,Employed full-time,3753,6.2,4.8 to 7.9,,,,470,7.4,5.5 to 9.3,,
+under2,Mental health fair or poor,"1: employment, child under 2",employment,Employed part-time,1108,6.9,4.8 to 9.7,,0.7,-2.2 to 3.6,470,6.0,3.8 to 8.2,-1.4,-4.3 to 1.5
+under2,Mental health fair or poor,"1: employment, child under 2",employment,"Not employed, looking for work",357,14.4,9.2 to 22.0,,8.2,1.7 to 14.7,470,10.5,6.0 to 15.0,3.1,-1.7 to 8.0
+under2,Mental health fair or poor,"1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1500,9.2,6.6 to 12.8,,3.0,-0.4 to 6.5,470,8.5,5.7 to 11.3,1.1,-2.4 to 4.6
+under2,Mental health fair or poor,"2: child age, full-time mothers",child age,Under 2,3753,6.2,4.8 to 7.9,,,,3661,6.0,4.5 to 7.6,,
+under2,Mental health fair or poor,"2: child age, full-time mothers",child age,2-5,12769,7.9,7.0 to 9.0,,1.7,-0.1 to 3.6,3661,7.2,6.3 to 8.1,1.2,-0.5 to 2.9
+under2,Mental health fair or poor,"2: child age, full-time mothers",child age,6-11,16243,6.7,5.9 to 7.7,,0.6,-1.2 to 2.3,3661,6.6,5.7 to 7.4,0.5,-1.2 to 2.3
+under2,Mental health fair or poor,"2: child age, full-time mothers",child age,12-17,23227,6.7,6.1 to 7.4,,0.5,-1.1 to 2.2,3661,7.5,6.7 to 8.2,1.4,-0.4 to 3.2
+under2,Mental health poor,"1: employment, child under 2",employment,Employed full-time,3753,0.3,0.1 to 0.6,CI>1.2x estimate,,,,,,,
+under2,Mental health poor,"1: employment, child under 2",employment,Employed part-time,1108,0.6,0.2 to 1.5,CI>1.2x estimate,0.3,-0.3 to 0.9,,,,,
+under2,Mental health poor,"1: employment, child under 2",employment,"Not employed, looking for work",357,3.6,1.8 to 7.3,CI>1.2x estimate,3.4,0.8 to 5.9,,,,,
+under2,Mental health poor,"1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1500,0.5,0.2 to 1.0,CI>1.2x estimate,0.2,-0.2 to 0.6,,,,,
+under2,Mental health poor,"2: child age, full-time mothers",child age,Under 2,3753,0.3,0.1 to 0.6,CI>1.2x estimate,,,,,,,
+under2,Mental health poor,"2: child age, full-time mothers",child age,2-5,12769,0.6,0.4 to 0.9,,0.3,-0.1 to 0.6,,,,,
+under2,Mental health poor,"2: child age, full-time mothers",child age,6-11,16243,0.7,0.4 to 1.1,,0.4,-0.1 to 0.8,,,,,
+under2,Mental health poor,"2: child age, full-time mothers",child age,12-17,23227,0.5,0.3 to 0.6,,0.2,-0.1 to 0.4,,,,,
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 2",employment,Employed full-time,3716,1.5,1.0 to 2.2,,,,142,1.5,0.9 to 2.0,,
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 2",employment,Employed part-time,1089,4.7,2.2 to 10.1,CI>1.2x estimate,3.2,-0.5 to 6.9,142,4.0,1.6 to 6.5,2.6,0.2 to 4.9
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 2",employment,"Not employed, looking for work",354,4.3,2.1 to 8.8,CI>1.2x estimate,2.8,-0.4 to 6.0,142,3.9,1.0 to 6.9,2.5,-0.6 to 5.5
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1487,1.9,1.2 to 3.0,,0.3,-0.7 to 1.4,142,2.1,1.0 to 3.1,0.6,-0.6 to 1.8
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,Under 2,3716,1.5,1.0 to 2.2,,,,2739,1.5,0.9 to 2.1,,
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,2-5,12678,4.4,3.7 to 5.2,,2.9,1.9 to 3.8,2739,4.3,3.5 to 5.1,2.8,1.9 to 3.7
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,6-11,16139,5.4,4.8 to 6.1,,3.9,3.0 to 4.8,2739,5.3,4.7 to 6.0,3.8,3.0 to 4.7
+under2,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,12-17,23036,5.8,5.2 to 6.5,,4.3,3.4 to 5.1,2739,5.7,5.1 to 6.4,4.2,3.3 to 5.2
+under2,Handling demands of raising children not very well / not at all (K8Q30),"1: employment, child under 2",employment,Employed full-time,3736,1.0,0.6 to 1.7,,,,72,not estimable (too few cases),,,
+under2,Handling demands of raising children not very well / not at all (K8Q30),"1: employment, child under 2",employment,Employed part-time,1099,1.0,0.4 to 2.2,CI>1.2x estimate,-0.1,-1.0 to 0.9,72,not estimable (too few cases),,,
+under2,Handling demands of raising children not very well / not at all (K8Q30),"1: employment, child under 2",employment,"Not employed, looking for work",355,2.2,0.7 to 6.8,CI>1.2x estimate,1.2,-1.4 to 3.7,72,not estimable (too few cases),,,
+under2,Handling demands of raising children not very well / not at all (K8Q30),"1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1489,2.2,0.8 to 6.0,CI>1.2x estimate,1.1,-1.1 to 3.4,72,not estimable (too few cases),,,
+under2,Handling demands of raising children not very well / not at all (K8Q30),"2: child age, full-time mothers",child age,Under 2,3736,1.0,0.6 to 1.7,,,,1088,1.1,0.5 to 1.6,,
+under2,Handling demands of raising children not very well / not at all (K8Q30),"2: child age, full-time mothers",child age,2-5,12750,2.2,1.7 to 2.7,,1.1,0.4 to 1.9,1088,2.3,1.8 to 2.9,1.2,0.5 to 2.0
+under2,Handling demands of raising children not very well / not at all (K8Q30),"2: child age, full-time mothers",child age,6-11,16229,1.8,1.5 to 2.3,,0.8,0.1 to 1.4,1088,1.8,1.4 to 2.2,0.8,0.1 to 1.4
+under2,Handling demands of raising children not very well / not at all (K8Q30),"2: child age, full-time mothers",child age,12-17,23158,2.2,1.9 to 2.6,,1.2,0.5 to 1.8,1088,2.1,1.7 to 2.4,1.0,0.3 to 1.7
+under2,"Job change because of problems with child care (K6Q27), child 0-5","1: employment, child under 2",employment,Employed full-time,3735,8.2,7.0 to 9.6,,,,919,7.8,6.4 to 9.2,,
+under2,"Job change because of problems with child care (K6Q27), child 0-5","1: employment, child under 2",employment,Employed part-time,1100,22.4,17.9 to 27.7,,14.2,9.2 to 19.3,919,22.6,18.1 to 27.0,14.8,10.0 to 19.5
+under2,"Job change because of problems with child care (K6Q27), child 0-5","1: employment, child under 2",employment,"Not employed, looking for work",356,29.3,21.4 to 38.7,,21.1,12.3 to 29.9,919,30.1,20.8 to 39.3,22.3,12.8 to 31.8
+under2,"Job change because of problems with child care (K6Q27), child 0-5","1: employment, child under 2",employment,"Not employed, not looking (incl. retired)",1493,13.1,10.6 to 16.2,,4.9,1.8 to 8.0,919,15.1,11.8 to 18.5,7.3,3.6 to 11.1
+under2,"Job change because of problems with child care (K6Q27), child 0-5","2: child age, full-time mothers",child age,Under 2,3735,8.2,7.0 to 9.6,,,,1214,8.2,6.8 to 9.5,,
+under2,"Job change because of problems with child care (K6Q27), child 0-5","2: child age, full-time mothers",child age,2-5,12741,7.5,6.6 to 8.5,,-0.7,-2.3 to 0.9,1214,7.4,6.5 to 8.3,-0.8,-2.4 to 0.9
+under3,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 3",employment,Employed full-time,7221,2.13,2.09 to 2.17,,,,,2.15,2.10 to 2.20,,
+under3,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 3",employment,Employed part-time,2073,2.16,2.08 to 2.24,,0.03,-0.07 to 0.12,,2.14,2.07 to 2.22,-0.01,-0.09 to 0.08
+under3,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 3",employment,"Not employed, looking for work",651,2.3,2.12 to 2.48,,0.17,-0.02 to 0.35,,2.27,2.10 to 2.45,0.12,-0.06 to 0.31
+under3,"Mental health rating, mean (1 excellent - 5 poor)","1: employment, child under 3",employment,"Not employed, not looking (incl. retired)",2579,2.13,2.05 to 2.21,,0.0,-0.09 to 0.09,,2.13,2.05 to 2.20,-0.02,-0.12 to 0.07
+under3,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,Under 3,7221,2.13,2.09 to 2.17,,,,,2.1,2.05 to 2.15,,
+under3,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,3-5,9301,2.21,2.17 to 2.25,,0.08,0.02 to 0.14,,2.18,2.14 to 2.22,0.08,0.02 to 0.14
+under3,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,6-11,16243,2.16,2.13 to 2.19,,0.03,-0.03 to 0.08,,2.15,2.12 to 2.18,0.05,-0.01 to 0.10
+under3,"Mental health rating, mean (1 excellent - 5 poor)","2: child age, full-time mothers",child age,12-17,23227,2.13,2.11 to 2.15,,-0.0,-0.05 to 0.05,,2.16,2.14 to 2.19,0.06,0.00 to 0.12
+under3,Mental health fair or poor,"1: employment, child under 3",employment,Employed full-time,7221,6.8,5.7 to 8.2,,,,915,7.7,6.2 to 9.2,,
+under3,Mental health fair or poor,"1: employment, child under 3",employment,Employed part-time,2073,7.5,5.7 to 9.9,,0.7,-1.7 to 3.1,915,6.8,4.9 to 8.7,-0.9,-3.3 to 1.5
+under3,Mental health fair or poor,"1: employment, child under 3",employment,"Not employed, looking for work",651,13.7,9.6 to 19.3,,6.9,1.9 to 11.8,915,11.1,7.2 to 15.1,3.4,-0.8 to 7.6
+under3,Mental health fair or poor,"1: employment, child under 3",employment,"Not employed, not looking (incl. retired)",2579,8.2,6.3 to 10.7,,1.4,-1.1 to 3.9,915,7.7,5.7 to 9.7,-0.0,-2.7 to 2.6
+under3,Mental health fair or poor,"2: child age, full-time mothers",child age,Under 3,7221,6.8,5.7 to 8.2,,,,3661,6.6,5.3 to 7.8,,
+under3,Mental health fair or poor,"2: child age, full-time mothers",child age,3-5,9301,7.9,6.8 to 9.1,,1.0,-0.7 to 2.7,3661,7.1,6.1 to 8.2,0.6,-1.0 to 2.1
+under3,Mental health fair or poor,"2: child age, full-time mothers",child age,6-11,16243,6.7,5.9 to 7.7,,-0.1,-1.6 to 1.4,3661,6.6,5.7 to 7.4,-0.0,-1.5 to 1.5
+under3,Mental health fair or poor,"2: child age, full-time mothers",child age,12-17,23227,6.7,6.1 to 7.4,,-0.1,-1.5 to 1.3,3661,7.4,6.7 to 8.2,0.9,-0.7 to 2.5
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 3",employment,Employed full-time,7164,2.3,1.6 to 3.2,,,,307,2.5,1.5 to 3.6,,
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 3",employment,Employed part-time,2046,4.5,2.5 to 7.9,,2.2,-0.4 to 4.9,307,4.0,2.1 to 6.0,1.5,-0.6 to 3.6
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 3",employment,"Not employed, looking for work",649,3.7,2.1 to 6.6,CI>1.2x estimate,1.5,-0.8 to 3.7,307,2.7,1.0 to 4.5,0.2,-1.9 to 2.3
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","1: employment, child under 3",employment,"Not employed, not looking (incl. retired)",2562,2.3,1.7 to 3.3,,0.1,-1.1 to 1.2,307,2.2,1.3 to 3.1,-0.3,-1.9 to 1.2
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,Under 3,7164,2.3,1.6 to 3.2,,,,2739,2.4,1.5 to 3.2,,
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,3-5,9230,4.5,3.8 to 5.4,,2.3,1.1 to 3.4,2739,4.4,3.6 to 5.2,2.1,0.9 to 3.2
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,6-11,16139,5.4,4.8 to 6.1,,3.1,2.1 to 4.2,2739,5.3,4.7 to 6.0,3.0,1.9 to 4.0
+under3,"Parenting aggravation (usually/always on K8Q31, K8Q32 or K8Q34)","2: child age, full-time mothers",child age,12-17,23036,5.8,5.2 to 6.5,,3.5,2.5 to 4.5,2739,5.7,5.0 to 6.4,3.4,2.2 to 4.5

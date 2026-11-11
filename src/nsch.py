@@ -49,6 +49,9 @@ VARIABLES = {
         "SC_AGE_LT6",    # Child younger than 6 months
         "SC_AGE_LT9",    # Child younger than 9 months
         "SC_AGE_LT10",   # Child younger than 10 months
+        "BIRTH_MO",      # Sampled child's birth month (1-12)
+        "BIRTH_YR",      # Sampled child's birth year
+        "BIRTH_YR_F",    # Birth year data quality flag (0 = no concerns)
         "TOTKIDS_R",     # Number of children in household (1, 2, 3, 4+)
         "TOTAGE_0_5",    # Number of children aged 0-5 in household
         "TOTAGE_6_11",   # Number of children aged 6-11 in household

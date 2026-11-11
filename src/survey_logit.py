@@ -91,6 +91,31 @@ def predictive_margin(X_domain, w_domain, beta, coefficient_if, domain_rows, n_t
     return margin, contributions
 
 
+def cluster_variance(contributions, clusters):
+    """Variance of one estimate with clusters (e.g. states) as the only sampling units.
+
+    Used when the comparison involves a cluster-level variable such as a state
+    policy: records in the same state share the policy, so states, not
+    households, are the independent units. contributions covers every record.
+    """
+    totals = pd.Series(contributions).groupby(clusters.values).sum()
+    g = len(totals)
+    return float(g / (g - 1) * ((totals - totals.mean()) ** 2).sum())
+
+
+def fit_linear(X, y, w):
+    """Weighted least squares (for a mean score). Returns the coefficient vector."""
+    weighted_X = X * w[:, None]
+    return np.linalg.solve(weighted_X.T @ X, weighted_X.T @ y)
+
+
+def linear_influence(X, y, w, beta):
+    """Each record's linearized contribution to a weighted least-squares beta."""
+    information = (X * w[:, None]).T @ X
+    scores = X * (w * (y - X @ beta))[:, None]
+    return scores @ np.linalg.inv(information)
+
+
 def rubin(estimates, variances):
     """Combine m estimates of one quantity (and their variances) with Rubin's rules.
 
