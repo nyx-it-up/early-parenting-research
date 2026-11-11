@@ -1,0 +1,15 @@
+comparison,covariate,contribution_pts,pct_of_raw_gap
+"Not employed, looking for work vs. Employed full-time",BAND,-0.03,-0.0
+"Not employed, looking for work vs. Employed full-time",YEAR,0.0,0.0
+"Not employed, looking for work vs. Employed full-time",INCOME,0.67,10.0
+"Not employed, looking for work vs. Employed full-time",EDUCATION,0.32,5.0
+"Not employed, looking for work vs. Employed full-time",MARITAL,0.99,15.0
+"Not employed, looking for work vs. Employed full-time",KIDS,-0.08,-1.0
+"Not employed, looking for work vs. Employed full-time",AGE,0.83,12.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",BAND,-0.08,-3.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",YEAR,0.0,0.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",INCOME,0.5,20.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",EDUCATION,0.4,16.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",MARITAL,-0.91,-36.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",KIDS,-0.18,-7.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",AGE,0.2,8.0

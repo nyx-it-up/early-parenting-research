@@ -1,11 +1,17 @@
-# H1: Mothers' Mental Health by Employment Status (NSCH), First Pass
+# H1: Mothers' Mental Health by Employment Status (NSCH)
 
-**Status:** v0.1 (2026-11-03). Descriptive, unadjusted.
-**Data:** NSCH 2023–2025 topical files, pooled. **Code:** `src/nsch_h1.py`. **Tables:** `reports/tables/nsch_h1/`.
+**Status:** v0.2 (2026-11-03). Part A: descriptive, unadjusted. Part B: adjusted logistic regression. Part C: Fairlie decomposition (exploratory).
+**Data:** NSCH 2023–2025 topical files, pooled.
+**Code:** `src/nsch_h1.py` (A), `src/nsch_h1_models.py` and `src/survey_logit.py` (B), `src/nsch_h1_fairlie.py` (C).
+**Tables:** `reports/tables/nsch_h1/`, `reports/tables/nsch_h1_models/`, `reports/tables/nsch_h1_fairlie/`.
 
 **Hypothesis (research plan H1):** working mothers' reported mental and emotional health varies by employment circumstances.
 
-**What this pass is and isn't.** It compares groups without adjusting for anything else, such as income, family structure or the mother's age. The differences are **associations**: poor mental health can make work harder to find or keep as much as the reverse. Adjusted models come in a later pass.
+**All results are associations.** Poor mental health can make work harder to find or keep as much as the reverse, and no model here estimates an effect of employment.
+
+# Part A: Descriptive comparison
+
+This part compares groups without adjusting for anything else, such as income, family structure or the mother's age.
 
 ## Methods
 
@@ -65,17 +71,147 @@ Bold: the 95% CI excludes zero.
 - **Youngest child's band** (`…_youngest.csv`): the same pattern. Looking: +6.4 / +6.7 / +7.6 points. Not looking: +0.9 / +3.6 / +6.1 points.
 - **Retired mothers** (`nsch_h1.py` check): excluding them changes the "not looking" estimates by at most 0.3 points.
 
-## Limitations of this pass
+## Limitations of Part A
 
-- **Unadjusted.** Groups differ in income, family structure, education, age and health, all of which relate to both employment and mental health. The next pass adds them.
+- **Unadjusted.** Groups differ in income, family structure, education, age and health, all of which relate to both employment and mental health. Part B adjusts for them.
 - **Direction unknown.** Poor mental health can lead to job loss or difficulty finding work.
 - **Single global self-rating.** `A1_MENTHEALTH` is not a diagnostic measure.
 - **Respondent selection.** Only mothers who answered the survey are included (`docs/nsch-feasibility.md` Section 1.3).
 - **Multiple comparisons.** The table has 9 primary-band comparisons, and the sensitivity analyses repeat them. Individual intervals are not corrected for this, so isolated borderline results (such as +2.7 for 6–11) should be read with caution.
 - **Employment ≠ job quality.** NSCH has no hours, schedule or job-quality items.
 
-## Next pass (proposed)
+# Part B: Adjusted logistic regression
 
-1. **Adjusted model:** survey-weighted logistic regression of fair/poor mental health on employment, child age band and covariates (income-to-poverty combined across imputations, family structure, education, age, number of children), with design-based SEs.
-2. **Test whether the employment gap differs by band** (employment × band interaction), especially for "not looking."
-3. **Mothers vs. fathers (H8):** the same table for fathers, full-time vs. not employed.
+## Why logistic regression
+
+The outcome (fair or poor mental health) is yes/no, so logistic regression is the standard model; a linear model can predict values outside 0–100%. Survey-weighted logistic regression with design-based standard errors is the usual approach for NSCH (Lumley, n.d.; Korn & Graubard, 1998). Results are reported mainly as **adjusted percentages and percentage-point gaps** (predictive margins), which read like the Part A tables. Odds ratios are in the appendix tables. Because only about 8% of mothers report fair or poor mental health, odds ratios are close to risk ratios here.
+
+## What "adjusted" means
+
+Each employment group is compared **as if it had the same mix of other characteristics** as all mothers in the sample. For the adjusted percentage of a group, every mother is set to that employment group while keeping her other characteristics, her predicted probability is computed, and the weighted average is taken. The gap between two such averages cannot be explained by differences in the adjusted characteristics. It can still reflect anything that is not measured.
+
+## Models
+
+All models use the same 87,318 mothers: the Part A sample minus 729 mothers missing marital status (291), age (243) or physical health (206) (`sample.csv`).
+
+| Model | Covariates | Role |
+|---|---|---|
+| **M0** | Employment, child age band, survey year | Baseline, close to Part A |
+| **M1** | M0 + income, education, marital status, number of children, mother's age | **Main model** |
+| **M2** | M1 + mother's physical health | Sensitivity. Physical health may be a cause or a consequence of both employment and mental health, so adjusting for it may remove part of a real association. |
+| **M1x** | M1 + employment × child age band | Tests whether the employment gaps differ by band |
+
+**Covariates** (codes from the 2023–2025 Stata label files, identical in all three years; the first group listed is the reference):
+
+| Covariate | Variable | Groups |
+|---|---|---|
+| Income-to-poverty ratio | `FPL_I1`–`FPL_I6` | 400%+; <100%; 100–199%; 200–399% |
+| Education | `A1_GRADE` | Bachelor's; high school or less (1–3); some college, vocational or associate (4–6); graduate (8–9) |
+| Marital status | `A1_MARITAL` | Married; living with a partner; never married; divorced, separated or widowed |
+| Number of children | `TOTKIDS_R` | 1; 2; 3; 4+ |
+| Mother's age | `A1_AGE` | 35–44; 18–24; 25–34; 45+ |
+| Child age band | `SC_AGE_YEARS` | 0–5; 6–11; 12–17 |
+| Survey year | `SURVEY_YEAR` | 2023; 2024; 2025 |
+| Physical health (M2 only) | `A1_PHYSHEALTH` | Excellent or very good; good; fair or poor |
+
+## Estimation
+
+- **Weights:** `FWC` / 3.
+- **Standard errors:** Taylor linearization (Binder, 1983), strata = year × state × stratum, each household its own PSU, with mothers as a domain of the full file. Implemented in `src/survey_logit.py`, because statsmodels has no survey-design regression. **Checks:** the coefficients equal statsmodels' weighted GLM (difference < 10⁻¹⁴), and an intercept-only model reproduces the design-based SE of the Part A share exactly.
+- **Adjusted percentages:** predictive margins. Their SEs include both the coefficient uncertainty and the variation of covariates across records, like Stata's `svy` margins.
+- **Income imputations:** 19.7% of children's families have imputed income (`FPL_IF`). Each model is fitted on all six imputations and combined with Rubin's rules (Rubin, 1987).
+- **Interaction test:** Wald χ² of the six employment × band terms, on the Rubin-combined estimates.
+
+## Results
+
+### Adjusted gaps vs. full-time (`adjusted_gaps.csv`)
+
+Percentage points, 95% CI.
+
+| Mother's employment | M0 | M1 (main) | M2 |
+|---|---|---|---|
+| Part-time | +0.6 (−0.4 to 1.5) | 0.0 (−0.9 to 0.9) | +0.2 (−0.7 to 1.1) |
+| Not employed, looking | **+6.7** (4.9 to 8.5) | **+3.0** (1.5 to 4.5) | **+1.8** (0.4 to 3.2) |
+| Not employed, not looking | **+2.5** (1.2 to 3.8) | **+2.7** (1.3 to 4.1) | +1.1 (0.0 to 2.3) |
+
+Adjusted percentages in M1: full-time 7.3%, part-time 7.3%, looking 10.3%, not looking 10.0% (`adjusted_percentages.csv`).
+
+### Gaps by child age band, M1x (`adjusted_gaps_by_band.csv`)
+
+The employment × band terms are jointly significant (χ² = 20.2, 6 df, p = 0.003; `interaction_test.csv`).
+
+| Mother's employment | Child 0–5 | Child 6–11 | Child 12–17 |
+|---|---|---|---|
+| Part-time | −0.4 (−2.1 to 1.3) | +0.2 (−1.5 to 2.0) | 0.0 (−1.3 to 1.3) |
+| Not employed, looking | +2.9 (−0.1 to 5.8) | **+3.7** (1.2 to 6.2) | +2.2 (0.0 to 4.3) |
+| Not employed, not looking | −0.4 (−2.1 to 1.3) | **+2.9** (0.5 to 5.2) | **+6.1** (3.2 to 8.9) |
+
+### What the models show
+
+1. **Part-time and full-time mothers do not differ** in any model or band.
+2. **The "looking for work" gap more than halves** with adjustment (+6.7 to +3.0 points) but does not disappear. After adjustment it is similar across child age bands (+2.2 to +3.7).
+3. **The "not looking" gap does not shrink** with the M1 covariates (+2.5 to +2.7). It **grows with child age**: none for children 0–5, +2.9 for 6–11 and +6.1 for 12–17. This confirms the Part A pattern after adjustment.
+4. **Adding physical health (M2)** shrinks both gaps (+1.8 and +1.1). Health is closely tied to both employment and mental health, but the direction is unknown, so this is a sensitivity result.
+5. **Other covariates (M1 odds ratios, `odds_ratios_M1.csv`):** fair or poor mental health is more common with lower income (OR 1.6–1.7 for every group below 400% FPL), without a bachelor's degree, and among mothers who are not married (OR 1.6 living with a partner, 2.3 never married, 2.3 divorced/separated/widowed). It is less common at age 45+ (OR 0.71).
+
+# Part C: Fairlie decomposition (exploratory)
+
+**Question:** how much of each raw gap is accounted for by measured differences between the groups (income, education, marital status, number of children, age, child age band and year)?
+
+**Method** (Fairlie, 2005), in `src/nsch_h1_fairlie.py`:
+1. One logistic regression on both groups, with the M1 covariates and a group indicator, so the group difference is not absorbed into the covariate coefficients.
+2. **Explained part** = average predicted probability with group A's characteristics minus that with full-time mothers' characteristics, using the same coefficients.
+3. **Covariate contributions:** equal-sized weighted samples of both groups are paired by predicted probability, and one covariate at a time is switched from A's value to the partner's value. The switching order is randomized in each of 100 replications, and results are averaged over replications and the six income imputations.
+
+**Exploratory:** point estimates only. No design-based CIs for the contributions.
+
+### Results (`fairlie_totals.csv`, `fairlie_contributions.csv`)
+
+| | Looking for work vs. full-time | Not looking vs. full-time |
+|---|---|---|
+| Raw gap | 6.7 pts | 2.5 pts |
+| **Explained** by measured differences | **2.7 pts (41%)** | **−0.1 pts (≈ 0%)** |
+| Unexplained | 4.0 pts | 2.6 pts |
+
+**Contributions** (percentage points; positive means this difference widens the gap):
+
+| Covariate | Looking for work | Not looking |
+|---|---|---|
+| Marital status | +0.99 | **−0.91** |
+| Mother's age | +0.83 | +0.20 |
+| Income | +0.67 | +0.50 |
+| Education | +0.32 | +0.40 |
+| Number of children | −0.08 | −0.18 |
+| Child age band | −0.03 | −0.08 |
+| Survey year | 0.00 | 0.00 |
+
+**Reading:**
+- **Looking for work:** about 40% of the gap goes with measured differences. These mothers are more often unmarried, younger and lower-income than full-time mothers, and each of these is linked to poorer mental health. The remaining 60% is not explained by these factors.
+- **Not looking:** measured differences explain almost nothing on balance, because they **pull in opposite directions**. These mothers have lower income and less education, which would raise their rate, but they are more often married, which would lower it. The two roughly cancel out, which is why adjustment did not shrink this gap in Part B.
+
+## Limitations (Parts B and C)
+
+- All Part A limitations apply: cross-sectional, direction unknown, single self-rating, respondent selection, no job-quality measures.
+- **Unmeasured factors** (for example mental health history, partner support, childcare access, job loss experiences) may account for the remaining gaps.
+- **Adjusting for income may over-adjust.** Job loss lowers income, which may then affect mental health. M1 shows the gap beyond income differences, not a "true" gap.
+- **Covariate groupings** are chosen to keep groups large; finer groupings could change estimates slightly.
+- **The interaction test** uses Rubin-combined estimates with a χ² reference distribution, which is an approximation.
+- **Fairlie contributions** depend on the reference coefficients and have no design-based CIs.
+
+## Next steps
+
+1. Compare one model with an independent implementation (Stata `svy: logit` or R `survey::svyglm`) if available.
+2. Ordinal logistic regression on the full five-point rating (sensitivity).
+3. H8: the same models for fathers (full-time vs. not employed).
+
+## References
+
+Binder, D. A. (1983). On the variances of asymptotically normal estimators from complex surveys. *International Statistical Review, 51*(3), 279–292. `[VERIFY]`
+
+Fairlie, R. W. (2005). An extension of the Blinder–Oaxaca decomposition technique to logit and probit models. *Journal of Economic and Social Measurement, 30*(4), 305–316. `[VERIFY]`
+
+Korn, E. L., & Graubard, B. I. (1998). *Analysis of health surveys*. Wiley. (As in `docs/nsch-feasibility.md`.)
+
+Lumley, T. (n.d.). *survey: Analysis of complex survey samples* [R package documentation]. (As in `docs/nsch-feasibility.md`.)
+
+Rubin, D. B. (1987). *Multiple imputation for nonresponse in surveys*. Wiley. (As in `docs/nsch-feasibility.md`.)
