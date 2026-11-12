@@ -142,7 +142,7 @@
   /* Up to four 10 x 10 grids. Each group: {key, label, pct, detail};
      the first round(pct) dots are highlighted. */
   function unitGrids(elementId) {
-    const svg = d3.select(`#${elementId}`).append("svg");
+    const svg = d3.select(`#${elementId}`).append("svg").call(nameChart, elementId);
 
     function draw(groups) {
       const width = chartWidth(elementId);
@@ -196,8 +196,17 @@
   /* Rows on the y axis; several series per row are dodged vertically, unless
      state.connect draws them on one line joined by a connector.
      points: [{row, series, value, ci, color, opacity, label, tooltip}] */
+  // Each chart is a group named by its figure's title, so screen readers know what they're in.
+  function nameChart(svg, elementId) {
+    const title = document.getElementById(elementId).closest("figure")?.querySelector(".figure-title");
+    if (title) {
+      title.id = title.id || `${elementId}-title`;
+      svg.attr("role", "group").attr("aria-labelledby", title.id);
+    }
+  }
+
   function dotRange(elementId, options = {}) {
-    const svg = d3.select(`#${elementId}`).append("svg");
+    const svg = d3.select(`#${elementId}`).append("svg").call(nameChart, elementId);
     const plot = svg.append("g");
     const xAxis = svg.append("g").attr("class", "x-axis");
     const zero = svg.append("line").attr("class", "zero-line");
@@ -319,7 +328,7 @@
   /* Horizontal waterfall: each row is a bar from start to end.
      rows: [{key, label, start, end, kind: "up" | "down" | "total", opacity}] */
   function waterfall(elementId) {
-    const svg = d3.select(`#${elementId}`).append("svg");
+    const svg = d3.select(`#${elementId}`).append("svg").call(nameChart, elementId);
     const plot = svg.append("g");
     const xAxis = svg.append("g").attr("class", "x-axis");
     const zero = svg.append("line").attr("class", "zero-line");
@@ -357,7 +366,8 @@
         .attr("x", margin.left - SIZE.rowLabelGap)
         .attr("y", (r) => y(r.key) + y.bandwidth() / 2)
         .classed("is-bold", (r) => r.kind === "total")
-        .style("opacity", (r) => r.opacity)
+        // Dimmed rows keep readable text: a softer colour instead of transparency.
+        .classed("is-dimmed", (r) => r.opacity < OPACITY.focus)
         .text((r) => r.label)
         .call(wrapLabel, margin.left - SIZE.wrapGap);
 

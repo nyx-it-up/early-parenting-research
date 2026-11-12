@@ -24,7 +24,6 @@
   --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: Iosevka, ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
   --text-base: 1.125rem;
-  --text-base-mobile: 1.0625rem;
   --text-xs: 0.75rem;
   --text-sm: 0.8125rem;
   --text-md: 0.875rem;
@@ -35,6 +34,10 @@
   --text-dek: 1.375rem;
   --text-h2: 1.875rem;
   --text-h1: clamp(2.5rem, 7vw, 4.5rem);
+  --text-control: 0.8125rem;     /* segmented buttons and zoom controls */
+  --text-svg-label: 0.8rem;      /* labels inside scaled SVG drawings */
+  --text-svg-note: 0.72rem;
+  --text-svg-eq: 0.95rem;
 
   /* Spacing */
   --space-3xs: 0.25rem;
@@ -55,6 +58,8 @@
   --page-width: 75rem;
   --steps-min: 17.5rem;
   --tooltip-width: 16.25rem;
+  --gutter: var(--space-xl);     /* side padding of pinned graphics */
+  --stage-height: 100dvh;        /* The Room's pinned stage */
 
   /* Shape and lines */
   --radius-sm: 0;
@@ -73,10 +78,87 @@
   --fade-fast: 120ms;
 }
 
+/* The one breakpoint: phones, and short sideways screens. It only changes tokens;
+   CSS can't put a variable in a media query, so layout rules below repeat this same query. */
+@media (max-width: 51.25rem), (max-height: 30rem) and (orientation: landscape) {
+  :root {
+    --text-base: 1.0625rem;
+    --text-dek: 1.1875rem;
+    --text-h2: 1.5rem;
+    --text-control: 0.7rem;
+    --text-svg-label: 1.25rem;   /* SVGs shrink on phones, so their text is set larger */
+    --text-svg-note: 1.1rem;
+    --text-svg-eq: 1.35rem;
+    --space-lg: 1rem;
+    --space-xl: 1.25rem;
+    --space-2xl: 1.5rem;
+    --space-3xl: 2rem;
+    --space-4xl: 3rem;
+    --space-5xl: 4rem;
+    --gutter: var(--space-sm);
+    --stage-height: max(72dvh, min(100dvh, 22rem));
+  }
+}
+
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 
-* { box-sizing: border-box; }
+/* ---------- Base: reset, motion, focus, utilities ---------- */
+
+*, ::before, ::after { box-sizing: border-box; }
+
+:root[data-motion="on"] { scroll-behavior: smooth; }
+
+/* Reduced motion, one declaration for the whole site.
+   global.js sets data-motion from the Motion button, or else the system setting;
+   the media query covers the page before (or without) JavaScript.
+   JS animations read the same choice from Viz.REDUCED_MOTION. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="on"]) *, :root:not([data-motion="on"]) ::before, :root:not([data-motion="on"]) ::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+:root[data-motion="off"] *, :root[data-motion="off"] ::before, :root[data-motion="off"] ::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* A visible keyboard focus ring everywhere, separate from the pressed style. */
+:focus-visible {
+  outline: var(--stroke) solid var(--ink);
+  outline-offset: var(--space-3xs);
+}
+
+/* SVG hit areas draw their own focus ring (outline isn't drawn on SVG in every browser). */
+rect.hit:focus-visible { outline: none; stroke: var(--ink); stroke-width: var(--stroke); }
+.s101-svg:focus-visible { outline: var(--stroke) solid var(--ink); }
+main:focus { outline: none; } /* focused only as the target of the scroll cue and skip link */
+
+/* First thing a keyboard user reaches: hidden until focused. */
+.skip-link {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 30;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--ink);
+  color: var(--surface);
+  font-family: var(--font-mono);
+  transform: translateY(calc(-100% - var(--space-xl)));
+}
+.skip-link:focus { transform: none; }
+
+/* Read by screen readers, not shown. */
+.sr-only {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 body {
   margin: 0;
@@ -95,6 +177,7 @@ a { color: inherit; text-underline-offset: 0.1875rem; }
   border-radius: var(--radius-pill);
   padding: var(--space-3xs) var(--space-sm);
   color: var(--ink-2);
+  background: var(--surface);
   cursor: pointer;
 }
 
@@ -144,12 +227,34 @@ h2 {
 
 .dek { font-size: var(--text-dek); color: var(--ink-2); margin: 0 0 var(--space-2xl); }
 .byline { font-size: var(--text-lead); color: var(--muted); margin: 0; }
-.scroll-cue { margin-top: var(--space-3xl); font-size: var(--text-md); color: var(--muted); }
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3xs);
+  margin-top: var(--space-3xl);
+  font-size: var(--text-md);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* The arrow is decoration: the empty alt text after "/" keeps screen readers to "Scroll down". */
+.scroll-cue::after {
+  content: "↓" / "";
+  font-size: 1.25rem;
+  animation: nudge-down 1.2s ease-in-out 0.6s 3;
+}
+
+.scroll-cue:hover { color: var(--ink); }
+
+@keyframes nudge-down {
+  50% { transform: translateY(0.5rem); }
+}
 
 .prose {
   max-width: var(--prose-width);
   margin: 0 auto;
-  padding: 0 var(--space-xl);
+  padding: 0 var(--gutter);
 }
 
 .prose p { margin: 0 0 1.1em; }
@@ -178,7 +283,7 @@ h2 {
   gap: var(--space-2xl);
   max-width: var(--page-width);
   margin: var(--space-3xl) auto;
-  padding: 0 var(--space-xl);
+  padding: 0 var(--gutter);
 }
 
 /* The graphic comes first in the HTML so it pins on top on mobile. */
@@ -247,6 +352,7 @@ h2 {
 
 details.table-view { margin-top: var(--space-xs); font-size: var(--text-sm); color: var(--ink-2); }
 details.table-view summary { cursor: pointer; }
+.table-scroll { max-width: 100%; overflow-x: auto; } /* wide tables scroll inside their box on phones */
 details.table-view table { border-collapse: collapse; margin-top: var(--space-xs); width: 100%; }
 details.table-view th,
 details.table-view td {
@@ -278,6 +384,7 @@ details.table-view td {
 .domain { stroke: none; }
 .row-label { fill: var(--ink-2); font-size: var(--text-sm); }
 .row-label.is-bold { font-weight: 600; }
+.row-label.is-dimmed { fill: var(--muted); }
 .group-label { fill: var(--ink); font-size: var(--text-md); font-weight: 600; }
 
 /* The halo in the surface color keeps labels readable over gridlines. */
@@ -334,33 +441,15 @@ details.table-view td {
 /* ---------- Mobile: graphic pinned on top, step cards scroll over it ---------- */
 
 @media (max-width: 51.25rem), (max-height: 30rem) and (orientation: landscape) {
-  body { font-size: var(--text-base-mobile); }
   .theme-toggle, .page-toggles { position: absolute; top: var(--space-sm); bottom: auto; }
-  .scrolly { display: block; padding: 0 var(--space-sm); }
-  .sticky { height: auto; padding-top: var(--space-xs); z-index: 1; }
-  .figure { padding: var(--space-sm); }
-  .steps { margin-top: -10dvh; }
-  .step { margin: 0 var(--space-3xs) 80dvh; }
-  .step:first-child { margin-top: 60dvh; }
-}
-
-/* Motion off (system setting or the Motion button): no CSS movement anywhere. */
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion="on"]) *, :root:not([data-motion="on"]) ::before, :root:not([data-motion="on"]) ::after {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
-:root[data-motion="off"] *, :root[data-motion="off"] ::before, :root[data-motion="off"] ::after {
-  transition: none !important;
-  animation: none !important;
-}
-
-/* A visible keyboard focus ring everywhere, separate from the pressed style. */
-:focus-visible {
-  outline: var(--stroke) solid var(--ink);
-  outline-offset: var(--space-3xs);
+  .scrolly { display: block; }
+  /* Below the breakpoint nothing is pinned: the chart sits in the flow and the cards follow it. */
+  .sticky { position: static; height: auto; padding-top: var(--space-xs); }
+  .figure { padding: var(--gutter); }
+  .steps { margin-top: var(--space-md); }
+  .step { margin: 0 0 var(--space-md); }
+  .step:first-child { margin-top: 0; }
+  .step:last-child { margin-bottom: 0; }
 }
 
 /* ---------- Snapshot illustration (snapshot.js) ---------- */
@@ -382,7 +471,7 @@ details.table-view td {
 .snapshot {
   margin: var(--space-3xl) auto;
   max-width: var(--prose-width);
-  padding: 0 var(--space-xl);
+  padding: 0 var(--gutter);
   text-align: center;
 }
 
@@ -448,8 +537,9 @@ details.table-view td {
 .snap-note {
   font-size: var(--text-lead);
   color: var(--ink-2);
-  max-width: 32rem;
+  width: min(100%, 32rem);
   margin: var(--space-xl) auto var(--space-md);
+  overflow-wrap: anywhere;
 }
 
 .snap-loop {
@@ -457,6 +547,7 @@ details.table-view td {
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
+  max-width: 100%;
 }
 
 .snap-node {
@@ -467,7 +558,7 @@ details.table-view td {
   font-weight: 600;
 }
 
-.snap-loop-arrows { width: 7.5rem; height: auto; }
+.snap-loop-arrows { flex: 0 1 7.5rem; min-width: 0; height: auto; } /* shrinks before the button overflows */
 .loop-arrow,
 .loop-head { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .loop-mark { fill: var(--ink); font-size: 1.25rem; font-weight: 700; font-family: var(--font); }
@@ -542,8 +633,9 @@ details.table-view td {
 
 .snap-note-panel {
   margin: var(--space-xl) auto 0;
-  max-width: 34rem;
+  width: min(100%, 34rem);
   padding: var(--space-md) var(--space-lg);
+  overflow-wrap: anywhere;
   background: var(--surface);
   border: var(--hairline) solid var(--border);
   border-left: var(--halo) solid var(--accent);
@@ -561,7 +653,7 @@ details.table-view td {
 .framing {
   max-width: var(--prose-width);
   margin: 0 auto;
-  padding: 0 var(--space-xl);
+  padding: 0 var(--gutter);
 }
 
 .framing-sub { margin: var(--space-3xl) 0 var(--space-sm); font-size: var(--text-dek); }
@@ -660,7 +752,7 @@ details.table-view, .tooltip .tt-label, .byline, .scroll-cue {
 .view-switch button {
   font: inherit;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-control);
   padding: var(--space-xs) var(--space-md);
   border: none;
   background: transparent;
@@ -679,23 +771,19 @@ details.table-view, .tooltip .tt-label, .byline, .scroll-cue {
 .s101-caption { margin-top: var(--space-sm); }
 .s101-replay { margin-top: var(--space-sm); }
 .s101-label, .s101-note, .s101-value { font-family: var(--font-mono); fill: var(--ink); }
-.s101-label { font-size: 0.8rem; }
-.s101-note { font-size: 0.72rem; fill: var(--muted); }
-.s101-value { font-size: 0.8rem; font-weight: 600; }
+.s101-label { font-size: var(--text-svg-label); }
+.s101-note { font-size: var(--text-svg-note); fill: var(--muted); }
+.s101-value { font-size: var(--text-svg-label); font-weight: 600; }
 .s101-track { fill: var(--grid); }
 .s101-band { fill: var(--series-1); opacity: 0.25; }
 .s101-bracket, .s101-mean { fill: none; stroke: var(--ink); stroke-width: 1.5; }
 .s101-mean { stroke-dasharray: 4 3; }
-.s101-axis text { font-family: var(--font-mono); fill: var(--muted); }
+.s101-axis text { font-family: var(--font-mono); fill: var(--muted); font-size: var(--text-svg-note); }
 .s101-axis path, .s101-axis line { stroke: var(--grid); }
 .s101-slider { width: 100%; accent-color: var(--accent); }
 
 .s101-say { min-height: 3em; margin: var(--space-sm) 0 0; font-family: var(--font-mono); font-size: var(--text-sm); }
 
-@media (max-width: 40rem) {
-  .s101-label, .s101-value { font-size: 1.25rem; }
-  .s101-note, .s101-axis text { font-size: 1.1rem; }
-}
 
 .s101-stage { position: relative; }
 .s101-svg { cursor: grab; touch-action: pan-y; }
@@ -709,19 +797,12 @@ details.table-view, .tooltip .tt-label, .byline, .scroll-cue {
 .s101-dots i { width: 0.5rem; height: 0.5rem; background: var(--grid); }
 .s101-dots i.on { background: var(--accent); }
 .s101-count { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--muted); }
-.s101-eq { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600; }
+.s101-eq { font-family: var(--font-mono); font-size: var(--text-svg-eq); font-weight: 600; }
 .s101-curve { fill: none; stroke-width: 3; }
 .s101-wrong { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 4; }
 .s101-figure .s101-replay { display: none; }
-@media (max-width: 40rem) {
-  .s101-eq { font-size: 1.35rem; }
-}
 .s101-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin: var(--space-sm) 0; padding-bottom: var(--space-2xs); border-bottom: var(--hairline) solid var(--border); }
 .s101-hint { margin: 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
 .s101-heading { margin: var(--space-2xs) 0 0; font-family: var(--font-mono); font-size: var(--text-sm); color: var(--muted); }
 .s101-heading:empty { display: none; }
 .funnel-item { display: contents; }
-
-/* SVG hit areas draw their own focus ring (outline isn't drawn on SVG in every browser). */
-rect.hit:focus-visible { outline: none; stroke: var(--ink); stroke-width: var(--stroke); }
-.s101-svg:focus-visible { outline: var(--stroke) solid var(--ink); }

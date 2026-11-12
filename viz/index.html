@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Who's Struggling? Mothers, Work and Mental Health</title>
   <meta name="description" content="An interactive look at mothers' employment and self-rated mental health in the 2023–2025 National Survey of Children's Health.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global.css">
 </head>
 <body>
+  <a class="skip-link" href="#story">Skip to content</a>
   <button class="pill theme-toggle" type="button" id="theme-toggle" aria-label="Switch between light and dark mode">Dark mode</button>
   <div class="tooltip" id="tooltip" aria-hidden="true"></div>
 
@@ -16,19 +17,20 @@
     <h1>Who's struggling?</h1>
     <p class="dek">A common worry says that mothers working full-time with a baby at home are the ones most at risk. A survey of 88,047 U.S. mothers points somewhere else.</p>
     <p class="byline">Data story · November 2026 · <a href="people.html">See the people version</a></p>
-    <p class="scroll-cue">Scroll down ↓</p>
+    <a class="scroll-cue" href="#story">Scroll down</a>
   </header>
 
-  <main>
+  <main id="story" tabindex="-1">
+    <noscript><p class="prose">This story needs JavaScript for its charts and data. The <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a> data are public.</p></noscript>
     <section class="prose">
       <p class="one-liner">Picture a mother with a baby.</p>
       <p class="one-liner">A full-time job. Not enough sleep. Day care pickup at 5:30.</p>
       <p class="one-liner">It's easy to assume she's the one most likely to be struggling.</p>
-      <p>This story checks that picture against the <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a>, which asks parents across the country about their children and themselves. One question asks the parent to rate their own mental or emotional health: excellent, very good, good, fair or poor.</p>
+      <p>This story checks that picture against the <a href="https://www.census.gov/programs-surveys/nsch.html" target="_blank" rel="noopener noreferrer">National Survey of Children's Health</a>, which asks parents across the country about their children and themselves. One question asks the parent to rate their own mental or emotional health: excellent, very good, good, fair or poor.</p>
       <p>Because the survey is about children, every number here is about children: how many have a mother who answers "fair" or "poor."</p>
     </section>
 
-    <div data-intro data-shot="intro"></div>
+    <div data-intro></div>
 
     <!-- Section 1: 100 children -->
     <section class="scrolly" id="s-units" aria-label="Fair or poor mental health by mother's employment">
@@ -225,7 +227,7 @@
       <p>A better test would use a survey with a depression scale and work hours, such as the National Health Interview Survey.</p>
     </section>
 
-    <div data-snapshot data-shot="snapshot"></div>
+    <div data-snapshot></div>
   </main>
 
   <footer class="methods" id="methods">
@@ -254,7 +256,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="data.js"></script>
-  <script src="shared.js"></script>
+  <script src="global.js"></script>
   <script src="story.js"></script>
   <script src="snapshot.js"></script>
   <script src="intro.js"></script>

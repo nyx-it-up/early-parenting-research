@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  // Must match the mobile breakpoint in style.css.
+  // Must match the mobile breakpoint in global.css.
   const MOBILE_QUERY = "(max-width: 51.25rem), (max-height: 30rem) and (orientation: landscape)";
   const MOTION_KEY = "viz-motion";
 
@@ -26,6 +26,12 @@
     ? savedMotion() === "off"
     : window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.dataset.motion = REDUCED_MOTION ? "off" : "on";
+  // If the reader hasn't chosen on this site, follow a change to the system setting.
+  window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", () => {
+    if (!savedMotion()) {
+      window.location.reload();
+    }
+  });
 
   const MOTION = {
     duration: REDUCED_MOTION ? 0 : 700,
@@ -156,9 +162,24 @@
     const box = byId(elementId);
     box.textContent = "";
     const tableEl = document.createElement("table");
+    // The box scrolls sideways when the table is wider, so it must be reachable by keyboard.
+    // It and the table are named by the chart's title (by reference, so a title set later counts).
+    const title = box.closest("figure, section")?.querySelector(".figure-title, h2");
+    box.classList.add("table-scroll");
+    box.tabIndex = 0;
+    box.setAttribute("role", "region");
+    if (title) {
+      title.id = title.id || `${elementId}-title`;
+      box.setAttribute("aria-labelledby", title.id);
+      tableEl.setAttribute("aria-labelledby", title.id);
+    } else {
+      box.setAttribute("aria-label", "Data table");
+    }
     const head = tableEl.createTHead().insertRow();
     for (const column of columns) {
-      head.appendChild(document.createElement("th")).textContent = column.label;
+      const th = head.appendChild(document.createElement("th"));
+      th.scope = "col";
+      th.textContent = column.label;
     }
     const body = tableEl.createTBody();
     for (const row of rows) {

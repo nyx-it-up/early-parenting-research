@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Room: Mothers, Fathers, Work and Mental Health</title>
   <meta name="description" content="Every parent who answered the 2023–2025 National Survey of Children's Health, one circle each: an interactive story about employment and mental health.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global.css">
   <link rel="stylesheet" href="people.css">
 </head>
 <body>
+  <a class="skip-link" href="#story">Skip to content</a>
   <button class="pill theme-toggle" type="button" id="theme-toggle" aria-label="Switch between light and dark mode">Dark mode</button>
   <div class="tooltip" id="tooltip" aria-hidden="true"></div>
 
@@ -17,18 +18,19 @@
     <h1>The Room</h1>
     <p class="dek">88,047 mothers and 43,550 fathers, one circle each. One question about how they are really doing. And a common worry about who is struggling.</p>
     <p class="byline">Data story · November 2026 · <a href="index.html">See the chart version</a></p>
-    <p class="scroll-cue">Scroll down ↓</p>
+    <a class="scroll-cue" href="#story">Scroll down</a>
   </header>
 
-  <main>
+  <main id="story" tabindex="-1">
+    <noscript><p class="prose">This story needs JavaScript for its charts and data. The <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a> data are public.</p></noscript>
     <section class="prose">
       <p class="one-liner">Picture a mother with a baby and a full-time job.</p>
       <p class="one-liner">Up at 5:30. Day care drop-off. A full day of work. Bath, bottle, bed.</p>
       <p class="one-liner">It's easy to assume she is the one most likely to be struggling.</p>
-      <p>To check, let's fill a room with every mother who answered the <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a> in 2023, 2024 or 2025. Hover over or tap any circle to meet her.</p>
+      <p>To check, let's fill a room with every mother who answered the <a href="https://www.census.gov/programs-surveys/nsch.html" target="_blank" rel="noopener noreferrer">National Survey of Children's Health</a> in 2023, 2024 or 2025. Hover over or tap any circle to meet her.</p>
     </section>
 
-    <div data-intro data-shot="intro"></div>
+    <div data-intro></div>
 
     <section class="room-story" id="room" aria-label="A room of every mother who answered">
       <div class="room-stage">
@@ -91,7 +93,7 @@
       <p>But a room is a snapshot. It can't show whether work shapes parents' mental health or mental health shapes work; most likely both. And this survey has no measure of postpartum depression or anxiety, no work hours, and no record of when mothers went back to work.</p>
     </section>
 
-    <div data-snapshot data-shot="snapshot"></div>
+    <div data-snapshot></div>
   </main>
 
   <footer class="methods" id="methods">
@@ -108,7 +110,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="data.js"></script>
   <script src="respondents.js"></script>
-  <script src="shared.js"></script>
+  <script src="global.js"></script>
   <script src="people.js"></script>
   <script src="snapshot.js"></script>
   <script src="intro.js"></script>
