@@ -49,10 +49,10 @@ import pandas as pd
 
 from nsch_feasibility import DATA_FILE, logit_ci, prepare, reliability_flags
 from nsch_h1 import design_se, linearized_share
-from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, add_covariates, combine_margins,
-                            design_matrix, fit_once, income_group, rubin, set_employment,
-                            variance_of)
-from survey_logit import design_covariance, fit_linear, linear_influence
+from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, NOT_ESTIMABLE, add_covariates, combine,
+                            combine_margins, design_matrix, fit_imputations, has_covariates, income_group,
+                            is_mother, set_employment, variance_of)
+from survey_logit import NotEstimable, fit_linear, linear_influence
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "reports" / "tables" / "nsch_h1_under2"
@@ -137,9 +137,7 @@ def descriptive(data, domain, group_column, groups, outcome, kind):
 
 
 def adjusted_binary(data, domain, exposure, outcome):
-    fits = []
-    for column in IMPUTATIONS:
-        fits.append(fit_once(data, domain, [exposure] + OTHER_COVARIATES, column, outcome=outcome))
+    fits = fit_imputations(data, domain, [exposure] + OTHER_COVARIATES, outcome=outcome)
     table = combine_margins(fits, data)
     table["adjusted_ci"] = table["ci_low_pct"].astype(str) + " to " + table["ci_high_pct"].astype(str)
     table["adjusted_gap_ci"] = table["gap_ci_low_pts"].astype(str) + " to " + table["gap_ci_high_pts"].astype(str)
@@ -186,14 +184,13 @@ def adjusted_mean(data, domain, exposure, outcome):
 
     rows = []
     for group in groups:
-        level, level_se = rubin(*levels[group])
-        row = {"group": group, "adjusted": round(level, 2),
-               "adjusted_ci": f"{level - 1.96 * level_se:.2f} to {level + 1.96 * level_se:.2f}",
+        level, low, high = combine(*levels[group], data)
+        row = {"group": group, "adjusted": round(level, 2), "adjusted_ci": f"{low:.2f} to {high:.2f}",
                "adjusted_gap": None, "adjusted_gap_ci": ""}
         if group != groups[0]:
-            gap, gap_se = rubin(*gaps[group])
+            gap, low, high = combine(*gaps[group], data)
             row["adjusted_gap"] = round(gap, 2)
-            row["adjusted_gap_ci"] = f"{gap - 1.96 * gap_se:.2f} to {gap + 1.96 * gap_se:.2f}"
+            row["adjusted_gap_ci"] = f"{low:.2f} to {high:.2f}"
         rows.append(row)
     return pd.DataFrame(rows)
 
@@ -201,7 +198,7 @@ def adjusted_mean(data, domain, exposure, outcome):
 def run_comparison(data, domain, exposure, outcome, comparison, scheme):
     label, kind = OUTCOMES[outcome]
     has_outcome = data[outcome].notna()
-    complete = domain & has_outcome & data["MARITAL"].notna() & data["AGE"].notna()
+    complete = domain & has_outcome & has_covariates(data)
     table = descriptive(data, domain & has_outcome, exposure, CATEGORIES[exposure], outcome, kind)
     events = int(data.loc[complete, outcome].sum()) if kind == "binary" else None
     table["outcome_events"] = events
@@ -210,9 +207,8 @@ def run_comparison(data, domain, exposure, outcome, comparison, scheme):
             table = table.merge(adjusted_binary(data, complete, exposure, outcome), on="group", how="left")
         elif kind == "mean":
             table = table.merge(adjusted_mean(data, complete, exposure, outcome), on="group", how="left")
-    except RuntimeError:
-        # Too few cases with the outcome for a model with about 20 terms.
-        table["adjusted"] = "not estimable (too few cases)"
+    except NotEstimable:
+        table["adjusted"] = NOT_ESTIMABLE
     table.insert(0, "group_type", "employment" if exposure == "EMP" else "child age")
     table.insert(0, "comparison", comparison)
     table.insert(0, "outcome", label)
@@ -222,8 +218,7 @@ def run_comparison(data, domain, exposure, outcome, comparison, scheme):
 
 def main():
     data = add_outcomes(add_covariates(prepare(pd.read_parquet(DATA_FILE)))).reset_index(drop=True)
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
-    usable = is_mother & data["EMP"].notna()
+    usable = is_mother(data) & data["EMP"].notna()
 
     results = []
     for scheme, groups in AGE_SCHEMES.items():

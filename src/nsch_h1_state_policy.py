@@ -27,7 +27,13 @@ Estimates (predictive margins):
     states, so it is less affected by other ways the PFL states differ.
 
 Standard errors are clustered by state (51 clusters), because the policy
-varies by state. Stratified household-level SEs are shown alongside.
+varies by state. With only about 10 PFL states, the state-clustered intervals
+use a small-cluster correction: a t critical value with G - 1 degrees of
+freedom, where G is the number of states on the side of the comparison that
+has fewer states (the PFL states for every estimate involving them), combined
+with the imputation degrees of freedom (Barnard and Rubin, 1999). CR2
+(bias-reduced linearization) is not applied. Stratified household-level
+intervals are shown alongside.
 
 Exploratory and associational: PFL states differ from other states in many
 ways (income, prices, other policies), and the comparison is cross-sectional.
@@ -42,10 +48,10 @@ import numpy as np
 import pandas as pd
 
 from nsch_feasibility import DATA_FILE, prepare
-from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, add_covariates, fit_once, margins,
-                            rubin, variance_of)
+from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, NOT_ESTIMABLE, add_covariates, combine,
+                            fit_once, has_covariates, is_mother, margins, variance_of)
 from nsch_h1_under2 import add_outcomes
-from survey_logit import cluster_variance
+from survey_logit import NotEstimable, cluster_variance, rubin, t_interval
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_FILE = ROOT / "data" / "reference" / "state_paid_family_leave.csv"
@@ -128,20 +134,29 @@ def estimate(data, domain, exposure_column, outcome):
             collected.setdefault(("difference", None, employment), []).append(
                 (difference, gap_z[True][1] - gap_z[False][1]))
 
+    in_domain = data[domain]
+    state_counts = {True: in_domain.loc[in_domain[exposure_column], "FIPSST"].nunique(),
+                    False: in_domain.loc[~in_domain[exposure_column], "FIPSST"].nunique()}
+    state_counts[None] = min(state_counts.values())
+
     rows = []
     for (kind, has_pfl, employment), draws in collected.items():
         values = [draw[0] for draw in draws]
         state_vars = [cluster_variance(draw[1], data["FIPSST"]) for draw in draws]
         household_vars = [variance_of(draw[1], data) for draw in draws]
-        value, se_state = rubin(values, state_vars)
-        _, se_household = rubin(values, household_vars)
+        clusters = state_counts[has_pfl]
+        value, se_state, df_state = rubin(values, state_vars, clusters - 1)
+        state_low, state_high = t_interval(value, se_state, df_state)
+        _, household_low, household_high = combine(values, household_vars, data)
         rows.append({
             "estimate": kind,
             "states": {None: "PFL minus no PFL", True: "PFL", False: "no PFL"}[has_pfl],
             "employment": employment if kind == "level" else f"full-time minus {employment.lower()}",
             "pct_or_pts": round(100 * value, 1),
-            "ci_state_clustered": f"{100 * (value - 1.96 * se_state):.1f} to {100 * (value + 1.96 * se_state):.1f}",
-            "ci_household_stratified": f"{100 * (value - 1.96 * se_household):.1f} to {100 * (value + 1.96 * se_household):.1f}",
+            "ci_state_clustered": f"{100 * state_low:.1f} to {100 * state_high:.1f}",
+            "state_clusters": clusters,
+            "state_df": round(df_state, 1),
+            "ci_household_stratified": f"{100 * household_low:.1f} to {100 * household_high:.1f}",
         })
     return pd.DataFrame(rows)
 
@@ -152,10 +167,9 @@ def main():
     data["PFL_AT_BIRTH"] = data.apply(pfl_at_birth, axis=1, starts=starts)
     data["PFL_IN_YEAR"] = data.apply(pfl_in_year, axis=1, starts=starts)
 
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
     under_2 = data["SC_AGE_YEARS"] < 2
     good_birth_date = data["BIRTH_YR_F"] == 0
-    base = (is_mother & under_2 & data["EMP3"].notna() & data["MARITAL"].notna() & data["AGE"].notna())
+    base = is_mother(data) & under_2 & data["EMP3"].notna() & has_covariates(data)
 
     sizes = []
     results = []
@@ -167,9 +181,9 @@ def main():
             print(f"{exposure}: {outcome}")
             try:
                 table = estimate(data, domain, exposure, outcome)
-            except RuntimeError:
-                print("  not estimable (too few cases)")
-                continue
+            except NotEstimable:
+                print(f"  {NOT_ESTIMABLE}")
+                table = pd.DataFrame([{"estimate": NOT_ESTIMABLE}])
             table.insert(0, "outcome", label)
             table.insert(0, "exposure", exposure)
             results.append(table)

@@ -9,6 +9,8 @@ each child age band and maternal employment group:
   Table 2  The difference in "fair or poor" between each employment group and
            full-time employment, with a 95% confidence interval.
   Table 3  How many mothers each exclusion removes.
+  Sensitivity  Tables 1 and 2 again with retired mothers (A1_EMPLOYED_R = 6)
+           left out, side by side with the main estimates.
 
 Applies the decisions in docs/nsch-feasibility.md Section 5:
   - Mothers: Adult 1 female and biological/adoptive parent; estimated as a
@@ -170,6 +172,34 @@ def exclusions(data, is_mother):
     return pd.DataFrame(rows)
 
 
+def retired_sensitivity(data, is_mother, band_column, bands):
+    """Tables 1 and 2 with retired mothers left out, next to the main estimates."""
+    not_retired = is_mother & (data["A1_EMPLOYED_R"] != 6)
+    keys = ["band", "employment", "mental_health"]
+    main = distribution_table(data, is_mother, band_column, bands)
+    check = distribution_table(data, not_retired, band_column, bands)
+    shares = main[keys + ["n", "share_pct"]].merge(
+        check[keys + ["n", "share_pct", "flags"]], on=keys, suffixes=("_main", "_no_retired"))
+    shares = shares.rename(columns={"share_pct_main": "main", "share_pct_no_retired": "no_retired",
+                                    "flags": "flags_no_retired"})
+    shares.insert(0, "estimate", "% " + shares.pop("mental_health"))
+
+    keys = ["band", "employment"]
+    main = difference_table(data, is_mother, band_column, bands)
+    check = difference_table(data, not_retired, band_column, bands)
+    gaps = main[keys + ["n_group", "difference_pts"]].merge(
+        check[keys + ["n_group", "difference_pts", "ci_low_pts", "ci_high_pts"]],
+        on=keys, suffixes=("_main", "_no_retired"))
+    gaps = gaps.rename(columns={"n_group_main": "n_main", "n_group_no_retired": "n_no_retired",
+                                "difference_pts_main": "main", "difference_pts_no_retired": "no_retired",
+                                "ci_low_pts": "ci_low_no_retired", "ci_high_pts": "ci_high_no_retired"})
+    gaps.insert(0, "estimate", "fair or poor, difference vs. full-time (pts)")
+
+    table = pd.concat([shares, gaps], ignore_index=True)
+    table["change_pts"] = (table["no_retired"] - table["main"]).round(1)
+    return table
+
+
 def save(table, name):
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     table.to_csv(OUT_DIR / f"{name}.csv", index=False)
@@ -185,6 +215,7 @@ def main():
     for name, (column, bands) in GROUPINGS.items():
         save(distribution_table(data, is_mother, column, bands), f"table1_mental_health_{name}")
         save(difference_table(data, is_mother, column, bands), f"table2_fair_poor_difference_{name}")
+        save(retired_sensitivity(data, is_mother, column, bands), f"sensitivity_no_retired_{name}")
 
 
 if __name__ == "__main__":

@@ -382,15 +382,15 @@ window.STORY_DATA = {
    "comparison": "employment",
    "group": "Part-time",
    "n": 1108,
-   "pct": 30.0,
+   "pct": 30.1,
    "ci": [
     25.1,
-    35.0
+    35.1
    ],
    "gap": -2.6,
    "gap_ci": [
     -8.3,
-    3.0
+    3.1
    ],
    "flag": ""
   },
@@ -407,7 +407,7 @@ window.STORY_DATA = {
    "gap": 8.8,
    "gap_ci": [
     -1.3,
-    18.9
+    18.8
    ],
    "flag": ""
   },
@@ -416,15 +416,15 @@ window.STORY_DATA = {
    "comparison": "employment",
    "group": "Not looking for work",
    "n": 1500,
-   "pct": 34.2,
+   "pct": 34.3,
    "ci": [
-    29.7,
-    38.7
+    29.8,
+    38.8
    ],
-   "gap": 1.5,
+   "gap": 1.6,
    "gap_ci": [
     -4.1,
-    7.2
+    7.3
    ],
    "flag": ""
   },
@@ -450,7 +450,7 @@ window.STORY_DATA = {
    "pct": 34.0,
    "ci": [
     32.1,
-    35.8
+    35.9
    ],
    "gap": 4.3,
    "gap_ci": [
@@ -469,7 +469,7 @@ window.STORY_DATA = {
     31.7,
     34.5
    ],
-   "gap": 3.5,
+   "gap": 3.4,
    "gap_ci": [
     0.3,
     6.6
@@ -483,10 +483,10 @@ window.STORY_DATA = {
    "n": 23227,
    "pct": 33.6,
    "ci": [
-    32.2,
+    32.3,
     35.0
    ],
-   "gap": 3.9,
+   "gap": 4.0,
    "gap_ci": [
     0.7,
     7.2
@@ -548,13 +548,13 @@ window.STORY_DATA = {
    "n": 1500,
    "pct": 8.5,
    "ci": [
-    5.7,
+    5.8,
     11.3
    ],
-   "gap": 1.1,
+   "gap": 1.2,
    "gap_ci": [
-    -2.4,
-    4.6
+    -2.3,
+    4.7
    ],
    "flag": ""
   },
@@ -565,7 +565,7 @@ window.STORY_DATA = {
    "n": 3753,
    "pct": 6.0,
    "ci": [
-    4.5,
+    4.4,
     7.6
    ],
    "gap": null,
@@ -599,7 +599,7 @@ window.STORY_DATA = {
     5.7,
     7.4
    ],
-   "gap": 0.5,
+   "gap": 0.6,
    "gap_ci": [
     -1.2,
     2.3
@@ -611,7 +611,7 @@ window.STORY_DATA = {
    "comparison": "child age",
    "group": "12-17",
    "n": 23227,
-   "pct": 7.5,
+   "pct": 7.4,
    "ci": [
     6.7,
     8.2
@@ -631,7 +631,7 @@ window.STORY_DATA = {
    "pct": 1.5,
    "ci": [
     0.9,
-    2.0
+    2.1
    ],
    "gap": null,
    "gap_ci": null,
@@ -659,14 +659,14 @@ window.STORY_DATA = {
    "comparison": "employment",
    "group": "Looking for work",
    "n": 354,
-   "pct": 3.9,
+   "pct": 4.0,
    "ci": [
     1.0,
     6.9
    ],
    "gap": 2.5,
    "gap_ci": [
-    -0.6,
+    -0.5,
     5.5
    ],
    "flag": "CI>1.2x estimate"
@@ -726,12 +726,12 @@ window.STORY_DATA = {
    "n": 16139,
    "pct": 5.3,
    "ci": [
-    4.7,
-    6.0
+    4.6,
+    5.9
    ],
    "gap": 3.8,
    "gap_ci": [
-    3.0,
+    2.9,
     4.7
    ],
    "flag": ""
@@ -741,12 +741,12 @@ window.STORY_DATA = {
    "comparison": "child age",
    "group": "12-17",
    "n": 23036,
-   "pct": 5.7,
+   "pct": 5.8,
    "ci": [
     5.1,
     6.4
    ],
-   "gap": 4.2,
+   "gap": 4.3,
    "gap_ci": [
     3.3,
     5.2
@@ -772,15 +772,15 @@ window.STORY_DATA = {
    "comparison": "employment",
    "group": "Part-time",
    "n": 1100,
-   "pct": 22.6,
+   "pct": 22.4,
    "ci": [
-    18.1,
-    27.0
+    17.9,
+    26.9
    ],
-   "gap": 14.8,
+   "gap": 14.6,
    "gap_ci": [
-    10.0,
-    19.5
+    9.8,
+    19.3
    ],
    "flag": ""
   },
@@ -789,15 +789,15 @@ window.STORY_DATA = {
    "comparison": "employment",
    "group": "Looking for work",
    "n": 356,
-   "pct": 30.1,
+   "pct": 30.0,
    "ci": [
-    20.8,
-    39.3
+    20.7,
+    39.2
    ],
-   "gap": 22.3,
+   "gap": 22.2,
    "gap_ci": [
-    12.8,
-    31.8
+    12.7,
+    31.7
    ],
    "flag": ""
   },
@@ -808,13 +808,13 @@ window.STORY_DATA = {
    "n": 1493,
    "pct": 15.1,
    "ci": [
-    11.8,
+    11.7,
     18.5
    ],
    "gap": 7.3,
    "gap_ci": [
-    3.6,
-    11.1
+    3.5,
+    11.0
    ],
    "flag": ""
   },
@@ -927,7 +927,7 @@ window.STORY_DATA = {
    "or": 1.65,
    "ci": [
     1.32,
-    2.05
+    2.06
    ],
    "p": 0.0
   },
@@ -946,7 +946,7 @@ window.STORY_DATA = {
    "level": "200-399% FPL",
    "or": 1.6,
    "ci": [
-    1.36,
+    1.35,
     1.88
    ],
    "p": 0.0
@@ -959,7 +959,7 @@ window.STORY_DATA = {
     1.01,
     1.43
    ],
-   "p": 0.0425
+   "p": 0.0426
   },
   {
    "variable": "EDUCATION",
@@ -1331,10 +1331,10 @@ window.STORY_DATA = {
    {
     "group": "Not employed",
     "parent": "fathers",
-    "gap": 6.7,
+    "gap": 6.6,
     "ci": [
      4.4,
-     8.9
+     8.8
     ]
    },
    {

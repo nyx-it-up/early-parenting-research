@@ -17,8 +17,11 @@ Outputs (reports/tables/nsch_h1_models/):
   adjusted_percentages.csv       predicted % fair/poor by employment group, M0-M2
   adjusted_gaps.csv              percentage-point gaps vs. full-time, M0-M2
   adjusted_gaps_by_band.csv      gaps vs. full-time within each band, from M1x
-  interaction_test.csv           Wald test of the employment x band terms
+  interaction_test.csv           D1 Wald F test of the employment x band terms
   sample.csv                     sample size and exclusions
+
+Intervals use t critical values with Barnard-Rubin degrees of freedom. A
+model that cannot be estimated is written as "not estimable".
 
 Exploratory (src/nsch_h1_fairlie.py): Fairlie decomposition of the gap
 between "not employed, looking" and full-time mothers.
@@ -38,12 +41,13 @@ from scipy import stats
 
 from nsch_feasibility import DATA_FILE, prepare
 from nsch_h1 import EMPLOYMENT_4_LABELS, employment_4
-from survey_logit import (coefficient_influence, design_covariance, fit_logit,
-                          predictive_margin, rubin)
+from survey_logit import (NotEstimable, coefficient_influence, d1_test, design_covariance,
+                          design_df, fit_logit, predictive_margin, rubin, t_interval)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "reports" / "tables" / "nsch_h1_models"
 IMPUTATIONS = ["FPL_I1", "FPL_I2", "FPL_I3", "FPL_I4", "FPL_I5", "FPL_I6"]
+NOT_ESTIMABLE = "not estimable"
 
 # Covariate groupings. Codes are from the 2023-2025 Stata label files (.do),
 # identical in all three years. The first category of each is the reference.
@@ -134,6 +138,21 @@ def health_group(code):
     return "Fair or poor"
 
 
+def is_mother(data):
+    """Adult 1 is female and the sampled child's biological or adoptive parent."""
+    return (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
+
+
+def has_covariates(data):
+    """Every model covariate answered: marital status, parent's age and physical health.
+
+    The one complete-case rule for all models and Table 1 (mothers and fathers
+    alike), so every adjusted model, including M0 and M1, uses the M2 sample.
+    Income is imputed and never missing.
+    """
+    return data["MARITAL"].notna() & data["AGE"].notna() & data["PHYS"].notna()
+
+
 def add_covariates(data):
     """Add the grouped covariates (income is added per imputation in design_matrix)."""
     data["EMPLOYMENT_4"] = data["A1_EMPLOYED_R"].apply(employment_4)
@@ -190,7 +209,7 @@ def fit_once(data, domain, variables, income_column, interaction=False, outcome=
     X, names = design_matrix(frame, variables, interaction)
     y = frame[outcome].values
     w = frame["WEIGHT_POOLED"].values
-    beta = fit_logit(X, y, w)
+    beta = fit_logit(X, y, w)  # raises NotEstimable
 
     # Influence of every record in the FILE (zeros outside the domain).
     influence = np.zeros((len(data), len(beta)))
@@ -220,6 +239,26 @@ def margins(fit, data, subset=None):
     return results
 
 
+def fit_imputations(data, domain, variables, interaction=False, outcome="FAIR_POOR"):
+    """fit_once on every imputation. Raises NotEstimable if any one cannot be estimated."""
+    fits = []
+    for column in IMPUTATIONS:
+        fits.append(fit_once(data, domain, variables, column, interaction, outcome))
+    return fits
+
+
+def household_df(data):
+    """Complete-data degrees of freedom of the household-level design."""
+    return design_df(data["DESIGN_STRATUM"])
+
+
+def combine(values, variances, data):
+    """Rubin-combined estimate and its t-based 95% CI (household-level design)."""
+    estimate, se, df = rubin(values, variances, household_df(data))
+    low, high = t_interval(estimate, se, df)
+    return estimate, low, high
+
+
 def variance_of(contributions, data):
     """Design-based variance of one estimate from its per-record contributions."""
     return float(design_covariance(contributions[:, None], data["DESIGN_STRATUM"])[0, 0])
@@ -243,56 +282,53 @@ def combine_margins(fits, data, subset=None):
             level_vars.append(variance_of(z, data))
             gaps.append(level - ref_level)
             gap_vars.append(variance_of(z - z_ref, data))
-        level, level_se = rubin(levels, level_vars)
-        gap, gap_se = rubin(gaps, gap_vars)
-        rows.append({
+        level, level_low, level_high = combine(levels, level_vars, data)
+        row = {
             "employment": employment,
             "adjusted_pct": round(100 * level, 1),
-            "ci_low_pct": round(100 * (level - 1.96 * level_se), 1),
-            "ci_high_pct": round(100 * (level + 1.96 * level_se), 1),
-            "gap_vs_full_time_pts": round(100 * gap, 1) if employment != reference else None,
-            "gap_ci_low_pts": round(100 * (gap - 1.96 * gap_se), 1) if employment != reference else None,
-            "gap_ci_high_pts": round(100 * (gap + 1.96 * gap_se), 1) if employment != reference else None,
-        })
+            "ci_low_pct": round(100 * level_low, 1),
+            "ci_high_pct": round(100 * level_high, 1),
+            "gap_vs_full_time_pts": None,
+            "gap_ci_low_pts": None,
+            "gap_ci_high_pts": None,
+        }
+        if employment != reference:
+            gap, gap_low, gap_high = combine(gaps, gap_vars, data)
+            row["gap_vs_full_time_pts"] = round(100 * gap, 1)
+            row["gap_ci_low_pts"] = round(100 * gap_low, 1)
+            row["gap_ci_high_pts"] = round(100 * gap_high, 1)
+        rows.append(row)
     return pd.DataFrame(rows)
 
 
-def combine_coefficients(fits):
-    """Rubin's rules for the whole coefficient vector. Returns (beta, covariance, names)."""
-    m = len(fits)
-    betas = np.array([fit["beta"] for fit in fits])
-    within = np.mean([fit["covariance"] for fit in fits], axis=0)
-    between = np.cov(betas, rowvar=False, ddof=1)
-    total = within + (1 + 1 / m) * between
-    return betas.mean(axis=0), total, fits[0]["names"]
-
-
-def odds_ratio_table(fits):
-    beta, covariance, names = combine_coefficients(fits)
-    se = np.sqrt(np.diag(covariance))
+def odds_ratio_table(fits, data):
+    """Odds ratios, Rubin-combined one coefficient at a time, with t-based CIs and p-values."""
     rows = []
-    for i, name in enumerate(names):
+    for i, name in enumerate(fits[0]["names"]):
         if name == "Intercept":
             continue
+        values = [fit["beta"][i] for fit in fits]
+        variances = [fit["covariance"][i, i] for fit in fits]
+        beta, se, df = rubin(values, variances, household_df(data))
+        low, high = t_interval(beta, se, df)
         rows.append({
             "term": name,
-            "odds_ratio": round(math.exp(beta[i]), 2),
-            "ci_low": round(math.exp(beta[i] - 1.96 * se[i]), 2),
-            "ci_high": round(math.exp(beta[i] + 1.96 * se[i]), 2),
-            "p_value": round(2 * stats.norm.sf(abs(beta[i] / se[i])), 4),
+            "odds_ratio": round(math.exp(beta), 2),
+            "ci_low": round(math.exp(low), 2),
+            "ci_high": round(math.exp(high), 2),
+            "p_value": round(2 * stats.t.sf(abs(beta / se), df), 4),
         })
     return pd.DataFrame(rows)
 
 
 def interaction_test(fits):
-    """Wald chi-square test that all employment x band terms are zero (on Rubin-combined estimates)."""
-    beta, covariance, names = combine_coefficients(fits)
-    index = [i for i, name in enumerate(names) if name.startswith("EMP x BAND")]
-    b = beta[index]
-    V = covariance[np.ix_(index, index)]
-    chi2 = float(b @ np.linalg.solve(V, b))
-    return pd.DataFrame([{"terms": len(index), "chi_square": round(chi2, 2),
-                          "p_value": round(stats.chi2.sf(chi2, len(index)), 4)}])
+    """D1 Wald F test that all employment x band terms are zero (Li, Raghunathan & Rubin, 1991)."""
+    index = [i for i, name in enumerate(fits[0]["names"]) if name.startswith("EMP x BAND")]
+    betas = [fit["beta"][index] for fit in fits]
+    covariances = [fit["covariance"][np.ix_(index, index)] for fit in fits]
+    f_statistic, df1, df2, p = d1_test(betas, covariances)
+    return pd.DataFrame([{"test": "D1", "F": round(f_statistic, 2), "df_numerator": df1,
+                          "df_denominator": round(df2, 1), "p_value": round(p, 4)}])
 
 
 def save(table, name):
@@ -303,9 +339,8 @@ def save(table, name):
 
 def main():
     data = add_covariates(prepare(pd.read_parquet(DATA_FILE))).reset_index(drop=True)
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
-    in_h1 = is_mother & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
-    complete = in_h1 & data["MARITAL"].notna() & data["AGE"].notna() & data["PHYS"].notna()
+    in_h1 = is_mother(data) & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
+    complete = in_h1 & has_covariates(data)
 
     save(pd.DataFrame([
         {"step": "H1 sample (nsch_h1.py)", "n": int(in_h1.sum())},
@@ -318,23 +353,30 @@ def main():
     percentages = []
     for model, variables in MODELS.items():
         print(f"Fitting {model} on {len(IMPUTATIONS)} imputations")
-        fits = []
-        for column in IMPUTATIONS:
-            fits.append(fit_once(data, complete, variables, column))
-        save(odds_ratio_table(fits), f"odds_ratios_{model}")
+        try:
+            fits = fit_imputations(data, complete, variables)
+        except NotEstimable:
+            print(f"  {NOT_ESTIMABLE}")
+            save(pd.DataFrame([{"term": NOT_ESTIMABLE}]), f"odds_ratios_{model}")
+            percentages.append(pd.DataFrame([{"model": model, "employment": NOT_ESTIMABLE}]))
+            continue
+        save(odds_ratio_table(fits, data), f"odds_ratios_{model}")
         table = combine_margins(fits, data)
         table.insert(0, "model", model)
         percentages.append(table)
     combined = pd.concat(percentages, ignore_index=True)
     save(combined[["model", "employment", "adjusted_pct", "ci_low_pct", "ci_high_pct"]], "adjusted_percentages")
-    gaps = combined[combined["gap_vs_full_time_pts"].notna()]
+    gaps = combined[combined["gap_vs_full_time_pts"].notna() | (combined["employment"] == NOT_ESTIMABLE)]
     save(gaps[["model", "employment", "gap_vs_full_time_pts", "gap_ci_low_pts", "gap_ci_high_pts"]], "adjusted_gaps")
 
     print("Fitting M1x (employment x band)")
-    fits = []
-    for column in IMPUTATIONS:
-        fits.append(fit_once(data, complete, MODELS["M1"], column, interaction=True))
-    save(odds_ratio_table(fits), "odds_ratios_M1x")
+    try:
+        fits = fit_imputations(data, complete, MODELS["M1"], interaction=True)
+    except NotEstimable:
+        print(f"  {NOT_ESTIMABLE}")
+        save(pd.DataFrame([{"test": NOT_ESTIMABLE}]), "interaction_test")
+        return
+    save(odds_ratio_table(fits, data), "odds_ratios_M1x")
     save(interaction_test(fits), "interaction_test")
     by_band = []
     for band in CATEGORIES["BAND"]:

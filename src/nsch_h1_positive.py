@@ -19,7 +19,8 @@ from pathlib import Path
 import pandas as pd
 
 from nsch_feasibility import DATA_FILE, prepare
-from nsch_h1_models import IMPUTATIONS, MODELS, add_covariates, combine_margins, fit_once
+from nsch_h1_models import (MODELS, add_covariates, combine_margins, fit_imputations, has_covariates,
+                            is_mother)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "reports" / "tables" / "nsch_h1_positive"
@@ -33,14 +34,12 @@ OUTCOMES = {
 def main():
     data = add_covariates(prepare(pd.read_parquet(DATA_FILE))).reset_index(drop=True)
     data["EXC_VG"] = (data["A1_MENTHEALTH"] <= 2).astype(float)
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
-    complete = (is_mother & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
-                & data["MARITAL"].notna() & data["AGE"].notna() & data["PHYS"].notna())
+    complete = is_mother(data) & data["EMP"].notna() & data["A1_MENTHEALTH"].notna() & has_covariates(data)
 
     tables = []
     for outcome, label in OUTCOMES.items():
         print(f"Fitting M1 for {label}")
-        fits = [fit_once(data, complete, MODELS["M1"], column, outcome=outcome) for column in IMPUTATIONS]
+        fits = fit_imputations(data, complete, MODELS["M1"], outcome=outcome)
         table = combine_margins(fits, data)
         table.insert(0, "outcome", label)
         tables.append(table)

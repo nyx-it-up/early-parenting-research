@@ -17,13 +17,25 @@ Functions
   design_covariance    stratified variance of any set of contributions
   predictive_margin    adjusted percentage when everyone is set to one group
   rubin                combine estimates across multiply imputed data sets
+  t_interval           95% interval from an estimate, its SE and degrees of freedom
+  d1_test              multivariate Wald F test for multiply imputed data
+
+A model that cannot be estimated (singular information matrix, or no
+convergence, e.g. too few cases with the outcome) raises NotEstimable.
 
 References: Binder (1983) and Lumley (n.d., R package "survey") for the
-linearization; Rubin (1987) for combining imputations.
+linearization; Rubin (1987) for combining imputations; Barnard and Rubin
+(1999) for the small-sample degrees of freedom; Li, Raghunathan and Rubin
+(1991) for the D1 test.
 """
 
 import numpy as np
 import pandas as pd
+from scipy import stats
+
+
+class NotEstimable(RuntimeError):
+    """The model cannot be estimated on this sample."""
 
 
 def fit_logit(X, y, w, iterations=50, tolerance=1e-10):
@@ -36,11 +48,23 @@ def fit_logit(X, y, w, iterations=50, tolerance=1e-10):
         p = 1 / (1 + np.exp(-X @ beta))
         gradient = X.T @ (w * (y - p))
         hessian = (X * (w * p * (1 - p))[:, None]).T @ X
-        step = np.linalg.solve(hessian, gradient)
+        try:
+            step = np.linalg.solve(hessian, gradient)
+        except np.linalg.LinAlgError:
+            raise NotEstimable("singular information matrix")
         beta = beta + step
+        if not np.all(np.isfinite(beta)):
+            raise NotEstimable("coefficients are not finite")
         if np.max(np.abs(step)) < tolerance:
             return beta
-    raise RuntimeError("Logistic regression did not converge")
+    raise NotEstimable("logistic regression did not converge")
+
+
+def solve_or_not_estimable(matrix, right_side):
+    try:
+        return np.linalg.solve(matrix, right_side)
+    except np.linalg.LinAlgError:
+        raise NotEstimable("singular information matrix")
 
 
 def coefficient_influence(X, y, w, beta):
@@ -52,7 +76,7 @@ def coefficient_influence(X, y, w, beta):
     p = 1 / (1 + np.exp(-X @ beta))
     information = (X * (w * p * (1 - p))[:, None]).T @ X
     scores = X * (w * (y - p))[:, None]
-    return scores @ np.linalg.inv(information)
+    return solve_or_not_estimable(information, scores.T).T
 
 
 def design_covariance(contributions, strata):
@@ -106,20 +130,27 @@ def cluster_variance(contributions, clusters):
 def fit_linear(X, y, w):
     """Weighted least squares (for a mean score). Returns the coefficient vector."""
     weighted_X = X * w[:, None]
-    return np.linalg.solve(weighted_X.T @ X, weighted_X.T @ y)
+    return solve_or_not_estimable(weighted_X.T @ X, weighted_X.T @ y)
 
 
 def linear_influence(X, y, w, beta):
     """Each record's linearized contribution to a weighted least-squares beta."""
     information = (X * w[:, None]).T @ X
     scores = X * (w * (y - X @ beta))[:, None]
-    return scores @ np.linalg.inv(information)
+    return solve_or_not_estimable(information, scores.T).T
 
 
-def rubin(estimates, variances):
+def design_df(strata):
+    """Complete-data degrees of freedom of the design: PSUs (households) minus strata."""
+    return len(strata) - strata.nunique()
+
+
+def rubin(estimates, variances, complete_df):
     """Combine m estimates of one quantity (and their variances) with Rubin's rules.
 
-    Returns (estimate, standard_error).
+    Degrees of freedom follow Barnard and Rubin (1999), which stay below the
+    complete-data degrees of freedom (complete_df) of the design.
+    Returns (estimate, standard_error, degrees_of_freedom).
     """
     estimates = np.asarray(estimates, dtype=float)
     variances = np.asarray(variances, dtype=float)
@@ -127,4 +158,37 @@ def rubin(estimates, variances):
     within = variances.mean()
     between = estimates.var(ddof=1)
     total = within + (1 + 1 / m) * between
-    return estimates.mean(), float(np.sqrt(total))
+    missing_share = (1 + 1 / m) * between / total
+    observed_df = (complete_df + 1) / (complete_df + 3) * complete_df * (1 - missing_share)
+    if missing_share == 0:
+        df = observed_df
+    else:
+        df = 1 / (missing_share ** 2 / (m - 1) + 1 / observed_df)
+    return estimates.mean(), float(np.sqrt(total)), float(df)
+
+
+def t_interval(estimate, se, df):
+    """95% confidence interval using the t distribution."""
+    critical = stats.t.ppf(0.975, df)
+    return estimate - critical * se, estimate + critical * se
+
+
+def d1_test(betas, covariances):
+    """D1 multivariate Wald test that all k coefficients are zero, for m imputations.
+
+    betas: (m, k) estimates; covariances: m (k, k) covariance matrices.
+    Li, Raghunathan and Rubin (1991). Returns (F, numerator df k, denominator df, p).
+    """
+    betas = np.asarray(betas, dtype=float)
+    m, k = betas.shape
+    mean = betas.mean(axis=0)
+    within = np.mean(covariances, axis=0)
+    between = np.atleast_2d(np.cov(betas, rowvar=False, ddof=1))
+    increase = (1 + 1 / m) * np.trace(between @ np.linalg.inv(within)) / k
+    f_statistic = float(mean @ np.linalg.solve(within, mean)) / (k * (1 + increase))
+    t = k * (m - 1)
+    if t > 4:
+        denominator_df = 4 + (t - 4) * (1 + (1 - 2 / t) / increase) ** 2
+    else:
+        denominator_df = t * (1 + 1 / k) * (1 + increase) ** 2 / 2
+    return f_statistic, k, float(denominator_df), float(stats.f.sf(f_statistic, k, denominator_df))

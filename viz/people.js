@@ -54,7 +54,11 @@
     dimmed: 0.14, // opacity of dots out of focus
   };
 
-  const MIN_N = 30; // NSCH reliability rule: do not report groups under 30 respondents
+  /* NSCH reliability rule, as in src/nsch_feasibility.py: report an estimate
+     only with 30 or more respondents and a 95% CI no wider than 20 points
+     and no wider than 1.2 times the estimate. */
+  const RELIABLE = { minN: 30, maxCiWidth: 20, maxRelativeCiWidth: 1.2 };
+  const UNRELIABLE = "too uncertain to report";
 
   const LAYOUT = {
     region: {
@@ -105,7 +109,7 @@
     hint: "Ctrl + scroll or pinch to zoom · drag to move · double-click a group",
     keys: "Dots of this view. Arrow keys move, plus and minus zoom, 0 shows everything, Enter zooms to the next group.",
     keyStep: 60, // px an arrow key moves the view
-    hintTouch: "Pinch to zoom · double-tap a group",
+    hintTouch: "Use + and − to zoom · drag to move when zoomed",
   };
 
   const HOVER = { reach: 1.6, minReach: 6, ring: 3, tapSlop: 10 };
@@ -148,9 +152,44 @@
     return { pct: total ? (100 * hit) / total : NaN, n: people.length };
   }
 
+  /* Weighted share with a 95% CI and the reliability check. The standard
+     error is the repo's linearized one (src/nsch_feasibility.py): each
+     person's contribution w(y - share)/W over the parent's whole file, here
+     without design strata, which the public records do not carry; the CI is
+     built on the logit scale. It reproduces the repo's published CIs. */
+  function estimate(people, test) {
+    const n = people.length;
+    if (n < RELIABLE.minN) {
+      return { n, reliable: false };
+    }
+    const { pct } = weighted(people, test);
+    const share = pct / 100;
+    let total = 0;
+    let squares = 0;
+    for (const p of people) {
+      total += p.weight;
+      const part = p.weight * ((test(p) ? 1 : 0) - share);
+      squares += part * part;
+    }
+    const fileSize = (people[0].parent === "fathers" ? fathers : mothers).length;
+    const se = Math.sqrt((fileSize / (fileSize - 1)) * squares) / total;
+    const logit = Math.log(share / (1 - share));
+    const logitSe = se / (share * (1 - share));
+    const back = (x) => 100 / (1 + Math.exp(-x));
+    const width = back(logit + 1.96 * logitSe) - back(logit - 1.96 * logitSe);
+    const reliable = share > 0 && share < 1
+      && width <= RELIABLE.maxCiWidth && width <= RELIABLE.maxRelativeCiWidth * pct;
+    return { n, pct, reliable };
+  }
+
   const fairOrPoor = (p) => p.rating >= 4;
   const highRating = (p) => p.rating <= 2;
-  const fpOf = (people) => Math.round(weighted(people, fairOrPoor).pct);
+  // A rounded weighted percentage, or a note when the rule withholds it.
+  const pctText = (people, test) => {
+    const result = estimate(people, test);
+    return result.reliable ? Math.round(result.pct) : UNRELIABLE;
+  };
+  const fpOf = (people) => pctText(people, fairOrPoor);
   const inGroup = (people, group) => people.filter((p) => p.group === group);
 
   const STATS = {
@@ -161,9 +200,9 @@
     fullTimeFp: fpOf(inGroup(mothers, "Full-time")),
     lookingFp: fpOf(inGroup(mothers, "Looking for work")),
     notLookingYoungFp: fpOf(inGroup(mothers, "Not looking for work").filter((p) => p.band === "0-5")),
-    fullTimeHigh: Math.round(weighted(inGroup(mothers, "Full-time"), (p) => p.rating <= 2).pct),
-    lookingHigh: Math.round(weighted(inGroup(mothers, "Looking for work"), (p) => p.rating <= 2).pct),
-    notLookingHigh: Math.round(weighted(inGroup(mothers, "Not looking for work"), (p) => p.rating <= 2).pct),
+    fullTimeHigh: pctText(inGroup(mothers, "Full-time"), highRating),
+    lookingHigh: pctText(inGroup(mothers, "Looking for work"), highRating),
+    notLookingHigh: pctText(inGroup(mothers, "Not looking for work"), highRating),
     notLookingFp: fpOf(inGroup(mothers, "Not looking for work")),
     notLookingTeenFp: fpOf(inGroup(mothers, "Not looking for work").filter((p) => p.band === "12-17")),
     babyCount: fmtInt(mothers.filter((p) => p.age < 2).length),
@@ -196,10 +235,10 @@
     let reach = HOVER.minReach;
     let current = null;
     let finder = null;
-    function measure() {
-      size.width = canvas.offsetWidth;
-      size.height = canvas.offsetHeight;
-      sizeCanvas();
+    function measure(exact = true) {
+      size.width = stage.clientWidth;
+      size.height = stage.clientHeight;
+      sizeCanvas(exact);
     }
 
     /* The part of the stage the dots may use: clear of the step cards on the
@@ -578,13 +617,24 @@
       probe.remove();
     }
 
-    function sizeCanvas() {
+    /* The pixel buffer is only replaced when it must grow, or exactly once a
+       resize settles. The canvas keeps its own size in px, so a buffer larger
+       than the stage is clipped, never stretched. */
+    function sizeCanvas(exact) {
       dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.max(1, Math.round(size.width * dpr));
-      canvas.height = Math.max(1, Math.round(size.height * dpr));
-      ringCanvas.width = canvas.width;
-      ringCanvas.height = canvas.height;
-      pixels = ctx.createImageData(canvas.width, canvas.height);
+      const width = Math.max(1, Math.round(size.width * dpr));
+      const height = Math.max(1, Math.round(size.height * dpr));
+      const fits = buffer && width <= canvas.width && height <= canvas.height;
+      if (fits && (!exact || (width === canvas.width && height === canvas.height))) {
+        return;
+      }
+      for (const box of [canvas, ringCanvas]) {
+        box.width = width;
+        box.height = height;
+        box.style.width = `${width / dpr}px`;
+        box.style.height = `${height / dpr}px`;
+      }
+      pixels = ctx.createImageData(width, height);
       buffer = new Uint32Array(pixels.data.buffer);
     }
 
@@ -813,14 +863,12 @@
 
     // A cluster's count and share: one line, or two on narrow screens.
     function countLines(members, twoLines) {
-      if (members.length < MIN_N) {
-        return [`${members.length} answered`, "(too few)"];
-      }
-      const lines = [fmtInt(members.length), `${Math.round(weighted(members, fairOrPoor).pct)}% fair or poor`];
+      const share = fpOf(members);
+      const lines = [fmtInt(members.length), share === UNRELIABLE ? "too uncertain" : `${share}% fair or poor`];
       return twoLines ? lines : [lines.join(" · ")];
     }
 
-    const shareText = (members) => (members.length < MIN_N ? "too few" : `${fpOf(members)}%`);
+    const shareText = (members) => (fpOf(members) === UNRELIABLE ? "n/a" : `${fpOf(members)}%`);
 
     function clusterLabels(clusters, view) {
       if (view.stacks) {
@@ -1053,10 +1101,14 @@
       zoomNow = transform;
       redraw();
       stage.classList.toggle("is-zoomed", transform.k > 1);
-      if (shown) {
-        drawLabels(...shown);
+      if (shown && !labelFrame) {
+        labelFrame = requestAnimationFrame(() => {
+          labelFrame = 0;
+          drawLabels(...shown);
+        });
       }
     }
+    let labelFrame = 0;
 
     const zoom = d3.zoom()
       .scaleExtent([1, ZOOM.max])
@@ -1068,7 +1120,7 @@
           return event.ctrlKey || event.metaKey;
         }
         if (event.type.startsWith("touch")) {
-          return event.touches.length > 1 || zoomNow.k > 1;
+          return event.touches.length === 1 && zoomNow.k > 1;
         }
         return !event.button;
       })
@@ -1220,25 +1272,31 @@
         show(current, true, true);
       }
     }
-    // The canvas always matches its box at once, so circles never stretch.
+    // While the stage resizes, the room on screen redraws at once; circles never stretch.
     new ResizeObserver(() => {
-      if (canvas.offsetWidth !== size.width || canvas.offsetHeight !== size.height) {
-        measure();
+      if (!onScreen) {
+        stale = true;
+        return;
+      }
+      if (stage.clientWidth !== size.width || stage.clientHeight !== size.height) {
+        measure(false);
         redraw();
       }
-    }).observe(canvas);
+    }).observe(stage);
 
     onResize(() => {
+      if (!onScreen) {
+        stale = true;
+        return;
+      }
+      measure();
       const phone = isMobile() && window.matchMedia("(pointer: coarse)").matches;
       const small = laidOut.width === size.width && Math.abs(size.height - laidOut.height) <= LAYOUT.resizeShare * laidOut.height;
       if (phone && small) {
+        redraw();
         return;
       }
-      if (onScreen) {
-        relayout();
-      } else {
-        stale = true;
-      }
+      relayout();
     });
 
     measure();
@@ -1274,13 +1332,13 @@
     const age = AGE_CHOICES.find((a) => a.key === choice.age);
     const like = people.filter((p) => p.group === choice.group && age.test(p));
     const who = `${names.many} who ${WORK_TEXT[choice.group].many} and have a child ${age.text}`;
-    if (like.length < MIN_N) {
-      return `Only ${like.length} ${who} answered: too few to estimate reliably.`;
+    const fp = fpOf(like);
+    const high = pctText(like, highRating);
+    const all = fpOf(people);
+    if (fp === UNRELIABLE || high === UNRELIABLE) {
+      return `${fmtInt(like.length)} ${who} answered: too few to say reliably (NSCH reliability rule). Among all ${names.many}: ${all} in 100 fair or poor.`;
     }
-    const fp = weighted(like, fairOrPoor).pct;
-    const high = weighted(like, highRating).pct;
-    const all = weighted(people, fairOrPoor).pct;
-    return `${fmtInt(like.length)} ${who} answered. About ${Math.round(fp)} in 100 rate their mental health fair or poor, and ${Math.round(high)} in 100 excellent or very good. Among all ${names.many}: ${Math.round(all)} in 100 fair or poor.`;
+    return `${fmtInt(like.length)} ${who} answered. About ${fp} in 100 rate their mental health fair or poor, and ${high} in 100 excellent or very good. Among all ${names.many}: ${all} in 100 fair or poor.`;
   }
 
   // Wires the "Where would you stand?" buttons and adds the step's view.
@@ -1402,11 +1460,13 @@
     for (const group of EMPLOYMENT) {
       for (const age of AGE_CHOICES) {
         const like = people.filter((p) => p.group === group && age.test(p));
-        const tooFew = like.length < MIN_N;
+        const cell = (test) => {
+          const result = estimate(like, test);
+          return result.reliable ? result.pct.toFixed(1) : UNRELIABLE;
+        };
         tableRows.push({
           parent: PARENT[parent].title, group, age: age.label, n: fmtInt(like.length),
-          fp: tooFew ? "too few" : weighted(like, fairOrPoor).pct.toFixed(1),
-          high: tooFew ? "too few" : weighted(like, highRating).pct.toFixed(1),
+          fp: cell(fairOrPoor), high: cell(highRating),
         });
       }
     }

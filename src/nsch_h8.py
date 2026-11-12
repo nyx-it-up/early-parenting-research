@@ -22,6 +22,10 @@ apply.
   Sensitivity           the same adjusted comparison with retired parents
                         left out.
 
+Model samples use the same complete-case rule for mothers and fathers as
+every H1 model (has_covariates in nsch_h1_models.py: marital status, the
+parent's own age and physical health answered).
+
 Mothers and fathers are separate domains of the same sample, so the variance
 of a difference is computed from the difference of the records'
 contributions; this keeps the shared strata in the calculation.
@@ -39,8 +43,8 @@ import pandas as pd
 
 from nsch_feasibility import DATA_FILE, logit_ci, prepare, reliability_flags
 from nsch_h1 import design_se, linearized_share
-from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, add_covariates, fit_once, margins,
-                            rubin, variance_of)
+from nsch_h1_models import (CATEGORIES, IMPUTATIONS, MODELS, add_covariates, combine, fit_imputations,
+                            has_covariates, margins, variance_of)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "reports" / "tables" / "nsch_h8"
@@ -109,9 +113,7 @@ def fit_by_sex(data, domains, interaction=False):
     fits = {}
     for sex, domain in domains.items():
         print(f"  fitting {sex}{' (with employment x band)' if interaction else ''}")
-        fits[sex] = []
-        for column in IMPUTATIONS:
-            fits[sex].append(fit_once(data, domain, COVARIATES, column, interaction))
+        fits[sex] = fit_imputations(data, domain, COVARIATES, interaction)
     return fits
 
 
@@ -140,10 +142,10 @@ def adjusted_gaps(fits, data, subset=None):
             variances["difference"].append(variance_of(contribution["mothers"] - contribution["fathers"], data))
         row = {"employment": employment}
         for key in ["mothers", "fathers", "difference"]:
-            estimate, se = rubin(values[key], variances[key])
+            estimate, low, high = combine(values[key], variances[key], data)
             row[f"{key}_pts"] = round(100 * estimate, 1)
-            row[f"{key}_ci_low"] = round(100 * (estimate - 1.96 * se), 1)
-            row[f"{key}_ci_high"] = round(100 * (estimate + 1.96 * se), 1)
+            row[f"{key}_ci_low"] = round(100 * low, 1)
+            row[f"{key}_ci_high"] = round(100 * high, 1)
         rows.append(row)
     return pd.DataFrame(rows)
 
@@ -169,7 +171,7 @@ def main():
 
     complete = {}
     for sex, domain in parents.items():
-        complete[sex] = domain & data["MARITAL"].notna() & data["AGE"].notna()
+        complete[sex] = domain & has_covariates(data)
     sample_rows = []
     for sex in parents:
         sample_rows.append({"parent": sex, "descriptive_n": int(parents[sex].sum()),

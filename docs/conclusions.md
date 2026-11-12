@@ -40,7 +40,7 @@ Mothers were defined as respondents (Adult 1) who were female and the sampled ch
 
 **Child care–related job change.** For children aged 0–5, respondents reported whether anyone in the family had to quit, not take, or greatly change a job because of problems with child care in the past 12 months (`K6Q27`).
 
-**Employment.** Mothers reported their current employment status (`A1_EMPLOYED_R`), grouped as employed full-time, employed part-time, not employed and looking for work, and not employed and not looking for work. Retired mothers (*n* = 882) were combined with the not-looking group; excluding them changed estimates by at most 0.3 percentage points. NSCH does not measure work hours.
+**Employment.** Mothers reported their current employment status (`A1_EMPLOYED_R`), grouped as employed full-time, employed part-time, not employed and looking for work, and not employed and not looking for work. Retired mothers (*n* = 882) were combined with the not-looking group. Excluding them changed the percentages of fair or poor mental health, and the differences from full-time employed mothers, by at most 0.3 percentage points in each child age band; the percentage rating their mental health as excellent or very good changed by up to 0.6 points. NSCH does not measure work hours.
 
 **Child age.** Child age was the sampled child's age in years, grouped as 0–5, 6–11 and 12–17. For the second aim, children under 2 (ages 0–1) were compared with older children, with ages 0–2 as a sensitivity analysis.
 
@@ -50,11 +50,11 @@ Mothers were defined as respondents (Adult 1) who were female and the sampled ch
 
 ### Analytic Strategy
 
-All estimates used the NSCH child weights divided by the number of pooled years, with design-based standard errors from Taylor linearization (strata defined by survey year, state and sampling stratum; households as primary sampling units) and mothers estimated as a domain of the full sample (Binder, 1983; Lumley, 2004; U.S. Census Bureau, 2026a). Estimates were checked against the NSCH reliability criteria: an unweighted denominator of at least 30, and a 95% confidence interval no wider than 20 percentage points or 1.2 times the estimate (U.S. Census Bureau, 2026b).
+All estimates used the NSCH child weights divided by the number of pooled years, with design-based standard errors from Taylor linearization (strata defined by survey year, state and sampling stratum; households as primary sampling units) and mothers estimated as a domain of the full sample (Binder, 1983; Lumley, 2004; U.S. Census Bureau, 2026a). Confidence intervals for estimates combined across imputations used *t* critical values with small-sample degrees of freedom (Barnard & Rubin, 1999). Estimates were checked against the NSCH reliability criteria: an unweighted denominator of at least 30, and a 95% confidence interval no wider than 20 percentage points or 1.2 times the estimate (U.S. Census Bureau, 2026b).
 
-For the first aim, descriptive percentages were followed by survey-weighted logistic regression. Model 0 included employment, child age band and survey year. Model 1, the main model, added income, education, marital status, number of children and maternal age. Model 2 added maternal physical health as a sensitivity analysis, because physical health may be either a cause or a consequence of both employment and mental health. Results are reported as adjusted percentages (predictive margins) and percentage-point differences from full-time employment. An employment × child age interaction tested whether the differences varied by child age. An exploratory Fairlie (2005) decomposition estimated how much of each unadjusted gap was accounted for by group differences in the Model 1 covariates.
+For the first aim, descriptive percentages were followed by survey-weighted logistic regression. Model 0 included employment, child age band and survey year. Model 1, the main model, added income, education, marital status, number of children and maternal age. Model 2 added maternal physical health as a sensitivity analysis, because physical health may be either a cause or a consequence of both employment and mental health. Results are reported as adjusted percentages (predictive margins) and percentage-point differences from full-time employment. An employment × child age interaction tested whether the differences varied by child age, using the multivariate Wald test for multiply imputed data (*D*<sub>1</sub>; Li et al., 1991). An exploratory Fairlie (2005) decomposition estimated how much of each unadjusted gap was accounted for by group differences in the Model 1 covariates.
 
-For the second aim, the same approach compared full-time employed mothers of children under 2 with other mothers of children under 2, and with full-time employed mothers of older children. For the exploratory aims, models were estimated separately within paid-leave and other states (with standard errors clustered by state) and separately for mothers and fathers, and differences between the employment gaps were estimated.
+For the second aim, the same approach compared full-time employed mothers of children under 2 with other mothers of children under 2, and with full-time employed mothers of older children. For the exploratory aims, models were estimated separately within paid-leave and other states (with standard errors clustered by state and, because only 10 states had paid leave, *t* critical values with degrees of freedom based on the number of states; Cameron & Miller, 2015) and separately for mothers and fathers, and differences between the employment gaps were estimated.
 
 ## Results
 
@@ -68,20 +68,20 @@ As shown in Table 1, mothers who were not employed and looking for work more oft
 
 | Characteristic | All mothers | Full-time | Part-time | Not employed, looking | Not employed, not looking |
 |---|---|---|---|---|---|
-| Unweighted *n* | 87,520 | 55,664 | 14,265 | 4,335 | 13,256 |
-| Child age 0–5 | 30.8 | 28.4 | 31.1 | 32.8 | 37.0 |
+| Unweighted *n* | 87,318 | 55,544 | 14,230 | 4,322 | 13,222 |
+| Child age 0–5 | 30.8 | 28.4 | 31.1 | 32.7 | 37.0 |
 | Child age 6–11 | 33.7 | 33.5 | 34.5 | 36.4 | 32.4 |
-| Child age 12–17 | 35.5 | 38.1 | 34.4 | 30.9 | 30.6 |
-| Mother aged 18–34 | 24.3 | 19.8 | 26.6 | 35.4 | 31.4 |
+| Child age 12–17 | 35.5 | 38.1 | 34.4 | 30.9 | 30.5 |
+| Mother aged 18–34 | 24.3 | 19.8 | 26.5 | 35.4 | 31.4 |
 | Married | 71.4 | 70.4 | 72.3 | 51.3 | 82.8 |
-| Never married | 9.0 | 8.9 | 9.0 | 19.2 | 4.7 |
-| High school or less | 25.4 | 17.2 | 27.3 | 52.4 | 36.8 |
-| Bachelor's degree or higher | 49.3 | 58.5 | 45.6 | 20.5 | 37.3 |
-| Three or more children | 34.1 | 27.2 | 37.2 | 42.2 | 49.2 |
+| Never married | 9.0 | 9.0 | 9.0 | 19.2 | 4.7 |
+| High school or less | 25.4 | 17.2 | 27.3 | 52.3 | 36.9 |
+| Bachelor's degree or higher | 49.3 | 58.5 | 45.6 | 20.5 | 37.4 |
+| Three or more children | 34.1 | 27.2 | 37.2 | 42.1 | 49.2 |
 | Income below 100% FPL | 17.6 | 10.0 | 21.5 | 48.6 | 23.5 |
-| Income 400% FPL or more | 32.8 | 41.0 | 26.3 | 10.7 | 23.6 |
+| Income 400% FPL or more | 32.9 | 41.0 | 26.3 | 10.7 | 23.6 |
 
-*Note.* Values are weighted column percentages unless noted. Sample: mothers with employment, mental health, marital status and age reported. Income categories are averaged across the six imputations. FPL = federal poverty level. Full rows in `reports/tables/manuscript/table1_characteristics.csv`.
+*Note.* Values are weighted column percentages unless noted. Sample: the regression model sample (mothers with employment, mental health, marital status, age and physical health reported). Income categories are averaged across the six imputations. FPL = federal poverty level. Full rows in `reports/tables/manuscript/table1_characteristics.csv`.
 
 ### Aim 1: Employment Status and Mental Health
 
@@ -114,7 +114,7 @@ After adjustment for income, education, marital status, number of children and m
 
 *Note.* Percentage-point differences in predicted probabilities with 95% confidence intervals in brackets. Model 0: child age band and survey year. Model 1: Model 0 plus income, education, marital status, number of children and maternal age. Model 2: Model 1 plus physical health. *n* = 87,318.
 
-The employment × child age interaction was significant, χ²(6) = 20.2, *p* = .003. In Model 1, the difference between mothers not looking for work and full-time employed mothers was −0.4 points (95% CI [−2.1, 1.3]) when the child was 0–5, 2.9 points (95% CI [0.5, 5.2]) when the child was 6–11 and 6.1 points (95% CI [3.2, 8.9]) when the child was 12–17. The difference for mothers looking for work was similar across age bands (2.2–3.7 points).
+The employment × child age interaction was significant, *D*<sub>1</sub> *F*(6, 1.2 × 10<sup>8</sup>) = 3.37, *p* = .003 (the very large denominator degrees of freedom reflect almost no between-imputation variation in these terms). In Model 1, the difference between mothers not looking for work and full-time employed mothers was −0.4 points (95% CI [−2.1, 1.3]) when the child was 0–5, 2.9 points (95% CI [0.5, 5.2]) when the child was 6–11 and 6.1 points (95% CI [3.2, 8.9]) when the child was 12–17. The difference for mothers looking for work was similar across age bands (2.2–3.7 points).
 
 In the exploratory decomposition, differences in the Model 1 covariates accounted for 2.7 of the 6.7-point unadjusted gap between mothers looking for work and full-time employed mothers (41%), mainly marital status, maternal age and income. For mothers not looking for work, covariate differences accounted for almost none of the gap: their lower income and education would have widened it, but their higher rate of marriage would have narrowed it.
 
@@ -124,9 +124,9 @@ In the exploratory decomposition, differences in the Model 1 covariates accounte
 
 The hypothesis was not supported. Among mothers of children under 2, full-time employed mothers did not report poorer mental health than part-time or non-employed mothers on any outcome (Table 4). After adjustment, 7.4% of full-time employed mothers of children under 2 reported fair or poor mental health, compared with 6.0% of part-time employed mothers and 8.5% of mothers not looking for work; none of the differences was statistically significant. The same pattern held for the mean rating, each cut-off of the rating scale and when children under 3 were analyzed. For parenting aggravation, the only significant difference ran opposite to the hypothesis: part-time employed mothers reported more aggravation than full-time employed mothers (4.0% vs. 1.5%), although this estimate did not meet the NSCH reliability criteria.
 
-Among full-time employed mothers, those whose child was under 2 reported slightly better mental health than those with older children. Compared with mothers of children under 2, mothers of children aged 2–5, 6–11 and 12–17 had higher (worse) adjusted mean ratings (by 0.11, 0.08 and 0.09 points on the 1–5 scale) and were 3.5–4.3 points more likely to rate their mental health as good, fair or poor. They were also 2.8–4.2 points more likely to report parenting aggravation.
+Among full-time employed mothers, those whose child was under 2 reported slightly better mental health than those with older children. Compared with mothers of children under 2, mothers of children aged 2–5, 6–11 and 12–17 had higher (worse) adjusted mean ratings (by 0.11, 0.08 and 0.09 points on the 1–5 scale) and were 3.4–4.3 points more likely to rate their mental health as good, fair or poor. They were also 2.8–4.3 points more likely to report parenting aggravation.
 
-The clearest difference among mothers of children under 2 concerned child care. After adjustment, 7.8% of full-time employed mothers reported a child care–related job change in the family, compared with 22.6% of part-time employed mothers, 30.1% of mothers looking for work and 15.1% of mothers not looking for work.
+The clearest difference among mothers of children under 2 concerned child care. After adjustment, 7.8% of full-time employed mothers reported a child care–related job change in the family, compared with 22.4% of part-time employed mothers, 30.0% of mothers looking for work and 15.1% of mothers not looking for work.
 
 **Table 4**
 
@@ -137,9 +137,9 @@ The clearest difference among mothers of children under 2 concerned child care. 
 | Unweighted *n* | 3,753 | 1,108 | 357 | 1,500 |
 | Mental health rating, mean (1–5) | 2.13 | 2.12 | 2.31 | 2.17 |
 | Fair or poor mental health (%) | 7.4 | 6.0 | 10.5 | 8.5 |
-| Good, fair or poor mental health (%) | 32.7 | 30.0 | 41.4 | 34.2 |
-| Parenting aggravation (%) | 1.5 | 4.0<sup>a</sup>\* | 3.9<sup>a</sup> | 2.1 |
-| Child care–related job change (%) | 7.8 | 22.6\* | 30.1\* | 15.1\* |
+| Good, fair or poor mental health (%) | 32.7 | 30.1 | 41.4 | 34.3 |
+| Parenting aggravation (%) | 1.5 | 4.0<sup>a</sup>\* | 4.0<sup>a</sup> | 2.1 |
+| Child care–related job change (%) | 7.8 | 22.4\* | 30.0\* | 15.1\* |
 
 *Note.* Adjusted for survey year, income, education, marital status, number of children and maternal age. Higher values indicate worse outcomes. Mean ratings and percentages are predictive margins. *n* for each outcome differs slightly because of item nonresponse.
 <sup>a</sup> Estimate flagged under the NSCH reliability criteria.
@@ -147,9 +147,9 @@ The clearest difference among mothers of children under 2 concerned child care. 
 
 ### Exploratory Analyses
 
-**State paid family leave.** In both paid-leave states and other states, full-time employed mothers of children under 2 did not report poorer mental health than other mothers. The difference between full-time and non-employed mothers was −1.1 points (95% CI [−2.8, 0.7]) in states without paid leave and −3.7 points (95% CI [−11.1, 3.8]) in paid-leave states; the difference between these gaps was not significant (−2.6 points, 95% CI [−9.7, 4.4]). With about 690 full-time employed mothers of children under 2 in paid-leave states, this comparison could not rule out moderate differences.
+**State paid family leave.** In both paid-leave states and other states, full-time employed mothers of children under 2 did not report poorer mental health than other mothers. The difference between full-time and non-employed mothers was −1.1 points (95% CI [−2.9, 0.8]) in states without paid leave and −3.8 points (95% CI [−12.7, 5.1]) in paid-leave states; the difference between these gaps was not significant (−2.7 points, 95% CI [−11.1, 5.7]). With about 690 full-time employed mothers of children under 2 in paid-leave states, this comparison could not rule out moderate differences.
 
-**Fathers.** The difference in fair or poor mental health between non-employed and full-time employed fathers (6.7 points, 95% CI [4.4, 8.9]) was more than twice that among mothers (2.8 points, 95% CI [1.7, 3.9]); the difference between them was −3.8 points, 95% CI [−6.3, −1.3]. Full-time employed fathers reported fair or poor mental health about half as often as full-time employed mothers (3.4%–4.4% vs. 6.7%–7.4%).
+**Fathers.** The difference in fair or poor mental health between non-employed and full-time employed fathers (6.6 points, 95% CI [4.4, 8.8]) was more than twice that among mothers (2.8 points, 95% CI [1.7, 3.9]); the difference between them was −3.8 points, 95% CI [−6.3, −1.3]. Full-time employed fathers reported fair or poor mental health about half as often as full-time employed mothers (3.4%–4.4% vs. 6.7%–7.4%).
 
 ## Discussion
 
@@ -179,11 +179,15 @@ Ahmad, F., Jhajj, A. K., Stewart, D. E., Burghardt, M., & Bierman, A. S. (2014).
 
 Barnett, R. C., & Hyde, J. S. (2001). Women, men, work, and family: An expansionist theory. *American Psychologist, 56*(10), 781–796. https://doi.org/10.1037/0003-066X.56.10.781
 
+Barnard, J., & Rubin, D. B. (1999). Small-sample degrees of freedom with multiple imputation. *Biometrika, 86*(4), 948–955. https://doi.org/10.1093/biomet/86.4.948 [VERIFY]
+
 Binder, D. A. (1983). On the variances of asymptotically normal estimators from complex surveys. *International Statistical Review, 51*(3), 279–292. https://doi.org/10.2307/1402588
 
 Buehler, C., & O'Brien, M. (2011). Mothers' part-time employment: Associations with mother and family well-being. *Journal of Family Psychology, 25*(6), 895–906. https://doi.org/10.1037/a0025993
 
 Bullinger, L. R. (2019). The effect of paid family leave on infant and parental health in the United States. *Journal of Health Economics, 66*, 101–116. https://doi.org/10.1016/j.jhealeco.2019.05.006
+
+Cameron, A. C., & Miller, D. L. (2015). A practitioner's guide to cluster-robust inference. *Journal of Human Resources, 50*(2), 317–372. https://doi.org/10.3368/jhr.50.2.317 [VERIFY]
 
 Chatterji, P., & Markowitz, S. (2005). Does the length of maternity leave affect maternal health? *Southern Economic Journal, 72*(1), 16–[VERIFY end page]. https://doi.org/10.2307/20062092
 
@@ -212,6 +216,8 @@ Irish, A. M., White, J. S., Modrek, S., & Hamad, R. (2021). Paid family leave an
 Klumb, P. L., & Lampert, T. (2004). Women, work, and well-being 1950–2000: A review and methodological critique. *Social Science & Medicine, 58*(6), 1007–1024. https://doi.org/10.1016/S0277-9536(03)00262-4
 
 Lee, B. C., Modrek, S., White, J. S., Batra, A., Collin, D. F., & Hamad, R. (2020). The effect of California's paid family leave policy on parent health: A quasi-experimental study. *Social Science & Medicine, 251*, Article 112915. https://doi.org/10.1016/j.socscimed.2020.112915
+
+Li, K. H., Raghunathan, T. E., & Rubin, D. B. (1991). Large-sample significance levels from multiply imputed data using moment-based statistics and an *F* reference distribution. *Journal of the American Statistical Association, 86*(416), 1065–1073. https://doi.org/10.1080/01621459.1991.10475152 [VERIFY]
 
 Lumley, T. (2004). Analysis of complex survey samples. *Journal of Statistical Software, 9*(8). https://doi.org/10.18637/jss.v009.i08
 
