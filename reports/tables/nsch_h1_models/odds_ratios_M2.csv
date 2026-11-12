@@ -1,0 +1,25 @@
+term,odds_ratio,ci_low,ci_high,p_value
+EMP: Employed part-time,1.04,0.89,1.2,0.6489
+"EMP: Not employed, looking for work",1.33,1.08,1.64,0.0077
+"EMP: Not employed, not looking (incl. retired)",1.2,1.0,1.45,0.0454
+BAND: 6-11,0.93,0.8,1.08,0.3527
+BAND: 12-17,0.87,0.74,1.01,0.0755
+YEAR: 2024,0.93,0.82,1.07,0.3091
+YEAR: 2025,0.92,0.79,1.08,0.3045
+INCOME: <100% FPL,0.98,0.76,1.27,0.8754
+INCOME: 100-199% FPL,1.1,0.9,1.35,0.3388
+INCOME: 200-399% FPL,1.2,1.01,1.44,0.0432
+EDUCATION: High school or less,0.81,0.67,0.98,0.027
+"EDUCATION: Some college, vocational or associate",1.09,0.94,1.27,0.2469
+EDUCATION: Graduate degree,0.93,0.79,1.11,0.4383
+MARITAL: Living with a partner,1.29,1.05,1.59,0.0134
+MARITAL: Never married,1.93,1.6,2.33,0.0
+"MARITAL: Divorced, separated or widowed",1.79,1.48,2.16,0.0
+KIDS: 2 children,1.11,0.96,1.28,0.1553
+KIDS: 3 children,1.09,0.92,1.3,0.3172
+KIDS: 4+ children,1.07,0.85,1.35,0.5431
+AGE: 18-24,2.73,1.84,4.04,0.0
+AGE: 25-34,1.37,1.18,1.59,0.0
+AGE: 45+,0.68,0.57,0.8,0.0
+PHYS: Good,6.65,5.75,7.69,0.0
+PHYS: Fair or poor,38.71,32.55,46.04,0.0

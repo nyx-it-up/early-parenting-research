@@ -1,0 +1,19 @@
+parent,band,employment,n,fair_poor_pct,ci_low_pct,ci_high_pct,flags
+mothers,0-5,Employed full-time,16522,7.4,6.6,8.3,
+mothers,0-5,Employed part-time,4596,8.4,7.0,10.0,
+mothers,0-5,"Not employed (looking, not looking or retired)",6770,9.6,8.3,11.1,
+mothers,6-11,Employed full-time,16243,6.7,5.9,7.7,
+mothers,6-11,Employed part-time,4328,7.6,6.2,9.2,
+mothers,6-11,"Not employed (looking, not looking or retired)",5049,10.9,9.4,12.7,
+mothers,12-17,Employed full-time,23227,6.7,6.1,7.4,
+mothers,12-17,Employed part-time,5442,6.9,5.8,8.1,
+mothers,12-17,"Not employed (looking, not looking or retired)",5870,12.1,10.2,14.3,
+fathers,0-5,Employed full-time,12935,4.4,3.8,5.1,
+fathers,0-5,Employed part-time,389,4.6,1.6,12.3,CI>1.2x estimate
+fathers,0-5,"Not employed (looking, not looking or retired)",669,8.0,5.5,11.6,
+fathers,6-11,Employed full-time,11416,3.5,3.0,4.1,
+fathers,6-11,Employed part-time,422,10.4,6.2,17.0,
+fathers,6-11,"Not employed (looking, not looking or retired)",775,12.8,9.5,17.1,
+fathers,12-17,Employed full-time,14874,3.4,2.9,4.1,
+fathers,12-17,Employed part-time,573,6.5,3.5,11.6,CI>1.2x estimate
+fathers,12-17,"Not employed (looking, not looking or retired)",1497,13.6,8.8,20.4,

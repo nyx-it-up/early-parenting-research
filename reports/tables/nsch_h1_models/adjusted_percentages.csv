@@ -1,0 +1,13 @@
+model,employment,adjusted_pct,ci_low_pct,ci_high_pct
+M0,Employed full-time,7.0,6.5,7.4
+M0,Employed part-time,7.5,6.7,8.3
+M0,"Not employed, looking for work",13.6,11.9,15.4
+M0,"Not employed, not looking (incl. retired)",9.5,8.3,10.7
+M1,Employed full-time,7.3,6.8,7.8
+M1,Employed part-time,7.3,6.5,8.0
+M1,"Not employed, looking for work",10.3,8.9,11.7
+M1,"Not employed, not looking (incl. retired)",10.0,8.7,11.2
+M2,Employed full-time,7.6,7.1,8.1
+M2,Employed part-time,7.8,7.1,8.6
+M2,"Not employed, looking for work",9.4,8.1,10.6
+M2,"Not employed, not looking (incl. retired)",8.7,7.7,9.8

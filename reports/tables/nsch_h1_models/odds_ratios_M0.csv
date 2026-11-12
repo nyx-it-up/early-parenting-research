@@ -1,0 +1,8 @@
+term,odds_ratio,ci_low,ci_high,p_value
+EMP: Employed part-time,1.09,0.95,1.24,0.2261
+"EMP: Not employed, looking for work",2.11,1.79,2.49,0.0
+"EMP: Not employed, not looking (incl. retired)",1.4,1.19,1.64,0.0
+BAND: 6-11,0.97,0.85,1.11,0.6882
+BAND: 12-17,0.99,0.87,1.13,0.9151
+YEAR: 2024,0.94,0.83,1.06,0.2954
+YEAR: 2025,0.91,0.8,1.05,0.1879

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Room: Mothers, Fathers, Work and Mental Health</title>
+  <meta name="description" content="Every parent who answered the 2023–2025 National Survey of Children's Health, one circle each: an interactive story about employment and mental health.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="people.css">
+</head>
+<body>
+  <button class="pill theme-toggle" type="button" id="theme-toggle" aria-label="Switch between light and dark mode">Dark mode</button>
+  <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="kicker">National Survey of Children's Health · 2023–2025</p>
+    <h1>The Room</h1>
+    <p class="dek">88,047 mothers and 43,550 fathers, one circle each. One question about how they are really doing. And a common worry about who is struggling.</p>
+    <p class="byline">Data story · November 2026 · <a href="index.html">See the chart version</a></p>
+    <p class="scroll-cue">Scroll down ↓</p>
+  </header>
+
+  <main>
+    <section class="prose">
+      <p class="one-liner">Picture a mother with a baby and a full-time job.</p>
+      <p class="one-liner">Up at 5:30. Day care drop-off. A full day of work. Bath, bottle, bed.</p>
+      <p class="one-liner">It's easy to assume she is the one most likely to be struggling.</p>
+      <p>To check, let's fill a room with every mother who answered the <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a> in 2023, 2024 or 2025. Hover over or tap any circle to meet her.</p>
+    </section>
+
+    <div data-intro data-shot="intro"></div>
+
+    <section class="room-story" id="room" aria-label="A room of every mother who answered">
+      <div class="room-stage">
+        <canvas class="room-canvas" aria-hidden="true"></canvas>
+        <svg class="room-labels" aria-hidden="true"></svg>
+        <p class="sr-only room-summary" aria-live="polite"></p>
+        <div class="legend room-legend"></div>
+        <div class="view-switch" role="group" aria-label="Jump to a view"></div>
+      </div>
+
+      <div class="room-steps">
+        <div class="step"><p>Every circle in this room is one real mother who answered the survey.</p><p>There are <span data-stat="mothersCount"></span> of them.</p></div>
+        <div class="step"><p>Each was asked: <em>how would you rate your own mental or emotional health?</em></p><p>Most say excellent or very good. <span class="accent-word"><span data-stat="mothersFp"></span> in 100 say fair or poor</span>.</p><p>Read the circle like a pizza: each slice is one survey year, sized by how many mothers answered that year, and each ring is one answer, from excellent in the middle to poor at the crust.</p></div>
+        <div class="step"><p>Line them up by year and answer, and the pattern holds steady: in 2023, 2024 and 2025 alike, most mothers say excellent or very good, and a short column says poor.</p><p>Each year's columns differ in height because the survey reached a different number of mothers each year; the pattern within each year is what matters.</p></div>
+        <div class="step"><p>Now let them sort themselves by what they do all day.</p><p>In each group, ratings run from excellent in the center to poor at the rim, so the size of each colored ring shows how common that answer is.</p></div>
+        <div class="step"><p>The orange-red rim is thickest among mothers <strong>looking for work</strong>: <span data-stat="lookingFp"></span> in 100, almost twice the rate of mothers with full-time jobs (<span data-stat="fullTimeFp"></span> in 100).</p><p>These mothers are poorer and less often married, which explains part of the gap, but not all of it.</p></div>
+        <div class="step"><p>Now look at the other end of the scale: the blue centers, mothers who say <strong>excellent or very good</strong>.</p><p>Mothers looking for work are behind here too: <span data-stat="lookingHigh"></span> in 100, compared with <span data-stat="fullTimeHigh"></span> in 100 of full-time mothers.</p><p>Mothers not looking for work are different: <span data-stat="notLookingHigh"></span> in 100 say excellent or very good, about the same as full-time mothers, even though more of them also say fair or poor (<span data-stat="notLookingFp"></span> in 100). Their group is more spread out, not simply worse off.</p></div>
+        <div class="step"><p>Now split each group by the age of the child.</p><p>Mothers who've stepped out of work look much like working mothers while their kids are small: <span data-stat="notLookingYoungFp"></span> in 100.</p><p>With a teenager at home, it's <span data-stat="notLookingTeenFp"></span> in 100.</p></div>
+        <div class="step"><p>Now keep only the <span data-stat="babyCount"></span> mothers whose child is <strong>under 2</strong>.</p><p>Here is the mother from the beginning: a full-time job and a baby at home. <span data-stat="babyFullTimeFp"></span> in 100 of them say fair or poor, no more than any other group. Mothers of babies looking for work: <span data-stat="babyLookingFp"></span> in 100.</p></div>
+        <div class="step step-explore" data-parent="mothers">
+          <p><strong>Where would you stand?</strong> Pick your situation to find the mothers like you.</p>
+          <div class="controls" data-choice="group" role="group" aria-label="Your work"><span class="control-label">Work</span></div>
+          <div class="controls" data-choice="age" role="group" aria-label="Your child's age"><span class="control-label">Child</span></div>
+          <p class="explore-result">Pick both to see their answers.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>And the fathers?</h2>
+      <p>The survey also heard from 43,550 fathers. Putting them in the room shows whether these patterns are about mothers or about parents in general.</p>
+    </section>
+
+    <section class="room-story" id="dads-room" aria-label="Mothers and fathers who answered">
+      <div class="room-stage">
+        <canvas class="room-canvas" aria-hidden="true"></canvas>
+        <svg class="room-labels" aria-hidden="true"></svg>
+        <p class="sr-only room-summary" aria-live="polite"></p>
+        <div class="legend room-legend"></div>
+        <div class="view-switch" role="group" aria-label="Jump to a view"></div>
+      </div>
+
+      <div class="room-steps">
+        <div class="step"><p>Here are the fathers: <span data-stat="fathersCount"></span> circles.</p><p><span class="accent-word"><span data-stat="fathersFp"></span> in 100 say fair or poor</span>, compared with <span data-stat="mothersFp"></span> in 100 mothers.</p></div>
+        <div class="step"><p>Now mothers and fathers side by side, sorted by work: in each pair the left column is mothers, the right one fathers (squares).</p><p>Each column is stretched to the same height, 100% of its group, with excellent at the bottom and poor at the top, so the shares compare even though mothers far outnumber fathers. The number above each column is the weighted share saying fair or poor.</p><p>Fathers with full-time jobs have the thinnest orange-red tops in the room: <span data-stat="fathersFullTimeFp"></span> in 100.</p></div>
+        <div class="step"><p>But look at the fathers who are out of work.</p><p>Among fathers looking for work, <span data-stat="fathersLookingFp"></span> in 100 say fair or poor; among those not looking, <span data-stat="fathersNotLookingFp"></span> in 100.</p><p>Fathers start from a lower point, so relative to full-time work the rise is much steeper for them: about two and a half to three and a half times as high, compared with at most about twice for mothers. Research in Europe links this to the weight of the breadwinner role, though one U.S. study found no difference between men and women.</p></div>
+        <div class="step step-explore" data-parent="fathers">
+          <p><strong>Where would you stand?</strong> Pick your situation to find the fathers like you.</p>
+          <div class="controls" data-choice="group" role="group" aria-label="Your work"><span class="control-label">Work</span></div>
+          <div class="controls" data-choice="age" role="group" aria-label="Your child's age"><span class="control-label">Child</span></div>
+          <p class="explore-result">Pick both to see their answers.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>What the room can and can't tell us</h2>
+      <p>The parents struggling most in this survey are the ones out of work, especially fathers, and money and family circumstances explain only part of it.</p>
+      <p>Full-time work, even with a baby at home, does not go with worse mental health for mothers here.</p>
+      <p>But a room is a snapshot. It can't show whether work shapes parents' mental health or mental health shapes work; most likely both. And this survey has no measure of postpartum depression or anxiety, no work hours, and no record of when mothers went back to work.</p>
+    </section>
+
+    <div data-snapshot data-shot="snapshot"></div>
+  </main>
+
+  <footer class="methods" id="methods">
+    <h2>Methodology</h2>
+    <p><strong>Every circle is a real respondent.</strong> The room shows each mother (88,047) and father (43,550) who answered the National Survey of Children's Health in 2023, 2024 or 2025 as Adult 1, is the sampled child's biological or adoptive parent, and gave both an employment status and a mental health rating. Hovering shows that person's own answers: work, child's age, mental health rating and survey year. No names, IDs or locations are included; the data are from the public-use files.</p>
+    <p><strong>Circles are counted as people; percentages are weighted.</strong> The survey samples some groups more than others (for example, families with young children in 2023), so counting circles does not exactly match the U.S. population. Every percentage in the text uses the survey weights, as in the main analysis. Because the weights describe children, "8 in 100 mothers" means the mothers of 8 in 100 children. Groups with fewer than 30 respondents are not reported.</p>
+    <p><strong>Layout.</strong> Every circle sits the same distance from its neighbors. Within each group, parents are placed from "excellent" in the center to "poor" at the rim, so the area of each color is proportional to the number of respondents.</p>
+    <p><strong>What this is not.</strong> These are unadjusted comparisons from a cross-sectional survey, not effects of employment. The <a href="index.html">chart version</a> shows the adjusted models and confidence intervals.</p>
+    <details class="table-view"><summary>Show the numbers behind the room</summary><div id="room-table"></div></details>
+    <h3>Data citation</h3>
+    <p>U.S. Census Bureau. (2025, 2026). <em>National Survey of Children's Health: Topical public use files, 2023–2025</em> [Data sets]. https://www.census.gov/programs-surveys/nsch/data/datasets.html</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="data.js"></script>
+  <script src="respondents.js"></script>
+  <script src="shared.js"></script>
+  <script src="people.js"></script>
+  <script src="snapshot.js"></script>
+  <script src="intro.js"></script>
+  <script src="stats101.js"></script>
+</body>
+</html>

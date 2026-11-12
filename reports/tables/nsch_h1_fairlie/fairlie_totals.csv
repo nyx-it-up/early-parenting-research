@@ -1,0 +1,3 @@
+comparison,n_group,n_full_time,raw_gap_pts,explained_pts,unexplained_pts,explained_pct_of_gap
+"Not employed, looking for work vs. Employed full-time",4322,55544,6.7,2.7,4.0,41.0
+"Not employed, not looking (incl. retired) vs. Employed full-time",13222,55544,2.5,-0.1,2.6,-3.0

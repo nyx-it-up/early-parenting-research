@@ -1,0 +1,10 @@
+model,employment,gap_vs_full_time_pts,gap_ci_low_pts,gap_ci_high_pts
+M0,Employed part-time,0.6,-0.4,1.5
+M0,"Not employed, looking for work",6.7,4.9,8.5
+M0,"Not employed, not looking (incl. retired)",2.5,1.2,3.8
+M1,Employed part-time,-0.0,-0.9,0.9
+M1,"Not employed, looking for work",3.0,1.5,4.5
+M1,"Not employed, not looking (incl. retired)",2.7,1.3,4.1
+M2,Employed part-time,0.2,-0.7,1.1
+M2,"Not employed, looking for work",1.8,0.4,3.2
+M2,"Not employed, not looking (incl. retired)",1.1,-0.0,2.3

@@ -1,0 +1,13 @@
+exposure,PFL_AT_BIRTH,EMP3,n,states,PFL_IN_YEAR
+PFL_AT_BIRTH,False,Employed full-time,2934,10,
+PFL_AT_BIRTH,False,Employed part-time,867,10,
+PFL_AT_BIRTH,False,"Not employed (looking, not looking or retired)",1517,10,
+PFL_AT_BIRTH,True,Employed full-time,690,10,
+PFL_AT_BIRTH,True,Employed part-time,195,10,
+PFL_AT_BIRTH,True,"Not employed (looking, not looking or retired)",276,10,
+PFL_IN_YEAR,,Employed full-time,2980,10,False
+PFL_IN_YEAR,,Employed part-time,874,10,False
+PFL_IN_YEAR,,"Not employed (looking, not looking or retired)",1534,10,False
+PFL_IN_YEAR,,Employed full-time,752,10,True
+PFL_IN_YEAR,,Employed part-time,228,10,True
+PFL_IN_YEAR,,"Not employed (looking, not looking or retired)",311,10,True
