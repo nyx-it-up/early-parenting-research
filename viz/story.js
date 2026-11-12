@@ -175,12 +175,12 @@
       merged.transition().duration(MOTION.duration).style("opacity", OPACITY.focus).attr("transform", position);
       merged.select("text.group-label").attr("x", gridSize / 2).attr("y", -UNITS.labelAbove).text((d) => d.label);
       merged.select("text.value-label").attr("x", gridSize / 2).attr("y", gridSize + UNITS.labelBelow)
-        .text((d) => `${Math.round(d.pct)} in ${UNITS.perGrid}`);
+        .text((d) => (d.lit ? `${Math.round(d.pct)} in ${UNITS.perGrid}` : ""));
       merged.select("rect.hit")
         .attr("x", -UNITS.hitPadding).attr("y", -UNITS.hitPadding)
         .attr("width", gridSize + 2 * UNITS.hitPadding).attr("height", gridSize + 2 * UNITS.hitPadding);
       merged.each(function (group) {
-        const on = Math.round(group.pct);
+        const on = group.lit ? Math.round(group.pct) : 0; // unlit grids keep their real value for the tooltip
         d3.select(this).selectAll("circle.dot")
           .attr("r", cell * UNITS.dotRadius)
           .attr("cx", (i) => (i % UNITS.perRow) * cell + cell / 2)
@@ -434,7 +434,8 @@
         return {
           key: name,
           label: name,
-          pct: view.highlight ? row.pct : 0,
+          pct: row.pct,
+          lit: view.highlight,
           detail: `${childLabel(view.band)}. ${ciText(row.ci)}; ${fmtInt(row.n)} mothers surveyed.`,
         };
       }));
@@ -727,7 +728,7 @@
       const names = step === 0 ? [EMPLOYMENT[0]] : EMPLOYMENT;
       chart.update(names.map((name) => {
         const row = data.find((r) => r.group === name);
-        return { key: name, label: name, pct: row.pct, detail: `${ciText(row.ci)}; ${fmtInt(row.n)} mothers of children under 2.` };
+        return { key: name, label: name, pct: row.pct, lit: true, detail: `${ciText(row.ci)}; ${fmtInt(row.n)} mothers of children under 2.` };
       }));
       title.textContent = step === 0
         ? "100 families with a child under 2 and a mother working full-time"

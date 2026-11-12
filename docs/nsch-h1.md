@@ -23,7 +23,7 @@ Everything follows the decisions in `docs/nsch-feasibility.md` Section 5.
   - Full-time.
   - Part-time.
   - Not employed, looking for work.
-  - Not employed, not looking. This includes 882 retired mothers; leaving them out changes the results by at most 0.3 points.
+  - Not employed, not looking. This includes 882 retired mothers. Leaving them out changes the fair/poor percentages and gaps by at most 0.3 points in the primary bands (see Sensitivity analyses).
 
   "Working without pay" (1,361 mothers) and missing employment (821) are left out.
 - **Child age bands:** the sampled child's age (primary 0–5 / 6–11 / 12–17, and secondary with 0–2 / 3–5). The youngest child's band is a sensitivity analysis.
@@ -69,7 +69,7 @@ Bold: the 95% CI excludes zero.
 
 - **0–2 vs. 3–5** (`…_secondary.csv`): the "looking for work" gap appears in both (+6.9 and +8.3 points). The "not looking" group does not differ from full-time in either (+1.4 and −1.1).
 - **Youngest child's band** (`…_youngest.csv`): the same pattern. Looking: +6.4 / +6.7 / +7.6 points. Not looking: +0.9 / +3.6 / +6.1 points.
-- **Retired mothers** (`nsch_h1.py` check): excluding them changes the "not looking" estimates by at most 0.3 points.
+- **Retired mothers** (`sensitivity_no_retired_*.csv`, from `nsch_h1.py`): Tables 1 and 2 are re-estimated without the retired mothers. Only the "not looking" group changes. Primary bands: fair/poor percentages and gaps change by at most 0.3 points (12–17: 12.1% → 12.4%, gap +5.4 → +5.7), but excellent/very good changes by up to 0.6 points (12–17: 65.4% → 64.8%). Youngest-child bands: changes up to 0.5 points for fair/poor (12–17 gap +6.1 → +6.6) and 1.0 point for excellent/very good. No conclusion changes. (The three-group check for mothers and fathers is in `docs/nsch-h8.md`.)
 
 ## Limitations of Part A
 
@@ -119,8 +119,10 @@ All models use the same 87,318 mothers: the Part A sample minus 729 mothers miss
 - **Weights:** `FWC` / 3.
 - **Standard errors:** Taylor linearization (Binder, 1983), strata = year × state × stratum, each household its own PSU, with mothers as a domain of the full file. Implemented in `src/survey_logit.py`, because statsmodels has no survey-design regression. **Checks:** the coefficients equal statsmodels' weighted GLM (difference < 10⁻¹⁴), and an intercept-only model reproduces the design-based SE of the Part A share exactly.
 - **Adjusted percentages:** predictive margins. Their SEs include both the coefficient uncertainty and the variation of covariates across records, like Stata's `svy` margins.
-- **Income imputations:** 19.7% of children's families have imputed income (`FPL_IF`). Each model is fitted on all six imputations and combined with Rubin's rules (Rubin, 1987).
-- **Interaction test:** Wald χ² of the six employment × band terms, on the Rubin-combined estimates.
+- **Income imputations:** 19.7% of children's families have imputed income (`FPL_IF`). Each model is fitted on all six imputations and combined with Rubin's rules (Rubin, 1987). Confidence intervals and p-values use t critical values with Barnard–Rubin (1999) degrees of freedom.
+- **Interaction test:** the D1 multivariate Wald F test for multiply imputed data (Li, Raghunathan & Rubin, 1991) of the six employment × band terms.
+- **Sample rule:** every model, Table 1 and the H8, under-2 and state-policy models use one complete-case rule (`has_covariates()` in `src/nsch_h1_models.py`: marital status, age and physical health answered).
+- **Not estimable:** a model whose information matrix is singular or that does not converge is written as "not estimable" instead of stopping the script.
 
 ## Results
 
@@ -138,7 +140,7 @@ Adjusted percentages in M1: full-time 7.3%, part-time 7.3%, looking 10.3%, not l
 
 ### Gaps by child age band, M1x (`adjusted_gaps_by_band.csv`)
 
-The employment × band terms are jointly significant (χ² = 20.2, 6 df, p = 0.003; `interaction_test.csv`).
+The employment × band terms are jointly significant (D1 F(6, 1.2 × 10⁸) = 3.37, p = 0.003; `interaction_test.csv`). The denominator df is very large because the six imputations give almost identical interaction estimates, so the test is practically the same as the earlier χ²(6) = 20.2.
 
 | Mother's employment | Child 0–5 | Child 6–11 | Child 12–17 |
 |---|---|---|---|
@@ -195,7 +197,7 @@ The employment × band terms are jointly significant (χ² = 20.2, 6 df, p = 0.0
 - **Unmeasured factors** (for example mental health history, partner support, childcare access, job loss experiences) may account for the remaining gaps.
 - **Adjusting for income may over-adjust.** Job loss lowers income, which may then affect mental health. M1 shows the gap beyond income differences, not a "true" gap.
 - **Covariate groupings** are chosen to keep groups large; finer groupings could change estimates slightly.
-- **The interaction test** uses Rubin-combined estimates with a χ² reference distribution, which is an approximation.
+- **The interaction test** (D1) assumes that the share of missing information is similar across the six terms (Li et al., 1991).
 - **Fairlie contributions** depend on the reference coefficients and have no design-based CIs.
 
 ## Next steps
@@ -213,5 +215,9 @@ Fairlie, R. W. (2005). An extension of the Blinder–Oaxaca decomposition techni
 Korn, E. L., & Graubard, B. I. (1998). *Analysis of health surveys*. Wiley. (As in `docs/nsch-feasibility.md`.)
 
 Lumley, T. (n.d.). *survey: Analysis of complex survey samples* [R package documentation]. (As in `docs/nsch-feasibility.md`.)
+
+Barnard, J., & Rubin, D. B. (1999). Small-sample degrees of freedom with multiple imputation. *Biometrika, 86*(4), 948–955. https://doi.org/10.1093/biomet/86.4.948 `[VERIFY]`
+
+Li, K. H., Raghunathan, T. E., & Rubin, D. B. (1991). Large-sample significance levels from multiply imputed data using moment-based statistics and an *F* reference distribution. *Journal of the American Statistical Association, 86*(416), 1065–1073. https://doi.org/10.1080/01621459.1991.10475152 `[VERIFY]`
 
 Rubin, D. B. (1987). *Multiple imputation for nonresponse in surveys*. Wiley. (As in `docs/nsch-feasibility.md`.)

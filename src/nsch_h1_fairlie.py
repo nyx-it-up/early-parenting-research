@@ -34,7 +34,8 @@ import numpy as np
 import pandas as pd
 
 from nsch_feasibility import DATA_FILE, prepare
-from nsch_h1_models import CATEGORIES, IMPUTATIONS, add_covariates, design_matrix, income_group
+from nsch_h1_models import (CATEGORIES, IMPUTATIONS, add_covariates, design_matrix, has_covariates, income_group,
+                            is_mother)
 from survey_logit import fit_logit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -101,9 +102,7 @@ def decompose_once(group_a, group_b, rng):
 
 def main():
     data = add_covariates(prepare(pd.read_parquet(DATA_FILE))).reset_index(drop=True)
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
-    complete = (is_mother & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
-                & data["MARITAL"].notna() & data["AGE"].notna() & data["PHYS"].notna())
+    complete = is_mother(data) & data["EMP"].notna() & data["A1_MENTHEALTH"].notna() & has_covariates(data)
     rng = np.random.default_rng(SEED)
 
     totals = []

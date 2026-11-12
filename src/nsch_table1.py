@@ -1,7 +1,8 @@
 """Table 1 for the manuscript: characteristics of mothers by employment status (NSCH 2023-2025).
 
 Weighted column percentages (FWC / 3) and unweighted n for the H1 model sample
-(mothers with employment, mental health, marital status and age answers).
+(mothers with employment and mental health answers and every model covariate:
+marital status, age and physical health; has_covariates() in nsch_h1_models.py).
 Income-to-poverty groups are averaged across the six imputations (FPL_I1-I6).
 
 Usage (from the repository root):
@@ -13,7 +14,7 @@ from pathlib import Path
 import pandas as pd
 
 from nsch_feasibility import DATA_FILE, prepare
-from nsch_h1_models import CATEGORIES, IMPUTATIONS, add_covariates, income_group
+from nsch_h1_models import CATEGORIES, IMPUTATIONS, add_covariates, has_covariates, income_group, is_mother
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_FILE = ROOT / "reports" / "tables" / "manuscript" / "table1_characteristics.csv"
@@ -35,9 +36,8 @@ def weighted_percent(frame, column, category):
 
 def main():
     data = add_covariates(prepare(pd.read_parquet(DATA_FILE)))
-    is_mother = (data["A1_SEX"] == 2) & (data["A1_RELATION"] == 1)
-    sample = data[is_mother & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
-                  & data["MARITAL"].notna() & data["AGE"].notna()].copy()
+    sample = data[is_mother(data) & data["EMP"].notna() & data["A1_MENTHEALTH"].notna()
+                  & has_covariates(data)].copy()
 
     groups = ["All mothers"] + CATEGORIES["EMP"]
     rows = [{"characteristic": "Unweighted n", "category": ""}]

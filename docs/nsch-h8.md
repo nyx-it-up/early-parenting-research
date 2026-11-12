@@ -14,10 +14,10 @@ Same outcome, design and estimation as H1 (`docs/nsch-h1.md`), with these differ
 - **Parents:** Adult 1 is the sampled child's biological or adoptive parent (`A1_RELATION = 1`). Mothers: `A1_SEX = 2` (88,047 with employment and mental health answers). Fathers: `A1_SEX = 1` (43,550).
 - **Employment, collapsed** (`docs/nsch-feasibility.md` decision 11): full-time; part-time; not employed (looking, not looking or retired). "Working without pay" and missing answers are left out. The main comparison is **not employed vs. full-time**, because about 90% of fathers work full-time. Part-time is shown with reliability flags.
 - **Outcome:** the parent's self-rated mental or emotional health is fair or poor (`A1_MENTHEALTH` 4–5).
-- **Adjusted models:** the H1 main model (M1: income across six imputations, education, marital status, number of children, age, child age band, survey year), fitted **separately for mothers and fathers**. That is equivalent to letting every covariate's association differ by sex. Model samples: 87,520 mothers and 43,236 fathers, after dropping those missing marital status or age.
+- **Adjusted models:** the H1 main model (M1: income across six imputations, education, marital status, number of children, age, child age band, survey year), fitted **separately for mothers and fathers**. That is equivalent to letting every covariate's association differ by sex. Model samples: 87,318 mothers and 43,157 fathers, after dropping those missing marital status, age or physical health. This is the same complete-case rule as every H1 model, applied to fathers' own answers (`A1_MARITAL`, `A1_AGE`, `A1_PHYSHEALTH`), even though physical health is not a covariate in M1.
 - **Difference between mothers and fathers:** mothers' gap minus fathers' gap (a "difference in differences"). Mothers and fathers are separate domains of the same sample, so the variance comes from the difference of the records' linearized contributions, keeping the shared strata in the calculation.
 - **By band:** the same models with employment × band terms.
-- **Sensitivity:** retired parents left out (870 mothers; 1,193 fathers, mostly fathers of teenagers).
+- **Sensitivity:** retired parents left out (865 mothers; 1,192 fathers in the model samples, mostly fathers of teenagers). This three-group check is separate from the four-group check for mothers in `docs/nsch-h1.md`.
 
 ## Results
 
@@ -44,7 +44,7 @@ Percentage points, 95% CI. M1 covariates.
 
 | Employment vs. full-time | Mothers | Fathers | Difference (mothers − fathers) |
 |---|---|---|---|
-| Not employed | **+2.8** (1.7 to 3.9) | **+6.7** (4.4 to 8.9) | **−3.8** (−6.3 to −1.3) |
+| Not employed | **+2.8** (1.7 to 3.9) | **+6.6** (4.4 to 8.8) | **−3.8** (−6.3 to −1.3) |
 | Part-time | 0.0 (−0.9 to 0.9) | +2.3 (0.0 to 4.6) | −2.3 (−4.8 to 0.1) |
 
 ### By child age band, adjusted (`partB_adjusted_gaps_by_band.csv`)
@@ -53,17 +53,17 @@ Gap for not employed vs. full-time:
 
 | | Child 0–5 | Child 6–11 | Child 12–17 |
 |---|---|---|---|
-| Mothers | +0.7 (−0.9 to 2.3) | **+3.2** (1.4 to 5.0) | **+4.6** (2.5 to 6.6) |
-| Fathers | +3.0 (0.0 to 6.1) | **+7.6** (3.9 to 11.2) | **+7.9** (3.9 to 12.0) |
-| Difference | −2.3 (−5.8 to 1.1) | **−4.4** (−8.4 to −0.3) | −3.4 (−7.9 to 1.2) |
+| Mothers | +0.7 (−0.9 to 2.3) | **+3.2** (1.3 to 5.0) | **+4.6** (2.5 to 6.6) |
+| Fathers | +2.9 (−0.1 to 6.0) | **+7.5** (3.9 to 11.2) | **+7.9** (3.9 to 12.0) |
+| Difference | −2.2 (−5.7 to 1.2) | **−4.3** (−8.4 to −0.3) | −3.4 (−7.9 to 1.2) |
 
 ### Sensitivity: retired parents left out (`sensitivity_adjusted_gaps_no_retired.csv`)
 
-Not employed vs. full-time: mothers +2.9 (1.8 to 4.0), fathers **+8.7** (5.5 to 11.9), difference **−5.8** (−9.2 to −2.4). Retired fathers dilute the fathers' gap, so leaving them out **widens** the mother-father difference.
+Not employed vs. full-time: mothers +2.9 (1.7 to 4.0), fathers **+8.7** (5.5 to 11.9), difference **−5.8** (−9.2 to −2.5). Retired fathers dilute the fathers' gap, so leaving them out **widens** the mother-father difference.
 
 ## What the results show
 
-1. **For non-employment, mothers and fathers differ.** After adjustment, the mental health gap between non-employed and full-time parents is **more than twice as large for fathers** (+6.7 points) as for mothers (+2.8). The difference (−3.8 points) excludes zero, and it widens when retired parents are left out.
+1. **For non-employment, mothers and fathers differ.** After adjustment, the mental health gap between non-employed and full-time parents is **more than twice as large for fathers** (+6.6 points) as for mothers (+2.8). The difference (−3.8 points) excludes zero, and it widens when retired parents are left out.
 2. **Relative to their baseline, the fathers' gap is even larger.** Full-time fathers start at about 3.5–4.4%, so non-employed fathers have roughly 2–4 times the rate of full-time fathers. Non-employed mothers have about 1.3–1.8 times the rate of full-time mothers.
 3. **By band,** the pattern is the same in every band. The mother-father difference is clearest for children 6–11. The band-specific differences have wide intervals, so the data do not show that the mother-father difference changes with child age.
 4. **Part-time:** no gap for mothers. For fathers, a borderline gap (+2.3, CI 0.0 to 4.6). Part-time fathers are few (389–573 per band) and two of three band estimates are flagged, so this is not interpreted further.

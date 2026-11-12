@@ -368,7 +368,7 @@
         run: (c, d) => c.series.forEach((s) => { show(s.path, d); show(s.name, d); }) },
       { say: "Let the gap differ by the child's age, and the lines bend to the study's estimates.",
         run: (c, d) => c.bend(d) },
-      { say: "Is the bending more than noise? A Wald test compares the two models: χ²(6) = 20.2, p = .003. The gaps do change with the child's age.",
+      { say: "Is the bending more than noise? A Wald test compares the two models: F(6, 1.2 × 10⁸) = 3.37, p = .003. The gaps do change with the child's age.",
         run: () => {} },
     ],
   };
@@ -520,7 +520,7 @@
       ["models", "Adjusted models", "Survey-weighted logistic regression, M0 to M2."],
       ["margins", "Adjusted percentages", "Predictive margins: the scale every gap in the story is on."],
       ["imputations", "Six incomes", "Multiple imputation of income, combined with Rubin's rules."],
-      ["interaction", "Age interaction", "Employment × child age, Wald χ²(6) = 20.2, p = .003."],
+      ["interaction", "Age interaction", "Employment × child age, Wald F(6, 1.2 × 10⁸) = 3.37, p = .003."],
       ["reliability", "Reliability rules", "NSCH guidance on small groups."],
     ],
     exploratory: [
