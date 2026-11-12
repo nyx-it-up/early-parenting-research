@@ -17,8 +17,8 @@ Open either page in a browser with its full path, for example `file:///C:/Users/
 
 | File | What it is |
 |---|---|
-| `style.css` | Design tokens (colors with `light-dark()`, type, spacing, radii, motion), shared layout and the snapshot illustration |
-| `shared.js` | Helpers used by both pages: formatting, tooltip, legend, data table, scroll trigger, theme toggle |
+| `global.css` | Design tokens (colors with `light-dark()`, type, spacing, radii, motion), shared layout and the snapshot illustration |
+| `global.js` | Helpers used by both pages: formatting, tooltip, legend, data table, scroll trigger, theme toggle |
 | `intro.js` | Interactive introduction and methods: role strain vs. enhancement balance, earlier findings, sample funnel, method chips |
 | `stats101.js` | "The analyses": one short animated scene per method (weights, confidence intervals, adjusted models, predictive margins, imputations, age interaction, reliability, and the four exploratory analyses). Scenes tagged *Illustration* use made-up numbers to show how a method works; *Study results* scenes read `data.js`. |
 | `snapshot.js` | The illustrated "snapshot, not the whole story" summary |

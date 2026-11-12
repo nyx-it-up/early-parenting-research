@@ -1081,6 +1081,8 @@
        Escape fits, Enter zooms to the next group in turn. */
     let groupTurn = -1;
     stage.tabIndex = 0;
+    stage.setAttribute("role", "group");
+    stage.setAttribute("aria-roledescription", "interactive chart");
     stage.setAttribute("aria-label", ZOOM.keys);
     stage.addEventListener("keydown", (event) => {
       if (event.target !== stage) {
@@ -1161,7 +1163,7 @@
       const actions = [
         ["+", "Zoom in", () => glide().call(zoom.scaleBy, ZOOM.step)],
         ["−", "Zoom out", () => glide().call(zoom.scaleBy, 1 / ZOOM.step)],
-        ["Fit", "Show everything", () => glide().call(zoom.transform, d3.zoomIdentity)],
+        ["Fit", "Fit: show everything", () => glide().call(zoom.transform, d3.zoomIdentity)],
       ];
       for (const [label, name, act] of actions) {
         const button = document.createElement("button");
