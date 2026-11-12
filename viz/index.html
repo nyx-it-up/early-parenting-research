@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Who's Struggling? Mothers, Work and Mental Health</title>
+  <meta name="description" content="An interactive look at mothers' employment and self-rated mental health in the 2023–2025 National Survey of Children's Health.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="pill theme-toggle" type="button" id="theme-toggle" aria-label="Switch between light and dark mode">Dark mode</button>
+  <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="kicker">National Survey of Children's Health · 2023–2025</p>
+    <h1>Who's struggling?</h1>
+    <p class="dek">A common worry says that mothers working full-time with a baby at home are the ones most at risk. A survey of 88,047 U.S. mothers points somewhere else.</p>
+    <p class="byline">Data story · November 2026 · <a href="people.html">See the people version</a></p>
+    <p class="scroll-cue">Scroll down ↓</p>
+  </header>
+
+  <main>
+    <section class="prose">
+      <p class="one-liner">Picture a mother with a baby.</p>
+      <p class="one-liner">A full-time job. Not enough sleep. Day care pickup at 5:30.</p>
+      <p class="one-liner">It's easy to assume she's the one most likely to be struggling.</p>
+      <p>This story checks that picture against the <a href="https://www.census.gov/programs-surveys/nsch.html">National Survey of Children's Health</a>, which asks parents across the country about their children and themselves. One question asks the parent to rate their own mental or emotional health: excellent, very good, good, fair or poor.</p>
+      <p>Because the survey is about children, every number here is about children: how many have a mother who answers "fair" or "poor."</p>
+    </section>
+
+    <div data-intro data-shot="intro"></div>
+
+    <!-- Section 1: 100 children -->
+    <section class="scrolly" id="s-units" aria-label="Fair or poor mental health by mother's employment">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title" id="units-title">100 children under 6 whose mothers work full-time</p>
+          <p class="figure-subtitle">Each dot is one child out of 100</p>
+          <div class="controls" id="units-controls" role="group" aria-label="Child's age"></div>
+          <div class="legend" id="units-legend"></div>
+          <div class="chart" id="units-chart"></div>
+          <p class="source">Source: National Survey of Children's Health 2023–2025 (U.S. Census Bureau) | Weighted percentages, rounded to whole dots. Mothers who answered the survey.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="units-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Picture 100 children under 6 whose mothers work full-time.</p></div>
+        <div class="step"><p>For about 7 of them, mom rates her mental health as <span class="accent-word">fair or poor</span>.</p></div>
+        <div class="step"><p>Now sort children by what their mothers do.</p><p>Part-time work looks almost the same as full-time: about 8 in 100.</p><p>The group that stands out is mothers who are <strong>out of work and looking for a job</strong>: 15 in 100, about twice the full-time rate.</p></div>
+        <div class="step"><p>Mothers who aren't working and aren't looking look like full-time mothers while the kids are little.</p><p>Once children reach school age, that starts to change.</p></div>
+        <div class="step"><p>By the teenage years, children whose mothers are out of the labor force are as likely to have a mother in fair or poor mental health as children whose mothers are looking for work: about 12 in 100.</p><p>Use the age buttons to compare.</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Is it really about the job?</h2>
+      <p>These groups of mothers differ in more than work.</p>
+      <p>Mothers looking for work are about five times as likely as full-time working mothers to live below the poverty line (49% vs. 10%), and less likely to be married (51% vs. 70%). Both go with poorer mental health on their own.</p>
+      <p>So the next question is what's left when mothers with similar circumstances are compared.</p>
+    </section>
+
+    <!-- Section 2: adjusted gaps -->
+    <section class="scrolly" id="s-gaps" aria-label="Gaps compared with full-time mothers before and after adjustment">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title" id="gaps-title">How much higher than full-time mothers?</p>
+          <p class="figure-subtitle" id="gaps-subtitle">Difference in fair or poor mental health, percentage points, with 95% confidence intervals</p>
+          <div class="legend" id="gaps-legend"></div>
+          <div class="chart" id="gaps-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Survey-weighted logistic regression; adjusted percentages (predictive margins). Income combined across the survey's six imputations.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="gaps-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Here is each group's gap compared with full-time mothers, accounting only for the child's age and survey year.</p><p>Mothers looking for work: <strong>6.7 points</strong> higher.</p></div>
+        <div class="step"><p>Now compare mothers with similar incomes, education, marital status, number of kids and age.</p><p>The gap for mothers looking for work shrinks to <strong>3.0 points</strong>. Smaller, but it doesn't disappear.</p></div>
+        <div class="step"><p>For mothers not looking for work, the gap barely moves: 2.5 to 2.7 points.</p></div>
+        <div class="step"><p>Add mothers' physical health and both gaps shrink again, to 1.8 and 1.1 points.</p><p>But health can be a cause or a result of being out of work, so this view is a check, not the answer.</p></div>
+        <div class="step"><p>And the gap between part-time and full-time mothers stays at about zero in every version.</p></div>
+      </div>
+    </section>
+
+    <!-- Section 3: age and decomposition -->
+    <section class="scrolly" id="s-age" aria-label="Gaps by child's age">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title">The gap depends on the child's age</p>
+          <p class="figure-subtitle">Adjusted difference from full-time mothers, percentage points, by child's age</p>
+          <div class="legend" id="age-legend"></div>
+          <div class="chart" id="age-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Model with an employment × child age interaction (χ²(6) = 20.2, p = .003).</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="age-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>For mothers <strong>looking for work</strong>, the adjusted gap is about the same at every age: 2 to 4 points.</p></div>
+        <div class="step"><p>For mothers <strong>not looking for work</strong>, it grows with the child.</p><p>No gap when the child is under 6. About 3 points at ages 6–11. About 6 points with a teenager.</p></div>
+        <div class="step"><p>One reading: staying home with a young child is a common, often chosen arrangement. Being out of the labor force with a teenager more often comes with other circumstances, like health problems or caring for a family member.</p><p>The survey can't tell these apart.</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Inside the model</h2>
+      <p>Behind those adjusted gaps is one survey-weighted logistic regression. It estimates how each characteristic goes with the odds of fair or poor mental health while holding the others constant.</p>
+      <p>An odds ratio above 1 means higher odds than the comparison group; below 1, lower odds. A line that crosses 1 means the data can't distinguish the group from the comparison.</p>
+    </section>
+
+    <section class="scrolly" id="s-model" aria-label="Odds ratios from the main model">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title">Odds of fair or poor mental health</p>
+          <p class="figure-subtitle">Odds ratios with 95% CIs, log scale. Compared with: full-time; income 400%+ of the federal poverty level (FPL); bachelor's degree; married; age 35–44.</p>
+          <div class="legend" id="model-legend"></div>
+          <div class="chart" id="model-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Survey-weighted logistic regression, n = 87,318 mothers; income combined across six imputations. Also in the model, not shown: child's age, number of children, survey year (all in the table).</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="model-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Start with work. Holding everything else equal, mothers looking for work have about <strong>1.5 times the odds</strong> of fair or poor mental health of full-time mothers; mothers not looking, about 1.4 times.</p><p>Part-time work: 1.0, the same as full-time.</p></div>
+        <div class="step"><p>Money matters on its own. Every income group below 400% of the poverty line has about 1.6 to 1.7 times the odds of the highest group.</p></div>
+        <div class="step"><p>Marital status shows the biggest differences in the model. Never-married and divorced, separated or widowed mothers have more than twice the odds of married mothers.</p></div>
+        <div class="step"><p>Education and age matter too: odds are higher without a bachelor's degree and lower for mothers 45 and older.</p><p>All of these are associations; none of them shows what causes what.</p></div>
+      </div>
+    </section>
+
+    <section class="scrolly" id="s-split" aria-label="Building the gap one factor at a time">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title" id="split-title"></p>
+          <p class="figure-subtitle" id="split-subtitle"></p>
+          <div class="legend" id="split-legend"></div>
+          <div class="chart" id="split-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Fairlie (2005) decomposition, averaged over 100 replications and six income imputations. Exploratory: no confidence intervals.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="split-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>So how much of the 6.7-point gap between mothers looking for work and full-time mothers do these differences explain?</p><p>Build it up one factor at a time, starting from full-time mothers.</p></div>
+        <div class="step"><p>Marital status adds the most, then the mother's age and family income. Together the measured differences add up to <strong>2.7 points</strong> (41%).</p></div>
+        <div class="step"><p>The remaining <strong>4.0 points</strong> aren't explained by anything the survey measures.</p></div>
+        <div class="step"><p>For mothers not looking for work, the factors pull in opposite directions.</p><p>Lower income and less education widen the gap; being more often married narrows it by about as much. Net: almost nothing, which is why adjusting didn't shrink their gap.</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Now, the full-time mother with a baby</h2>
+      <p class="one-liner">Back to the picture this story started with.</p>
+      <p>The survey records each child's exact age, so it can single out mothers whose child is under 2. Among them, 3,753 work full-time.</p>
+    </section>
+
+    <!-- Section 4: under 2 -->
+    <section class="scrolly" id="s-baby" aria-label="Mothers of children under 2">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title" id="baby-title"></p>
+          <p class="figure-subtitle" id="baby-subtitle"></p>
+          <div class="legend" id="baby-legend"></div>
+          <div class="chart" id="baby-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Adjusted for survey year, income, education, marital status, number of children and mother's age. † flagged under the NSCH reliability rules.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="baby-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Among mothers of children under 2, those working full-time are not the ones struggling most.</p><p>7.4% rate their mental health fair or poor, inside the range of every other group.</p></div>
+        <div class="step"><p>Take a wider slice, anything below "very good," and full-time mothers of babies still sit in the middle.</p></div>
+        <div class="step"><p>Compare full-time mothers by their child's age instead.</p><p>Those with a child under 2 report slightly <em>better</em> mental health than full-time mothers of older children.</p></div>
+        <div class="step"><p>They also report the least parenting aggravation: 1.5%, vs. 4 to 6% for mothers of older children.</p><p>(The aggravation questions, such as "this child is much harder to care for than most," may fit older children better than babies.)</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <p class="one-liner">So why don't full-time mothers of babies look worse off?</p>
+      <p>One clue sits in a different question: whether anyone in the family had to quit, turn down or greatly change a job in the past year because of problems with child care.</p>
+    </section>
+
+    <!-- Section 5: child care -->
+    <section class="scrolly" id="s-care" aria-label="Job changes because of child care problems">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title" id="care-title">100 families with a child under 2</p>
+          <p class="figure-subtitle">Each dot is one family out of 100</p>
+          <div class="legend" id="care-legend"></div>
+          <div class="chart" id="care-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Adjusted percentages, rounded to whole dots. The question covers anyone in the family, in the past 12 months.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="care-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>Where the mother works full-time, about 8 in 100 families had a <span class="accent-word">job change because of child care</span>.</p></div>
+        <div class="step"><p>Where she works part-time: about 23.</p><p>Where she's looking for work: 30.</p><p>Where she's not looking: 15.</p></div>
+        <div class="step"><p>This points to sorting. Mothers for whom full-time work and an infant didn't fit may already have cut back or left.</p><p>The full-time mothers who remain may be the ones whose child care works.</p><p>A one-time survey can't prove it, but sorting like this would hide any strain from full-time work.</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>And fathers?</h2>
+      <p>The survey also hears from 43,550 fathers, which shows whether these patterns are about mothers or about parents in general.</p>
+    </section>
+
+    <!-- Section 7: fathers -->
+    <section class="scrolly" id="s-dads" aria-label="Mothers and fathers compared">
+      <div class="sticky">
+        <figure class="figure">
+          <p class="figure-title">Fair or poor mental health: full-time vs. not employed</p>
+          <p class="figure-subtitle">Percentage of children, by parent and child's age (95% CIs in the tooltips and table)</p>
+          <div class="legend" id="dads-legend"></div>
+          <div class="chart" id="dads-chart"></div>
+          <p class="source">Source: NSCH 2023–2025 | Parents who answered the survey. "Not employed" combines looking, not looking and retired. Exploratory comparison.</p>
+          <details class="table-view"><summary>Show the data table</summary><div id="dads-table"></div></details>
+        </figure>
+      </div>
+      <div class="steps">
+        <div class="step"><p>For mothers, not working goes with a modestly higher rate of fair or poor mental health.</p></div>
+        <div class="step"><p>For fathers, the jump is much bigger.</p><p>Full-time fathers start lower, at 3 to 4 in 100. Non-employed fathers of school-age kids reach 13 to 14 in 100.</p></div>
+        <div class="step"><p>After accounting for income and family circumstances, the fathers' gap (6.7 points) is more than twice the mothers' (2.8).</p><p>Studies in Europe link this to the weight of the breadwinner role, though one U.S. study found no difference between men and women.</p></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>What this can and can't tell us</h2>
+      <p>Children whose mothers are looking for work are the most likely to have a mother in fair or poor mental health, and family circumstances explain only part of that.</p>
+      <p>Full-time work, including with a baby at home, does not go with worse mental health in this survey.</p>
+      <p>But this is one snapshot. It can't say whether work affects mothers' mental health or mental health affects work; it is probably both. The survey has no measure of postpartum depression or anxiety, no work hours and no record of when mothers went back to work.</p>
+      <p>A better test would use a survey with a depression scale and work hours, such as the National Health Interview Survey.</p>
+    </section>
+
+    <div data-snapshot data-shot="snapshot"></div>
+  </main>
+
+  <footer class="methods" id="methods">
+    <h2>Methodology</h2>
+    <p><strong>Data.</strong> National Survey of Children's Health (NSCH) topical public use files for 2023, 2024 and 2025, pooled (U.S. Census Bureau). One child is sampled per household and an adult who knows the child answers.</p>
+    <p><strong>Who counts as a mother.</strong> The adult who answered is female and the sampled child's biological or adoptive parent (90,415 mothers). Mothers who were "working without pay" (1,361) or had no employment or mental health answer (1,007) were left out, leaving 88,047. Fathers are defined the same way.</p>
+    <p><strong>Measures.</strong> Mental health is the parent's own rating of their mental or emotional health (excellent to poor). Parenting aggravation means "usually" or "always" feeling that the child is much harder to care for than most, does things that really bother the parent, or makes the parent angry. The child care question asks whether anyone in the family had to quit, not take or greatly change a job because of problems with child care in the past 12 months (children 0–5 only).</p>
+    <p><strong>Estimates.</strong> All percentages use the NSCH weights divided by three, with design-based standard errors (strata by year × state × sampling stratum, households as primary sampling units). Because the weights describe children, results read "X% of children have a mother who…". Adjusted results come from survey-weighted logistic regression with family income (six imputations combined with Rubin's rules), education, marital status, number of children, mother's age and survey year. The gap split uses a Fairlie decomposition and is exploratory. Every estimate was checked against the NSCH reliability rules; flagged estimates are marked †.</p>
+    <p><strong>Unit charts.</strong> Dots show weighted percentages rounded to whole numbers out of 100. They are not individual survey respondents.</p>
+    <p><strong>What this is not.</strong> Associations from a cross-sectional survey, not effects of employment.</p>
+
+    <h3>Explore the data</h3>
+    <p>Code, tables and the full write-up (including all confidence intervals) are in the project repository: <code>docs/conclusions.md</code>, <code>docs/nsch-h1.md</code>, <code>docs/nsch-h1-under2.md</code>, <code>docs/nsch-h8.md</code> and <code>reports/tables/</code>.</p>
+
+    <h3>Data citation</h3>
+    <p>U.S. Census Bureau. (2025, 2026). <em>National Survey of Children's Health: Topical public use files, 2023–2025</em> [Data sets]. https://www.census.gov/programs-surveys/nsch/data/datasets.html</p>
+
+    <h3>Selected references</h3>
+    <ul>
+      <li>Chatterji, P., Markowitz, S., &amp; Brooks-Gunn, J. (2013). Effects of early maternal employment on maternal health and well-being. <em>Journal of Population Economics, 26</em>(1), 285–301.</li>
+      <li>Fairlie, R. W. (2005). An extension of the Blinder–Oaxaca decomposition technique to logit and probit models. <em>Journal of Economic and Social Measurement, 30</em>(4), 305–316.</li>
+      <li>Klumb, P. L., &amp; Lampert, T. (2004). Women, work, and well-being 1950–2000. <em>Social Science &amp; Medicine, 58</em>(6), 1007–1024.</li>
+      <li>Paul, K. I., &amp; Moser, K. (2009). Unemployment impairs mental health: Meta-analyses. <em>Journal of Vocational Behavior, 74</em>(3), 264–282.</li>
+    </ul>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="data.js"></script>
+  <script src="shared.js"></script>
+  <script src="story.js"></script>
+  <script src="snapshot.js"></script>
+  <script src="intro.js"></script>
+  <script src="stats101.js"></script>
+</body>
+</html>
